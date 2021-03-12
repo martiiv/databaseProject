@@ -8,9 +8,9 @@
 | customer            | GET, PUT, <br />POST, (DELETE) | This resource offer functionality for the customer to create, update and manage orders. <br />Media type: application/json |
 | transporter         | GET, PUT                       | This resource offer functionality for the transporter to manage shipments<br />Media type: application/json |
 | public              | GET                            | This resource offer functionality for the public to gather information about various types of skis<br />Media type: application/json |
-| order               | GET                            | Return order details<br />Media type: application/json       |
 
-
+<br />
+<br />
 
 
 | Endpoint            | URI                                                          | Description                                                  |
@@ -21,9 +21,9 @@
 | customer            | http://127.0.0.1/customer/ {customer_id}/order/<br />http://127.0.0.1/customer/ {customer_id}/order/{order_no}<br />http://127.0.0.1/customer/ {customer_id}/order/{order_no}/split<br />http://127.0.0.1/customer/plan | Use this endpoint to <br /><ul><li>list your orders</li><li>retrieve information about a specific order</li><li>to place an order</li><li>to cancel an order</li><li>request an order split</li><li>retrieve production plan</li></ul> |
 | transporter         | http://127.0.0.1/transporter<br />http://127.0.0.1/transporter/{shipment_id} | Use this endpoint to get all the orders ready to be shipped and change the status of a specific shipment. |
 | public              | http://127.0.0.1/public<br />http://127.0.0.1/public?model-name={model_name} | Use this endpoint to get information about all the skis stored in the database. It may be sorted based on model name. |
-| order               | http://127.0.0.1/order/{id}                                  | Use this endpoint to get information about a specific order. |
 
-
+<br />
+<br />
 
 
 
