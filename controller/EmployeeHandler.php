@@ -12,4 +12,9 @@ class EmployeeHandler
     {
         return (new EmployeeModel())->getCollection();
     }
+
+    public function createResource(array $arr): ?array
+    {
+        return (new EmployeeModel())->createResource($arr);
+    }
 }
