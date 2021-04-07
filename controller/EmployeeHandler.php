@@ -17,4 +17,9 @@ class EmployeeHandler
     {
         return (new EmployeeModel())->createResource($arr);
     }
+
+    public function updateResource(array $arr, int $oldID): ?array
+    {
+        return (new EmployeeModel())->updateResource($arr, $oldID);
+    }
 }
