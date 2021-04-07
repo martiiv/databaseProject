@@ -14,7 +14,16 @@ class EmployeeModel extends DB
 
     function getCollection(array $query = null): array
     {
-        // TODO: Implement getCollection() method.
+        $res = array();
+        $query = 'SELECT number, name, department FROM employees';
+
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $res[] = $row;
+        }
+        return $res;
     }
 
     function getResource(int $id): ?array
