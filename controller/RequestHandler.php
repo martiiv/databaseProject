@@ -8,13 +8,13 @@ abstract class RequestHandler
     /**
      * @var array an array holding the RESTConstant values indicating what method may be called on this resource/controller.
      */
-    protected $validMethods;
+    protected array $validMethods;
 
     /**
      * @var array an associative array mapping requests to an HTTP status indicating whether such a request is valid
      *      or not implemented,
      */
-    protected $validRequests;
+    protected array $validRequests;
 
     /**
      * The constructor defines the valid requests to be the dealers, used cars and report controller endpoints.
