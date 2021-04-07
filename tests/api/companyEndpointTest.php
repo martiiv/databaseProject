@@ -4,7 +4,8 @@
  * Martin Iversen
  * 22.03.2021
  */
-class companyEndpointTest{
+class ccompanyEndpointTest{
+
     public function _before(ApiTester $I){
         //Vetikkehvaviskalputteinnher
     }
@@ -18,9 +19,9 @@ class companyEndpointTest{
         $I->seeResponseCodeIs(200);
         $I->seeResponseIsJson();
         $I->seeResponseContainsJson(['order_no'=> '{:id}',
-                                     'ski_type'=>'klassisk',
-                                     'total_price'=>'345000',
-                                     'status'=>'new']);
+            'ski_type'=>'klassisk',
+            'total_price'=>'345000',
+            'status'=>'new']);
     }
 
     /*
@@ -31,10 +32,10 @@ class companyEndpointTest{
         $I->sendPut('/company/costumer-rep/order/{:id}{?state={:state}}', [ 'order_no'=> '{:id}',
                                                       'status'=>'open']);
         $I->seeResponseCodeIs(201);
-        $I->seeInDatabase( [  'order_no'=> '{:id}',
-                              'ski_type'=>'klassisk',
-                              'total_price'=>'345000',
-                              'status'=>'open']);
+        $I->seeInDatabase((string)['order_no' => '{:id}',
+            'ski_type' => 'klassisk',
+            'total_price' => '345000',
+            'status' => 'open']);
     }
 
     /*
@@ -44,12 +45,12 @@ class companyEndpointTest{
     public function createShipmentTest(ApiTester $I){
         $I->sendPut('/company/costumer-rep/shipment/');
         $I->seeResponseCodeIs(201);
-        $I->seeInDatabase( [    'shipment_no'=> '',
-                                'store_franchise_name'=>'',
-                                'pickup_date'=>'',
-                                'state'=>'',
-                                'transporting_company'=>'',
-                                'driver_id'=>'']);
+        $I->seeInDatabase((string)['shipment_no' => '',
+            'store_franchise_name' => '',
+            'pickup_date' => '',
+            'state' => '',
+            'transporting_company' => '',
+            'driver_id' => '']);
 
     }
 
@@ -71,17 +72,17 @@ class companyEndpointTest{
                                                     'retail_price'=>'225',
                                                     'production_date'=>'21.07.2035']);
         $I->seeResponseCodeIs(201);
-        $I->seeInDatabase( [                        'model'=> 'X547Jegvetikke',
-                                                    'ski_type'=>'klassisk',
-                                                    'temperature'=>'(-15)-(-20)',
-                                                    'grip_system'=>'JEgaNerIkKe',
-                                                    'size'=>'225',
-                                                    'weight_class'=>'85kg',
-                                                    'description'=>'bra ski',
-                                                    'historical'=>'JegVetIkke',
-                                                    'photo_url'=>'u/tull/bildet',
-                                                    'retail_price'=>'225',
-                                                    'production_date'=>'21.07.2035']);
+        $I->seeInDatabase((string)['model' => 'X547Jegvetikke',
+            'ski_type' => 'klassisk',
+            'temperature' => '(-15)-(-20)',
+            'grip_system' => 'JEgaNerIkKe',
+            'size' => '225',
+            'weight_class' => '85kg',
+            'description' => 'bra ski',
+            'historical' => 'JegVetIkke',
+            'photo_url' => 'u/tull/bildet',
+            'retail_price' => '225',
+            'production_date' => '21.07.2035']);
     }
 
     /*
@@ -107,10 +108,10 @@ class companyEndpointTest{
         $I->sendPut('/company/storekeeper/order/{:id}{?state={:state}}', [    'order_no'=> '{:id}',
                                                         'status'=>'open']);
         $I->seeResponseCodeIs(201);
-        $I->seeInDatabase( [    'order_no'=> '{:id}',
-                                'ski_type'=>'klassisk',
-                                'total_price'=>'345000',
-                                'status'=>'Ready to be shipped']);
+        $I->seeInDatabase((string)['order_no' => '{:id}',
+            'ski_type' => 'klassisk',
+            'total_price' => '345000',
+            'status' => 'Ready to be shipped']);
     }
 
     /*
@@ -122,8 +123,8 @@ class companyEndpointTest{
         $I->sendPost('/company/planner/production', [   'production_plan_period'=> '(25-04-2021)-(22-05-2021)',
                                                         'no_of_skis'=>'2255']);
         $I->seeResponseCodeIs(201);
-        $I->seeInDatabase( [    'production_plan_period'=> '(25-04-2021)-(22-05-2021)',
-                                'no_of_skis'=>'2255']);
+        $I->seeInDatabase((string)['production_plan_period' => '(25-04-2021)-(22-05-2021)',
+            'no_of_skis' => '2255']);
     }
 }
 

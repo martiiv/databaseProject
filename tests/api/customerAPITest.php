@@ -45,23 +45,23 @@ class customerAPITest{
                                                 'total_price'=>'345000',
                                                 'status'=>'new']);
         $I->seeResponseCodeIs(201);
-        $I->seeInDatabase( [            'order_no'=> 'AUTOMATISK',
-            'ski_type'=>'klassisk',
-            'total_price'=>'345000',
-            'status'=>'new']);
+        $I->seeInDatabase((string)['order_no' => 'AUTOMATISK',
+            'ski_type' => 'klassisk',
+            'total_price' => '345000',
+            'status' => 'new']);
     }
 
-    public function cancelOrderTest(TestApi $I){
+    public function cancelOrderTest(ApiTester $I){
         $I->haveHttpHeader('Content-Type', 'application/json');
         $I->sendDelete('/customer/order/cancel/{:customer_id}/{:order_id}', [ 'order_no'=> '',
             'ski_type'=>'klassisk',
             'total_price'=>'345000',
             'status'=>'new']);
         $I->seeResponseCodeIs("sletta");
-        $I->seeInDatabase( [            'order_no'=> '{:order_id}',
-            'ski_type'=>'klassisk',
-            'total_price'=>'345000',
-            'status'=>'new']);
+        $I->seeInDatabase((string)['order_no' => '{:order_id}',
+            'ski_type' => 'klassisk',
+            'total_price' => '345000',
+            'status' => 'new']);
     }
 
     /*
@@ -72,10 +72,10 @@ class customerAPITest{
         $I->haveHttpHeader('Content-Type', 'application/json');
         $I->sendPut('/customer/order/{:customer_id}/{:order:id}/split', [ 'order_no'=> '{:id}']);
         $I->seeResponseCodeIs(201);
-        $I->seeInDatabase( ['order_no'=> 'NY ID AUTO',
-                            'ski_type'=>'',
-                            'total_price'=>'',
-                            'status'=>'']);
+        $I->seeInDatabase((string)['order_no' => 'NY ID AUTO',
+            'ski_type' => '',
+            'total_price' => '',
+            'status' => '']);
     }
 
     /*
