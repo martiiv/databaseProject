@@ -20,13 +20,6 @@ class EmployeeTest extends \Codeception\Test\Unit
     }
 
     // tests
-    public function testSomeFeature()
-    {
-
-
-    }
-
-    // tests
     public function testGetResource()
     {
         $employeeHandler = new EmployeeHandler();
@@ -43,5 +36,23 @@ class EmployeeTest extends \Codeception\Test\Unit
             print(json_encode($employee));
             print("\n");
         }
+    }
+
+    // tests
+    public function testCreateResource()
+    {
+        // Delete this instance from the DB if you want to re-run the test
+        // Optionally change the values
+        $arr = array (
+            'number' => 6,
+            'name' => "Morten",
+            'department' => "Storekeeper"
+        );
+
+        $employeeHandler = new EmployeeHandler();
+        $newEmployee = $employeeHandler->createResource($arr);
+        print(json_encode($newEmployee));
+        print(json_encode($arr));
+        $this->assertEquals(json_encode($newEmployee), json_encode($arr));
     }
 }
