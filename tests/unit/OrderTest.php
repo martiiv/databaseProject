@@ -3,6 +3,7 @@ require_once 'controller/OrderHandler.php';
 require_once 'db/OrderModel.php';
 
 
+
 class OrderTest extends \Codeception\Test\Unit
 {
     /**
@@ -23,8 +24,11 @@ class OrderTest extends \Codeception\Test\Unit
     public function testGetResource()
     {
         $orderHandler = new OrderHandler();
-        $order = $orderHandler->getResource(15231);
-        print(json_encode($order));
+        $order = $orderHandler->getResource(1);
+        foreach ($order as $o) {
+            print(json_encode($o));
+            print("\n");
+        }
 
     }
 

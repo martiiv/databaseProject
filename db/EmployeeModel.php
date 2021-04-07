@@ -4,8 +4,9 @@ require_once 'DB.php';
 /**
  * Class OrderModel
  */
-class EmployeeModel extends AbstractModel
+class EmployeeModel extends DB
 {
+
     public function __construct()
     {
         parent::__construct();

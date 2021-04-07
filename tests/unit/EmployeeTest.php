@@ -1,4 +1,6 @@
 <?php
+require_once "controller/EmployeeHandler.php";
+require_once "db/EmployeeModel.php";
 
 class EmployeeTest extends \Codeception\Test\Unit
 {
@@ -28,7 +30,7 @@ class EmployeeTest extends \Codeception\Test\Unit
     public function testGetResource()
     {
         $employeeHandler = new EmployeeHandler();
-        $employee = $employeeHandler->getResource(15231);
+        $employee = $employeeHandler->getResource(1);
         print(json_encode($employee));
     }
 }
