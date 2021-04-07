@@ -18,7 +18,17 @@ class EmployeeModel extends AbstractModel
 
     function getResource(int $id): ?array
     {
-        // TODO: Implement getResource() method.
+        $res = array();
+        $query = 'SELECT number, name, department FROM employees WHERE number = :id';
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':id', $id);
+        $stmt->execute();
+
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $res[] = $row;
+        }
+        return $res;
     }
 
     function createResource(array $resource): array
