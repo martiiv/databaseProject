@@ -2,7 +2,7 @@
 require_once 'DB.php';
 
 /**
- * Class OrderModel
+ * Class EmployeeModel
  */
 class EmployeeModel extends DB
 {
@@ -43,8 +43,25 @@ class EmployeeModel extends DB
 
     function createResource(array $resource): array
     {
-        // TODO: Implement createResource() method.
+        $this->db->beginTransaction();
+
+        $res = array();
+        $query = 'INSERT INTO employees (number, name, department) VALUES (:number, :name, :department)';
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':number', $resource['number']);
+        $stmt->bindValue(':name', $resource['name']);
+        $stmt->bindValue(':department', $resource['department']);
+        $stmt->execute();
+
+        $res['number'] = $resource['number']; //intval($this->db->lastInsertId());
+        $res['name'] = $resource['name'];
+        $res['department'] = $resource['department'];
+        $this->db->commit();
+
+        return $res;
     }
+
 
     function updateResource(array $resource): array
     {
