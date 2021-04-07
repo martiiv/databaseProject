@@ -63,9 +63,28 @@ class EmployeeModel extends DB
     }
 
 
-    function updateResource(array $resource): array
+    function updateResource(array $resource, int $oldID): array
     {
-        // TODO: Implement updateResource() method.
+        $this->db->beginTransaction();
+
+        $oldIDRecieved = $oldID;
+
+        $res = array();
+        $query = 'UPDATE employees SET number = (:number), name = (:name), department = (:department) WHERE number = (:oldID)';
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':number', $resource['number']);
+        $stmt->bindValue(':name', $resource['name']);
+        $stmt->bindValue(':department', $resource['department']);
+        $stmt->bindValue(':oldID', $oldIDRecieved);
+        $stmt->execute();
+
+        $res['number'] = $resource['number'];
+        $res['name'] = $resource['name'];
+        $res['department'] = $resource['department'];
+        $this->db->commit();
+
+        return $res;
     }
 
     function deleteResource(int $id)
