@@ -5,7 +5,7 @@ require_once "db/EmployeeModel.php";
 class EmployeeTest extends \Codeception\Test\Unit
 {
     /**
-     * @var \UnitTester
+     * @var UnitTester
      */
     protected $tester;
     
@@ -30,7 +30,18 @@ class EmployeeTest extends \Codeception\Test\Unit
     public function testGetResource()
     {
         $employeeHandler = new EmployeeHandler();
-        $employee = $employeeHandler->getResource(1);
-        print(json_encode($employee));
+        $employees = $employeeHandler->getResource(1);
+        print(json_encode($employees));
+    }
+
+    // tests
+    public function testGetCollection()
+    {
+        $employeeHandler = new EmployeeHandler();
+        $employees = $employeeHandler->getCollection();
+        foreach ($employees as $employee) {
+            print(json_encode($employee));
+            print("\n");
+        }
     }
 }
