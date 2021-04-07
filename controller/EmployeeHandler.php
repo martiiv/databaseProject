@@ -22,4 +22,9 @@ class EmployeeHandler
     {
         return (new EmployeeModel())->updateResource($arr, $oldID);
     }
+
+    public function deleteResource(int $id): ?string
+    {
+        return (new EmployeeModel())->deleteResource($id);
+    }
 }
