@@ -67,8 +67,6 @@ class EmployeeModel extends DB
     {
         $this->db->beginTransaction();
 
-        $oldIDRecieved = $oldID;
-
         $res = array();
         $query = 'UPDATE employees SET number = (:number), name = (:name), department = (:department) WHERE number = (:oldID)';
 
@@ -76,7 +74,7 @@ class EmployeeModel extends DB
         $stmt->bindValue(':number', $resource['number']);
         $stmt->bindValue(':name', $resource['name']);
         $stmt->bindValue(':department', $resource['department']);
-        $stmt->bindValue(':oldID', $oldIDRecieved);
+        $stmt->bindValue(':oldID', $oldID);
         $stmt->execute();
 
         $res['number'] = $resource['number'];
@@ -87,8 +85,24 @@ class EmployeeModel extends DB
         return $res;
     }
 
-    function deleteResource(int $id)
+    function deleteResource(int $id): string
     {
-        // TODO: Implement deleteResource() method.
+        $this->db->beginTransaction();
+
+        $query = 'DELETE FROM employees WHERE number = (:id)';
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':id', $id);
+        $stmt->execute();
+
+        $this->db->commit();
+
+        $success = "Successfully deleted employee with employee number: " . strval($id) . ".";
+
+        if (strlen($success) != 0) {
+            return $success;
+        } else {
+            return "Failed to delete employee with employee number: " . strval($id) . ".";
+        }
     }
 }
