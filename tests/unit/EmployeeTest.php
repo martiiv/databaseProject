@@ -55,4 +55,24 @@ class EmployeeTest extends \Codeception\Test\Unit
         print(json_encode($arr));
         $this->assertEquals(json_encode($newEmployee), json_encode($arr));
     }
+
+    // tests
+    public function testUpdateResource()
+    {
+        // Change the values in this instance if you want to re-run the test
+        $arr = array (
+            'number' => 7,
+            'name' => "Morten",
+            'department' => "Storekeeper"
+        );
+
+        // The ID needs to be updated after you have updated it if you want to rerun it
+        $oldID = 6;
+
+        $employeeHandler = new EmployeeHandler();
+        $updatedEmployee = $employeeHandler->updateResource($arr, $oldID);
+        print(json_encode($updatedEmployee));
+        print(json_encode($arr));
+        $this->assertEquals(json_encode($updatedEmployee), json_encode($arr));
+    }
 }
