@@ -75,4 +75,15 @@ class EmployeeTest extends \Codeception\Test\Unit
         print(json_encode($arr));
         $this->assertEquals(json_encode($updatedEmployee), json_encode($arr));
     }
+
+    // tests
+    public function testDeleteResource()
+    {
+        $id = 7;
+        $idTemp = "Successfully deleted employee with employee number: " . strval($id) . ".";
+
+        $employeeHandler = new EmployeeHandler();
+        $deletedEmployee = $employeeHandler->deleteResource($id);
+        $this->assertEquals($deletedEmployee, $idTemp);
+    }
 }
