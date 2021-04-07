@@ -25,11 +25,7 @@ class RESTConstants
     const HTTP_NOT_IMPLEMENTED = 501;
 
     // Defined application endpoints
-    const ENDPOINT_DEALERS = 'dealers';
-    const ENDPOINT_USEDCARS = 'used-cars';
-    const ENDPOINT_REPORT = 'create-report';
-    const ENDPOINT_REPORT_DEALER_STOCK = 'dealer-stock';
-    const ENDPOINT_ID = '{id}';
+
 
     // Defined database errors
     const DB_ERR_ATTRIBUTE_MISSING = 1;
