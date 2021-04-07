@@ -19,11 +19,11 @@ class transporterEndpointTest{
         $I->sendPut('/transporter/shipment/{:id}', [ 'shipment_no'=> '{:id}',
                                                      'status'=>'true']);
         $I->seeResponseCodeIs(201);
-        $I->seeInDatabase( ['shipment_no'=> '',
-                            'store_franchise_name'=>'',
-                            'pickup_date'=>'',
-                            'state'=>'true',
-                            'transporting_company'=>'',
-                            'driver_id'=>''  ]);
+        $I->seeInDatabase((string)['shipment_no' => '',
+            'store_franchise_name' => '',
+            'pickup_date' => '',
+            'state' => 'true',
+            'transporting_company' => '',
+            'driver_id' => '']);
     }
 }
