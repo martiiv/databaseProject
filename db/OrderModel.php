@@ -60,9 +60,32 @@ class OrderModel extends DB
         //return $this->db->lastInsertId();
     }
 
-    function updateResource(array $resource): array
+    function updateResource(array $resource, int $old_Order_no): int
     {
-        // TODO: Implement updateResource() method.
+        //$transporterArray = $this->editTransporter($resource, $old_Order_no);
+
+        $this->db->beginTransaction();
+
+        $res = array();
+
+        $query = 'UPDATE orders SET order_no = (:order_no), total_price = (:total_price), 
+                     status = (:status), customer_id = (:customer_id) WHERE order_no = (:old_Order_no)';
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':order_no', $resource['order_no']);
+        $stmt->bindValue(':total_price', $resource['total_price']);
+        $stmt->bindValue(':status', $resource['status']);
+        $stmt->bindValue(':customer_id', $resource['customer_id']);
+        $stmt->bindValue(':old_Order_no', $old_Order_no);
+        $stmt->execute();
+
+        $res['order_no'] = $resource['order_no'];
+        $res['total_price'] = $resource['total_price'];
+        $res['status'] = $resource['status'];
+        $res['customer_id'] = $resource['customer_id'];
+        $this->db->commit();
+
+        return $resource['order_no'];
     }
 
     function deleteResource(int $id)

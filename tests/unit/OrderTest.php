@@ -61,4 +61,25 @@ class OrderTest extends \Codeception\Test\Unit
         print($arr['order_no']);
         $this->assertEquals($newOrder, $arr['order_no']);
     }
+
+    // tests
+    public function testUpdateResource()
+    {
+        // Change the values in this instance if you want to re-run the test
+        $arr = array (
+            'order_no' => 12480,
+            'total_price' => 1400,
+            'status' => "used",
+            'customer_id' => 1,
+        );
+
+        // The old order number needs to be updated after you have updated it if you want to rerun it
+        $old_Order_no = 12479;
+
+        $orderHandler = new OrderHandler();
+        $updatedOrder = $orderHandler->updateResource($arr, $old_Order_no);
+        $this->assertEquals($updatedOrder, $arr['order_no']);
+    }
+
+
 }
