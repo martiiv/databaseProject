@@ -102,7 +102,8 @@ class EmployeeModel extends DB
         if (strlen($success) != 0) {
             return $success;
         } else {
-            return "Failed to delete employee with employee number: " . strval($id) . ".";
+            $success = "Failed to delete employee with employee number: " . strval($id) . ".";
+            return $success;
         }
     }
 }
