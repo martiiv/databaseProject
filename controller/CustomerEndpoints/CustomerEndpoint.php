@@ -1,5 +1,6 @@
 <?php
 require_once 'db/OrderModel.php';
+require_once 'db/ShipmentModel.php';
 
 
 class CustomerEndpoint
@@ -34,4 +35,24 @@ class CustomerEndpoint
         return $res;
     }
 
+    private function handleDelete($uri, $queries, $payload)
+    {
+        if ($uri[0] == "order" && count($uri) == 4) {
+
+            $resource = array();
+            $resource['order_no'] = $uri[3];
+            $resource['status'] = "canceled";
+            $shipment_no = (new OrderModel())->updateResource($resource);
+
+            // TODO: delete shipment will not work because of improper database design.
+            (new ShipmentModel())->deleteResource($shipment_no);
+
+            $res['result'] = $uri[3] . " canceled";
+            $res['status'] =  RESTConstants::HTTP_OK;
+            return $res;
+        }
+        else {
+            //TODO Throw exception
+        }
+    }
 }
