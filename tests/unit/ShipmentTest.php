@@ -29,10 +29,24 @@ class ShipmentTest extends \Codeception\Test\Unit
     }
 
     // tests
-    public function testGetResource()
+    public function testCreateResource()
     {
+        // Delete this instance from the DB if you want to re-run the test
+        // Optionally change the values
+        $arr = array (
+            'shipment_no' => 3,
+            'store_franchise_name' => "Sport 1 Oslo",
+            'pickup_date' => '2021-05-12',
+            'state' => 0,
+            'driver_id' => 3,
+            'transporter' => "Magnus' transporting AS",
+            'address_id' => 3,
+        );
+
         $shipmentHandler = new ShipmentHandler();
-        $shipments = $shipmentHandler->getResource(1);
-        print(json_encode($shipments));
+        $newShipment = $shipmentHandler->createResource($arr);
+        print(json_encode($newShipment));
+        print(json_encode($arr));
+        $this->assertEquals(json_encode($newShipment), json_encode($arr));
     }
 }

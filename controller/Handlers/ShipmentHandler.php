@@ -12,4 +12,9 @@ class ShipmentHandler
     {
         return (new ShipmentModel())->getCollection();
     }
+
+    public function createResource(array $arr): ?array
+    {
+        return (new ShipmentModel())->createResource($arr);
+    }
 }
