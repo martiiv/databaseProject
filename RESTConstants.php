@@ -25,7 +25,7 @@ class RESTConstants
     const HTTP_NOT_IMPLEMENTED = 501;
 
     // Defined application endpoints
-
+    const ENDPOINT_CUSTOMER = "customer";
 
     // Defined database errors
     const DB_ERR_ATTRIBUTE_MISSING = 1;
