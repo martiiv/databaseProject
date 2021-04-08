@@ -74,4 +74,17 @@ class ShipmentTest extends \Codeception\Test\Unit
         print(json_encode($arr));
         $this->assertEquals(json_encode($updatedShipment), json_encode($arr));
     }
+
+    // tests
+    public function testDeleteResource()
+    {
+        // To rerun the delete tests, you need to delete the duplicated transporter from "transporters", because this
+        // is not deleted upon deletion of a shipment.
+        $id = 4;
+        $idTemp = "Successfully deleted shipment with shipment number: " . strval($id) . ".";
+
+        $shipmentHandler = new ShipmentHandler();
+        $deletedShipment = $shipmentHandler->deleteResource($id);
+        $this->assertEquals($deletedShipment, $idTemp);
+    }
 }

@@ -22,4 +22,9 @@ class ShipmentHandler
     {
         return (new ShipmentModel())->updateResource($arr, $oldName, $oldShipment_no);
     }
+
+    public function deleteResource(int $id): ?string
+    {
+        return (new ShipmentModel())->deleteResource($id);
+    }
 }

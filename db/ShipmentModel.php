@@ -147,8 +147,25 @@ class ShipmentModel extends DB
         return $res;
     }
 
-    function deleteResource(int $id)
+    function deleteResource(int $id): string
     {
-        // TODO: Implement deleteResource() method.
+        $this->db->beginTransaction();
+
+        $query = 'DELETE FROM shipments WHERE shipment_no = (:id)';
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':id', $id);
+        $stmt->execute();
+
+        $this->db->commit();
+
+        $success = "Successfully deleted shipment with shipment number: " . strval($id) . ".";
+
+        if (strlen($success) != 0) {
+            return $success;
+        } else {
+            $success = "Failed to delete shipment with shipment number: " . strval($id) . ".";
+            return $success;
+        }
     }
 }
