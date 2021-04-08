@@ -42,4 +42,25 @@ class TransporterModel extends DB
         return $res;
     }
 
+    function deleteResource(string $name): string
+    {
+        $this->db->beginTransaction();
+
+        $query = 'DELETE FROM transporters WHERE name = (:name)';
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':name', $name);
+        $stmt->execute();
+
+        $this->db->commit();
+
+        $success = "Successfully deleted transporter: " . $name . ".";
+
+        if (strlen($success) != 0) {
+            return $success;
+        } else {
+            $success = "Failed to delete transporter: " . $name . ".";
+            return $success;
+        }
+    }
 }

@@ -11,15 +11,22 @@ class TransporterUnitTest extends \Codeception\Test\Unit
     
     protected function _before()
     {
+
     }
 
     protected function _after()
     {
+
     }
 
     // tests
-    public function testSomeFeature()
+    public function testDeleteResource()
     {
+        $name = "Ole Joar's Pickup Service";
+        $idTemp = "Successfully deleted transporter: " . $name . ".";
 
+        $transporterHandler = new TransporterHandler();
+        $deletedTransporter = $transporterHandler->deleteResource($name);
+        $this->assertEquals($deletedTransporter, $idTemp);
     }
 }
