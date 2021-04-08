@@ -199,7 +199,7 @@ class companyTest extends \Codeception\Test\Unit
     /*
      * Method for creating a ski
      * Tests the following endpoint:
-     * /company/storekeeper/ski/{:id} //TODO denne må kanskje bort
+     * /company/storekeeper/ski/{:id} //TODO ID må kanskje bort
      */
     public function createSkiTest(ApiTester $I){
         $I->haveHttpHeader('Content-Type', 'application/json');
