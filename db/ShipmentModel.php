@@ -4,7 +4,7 @@ require_once 'DB.php';
 /**
  * Class OrderModel
  */
-class ShipmentModel extends AbstractModel
+class ShipmentModel extends DB
 {
     public function __construct()
     {
@@ -13,7 +13,16 @@ class ShipmentModel extends AbstractModel
 
     function getCollection(array $query = null): array
     {
-        // TODO: Implement getCollection() method.
+        $res = array();
+        $query = 'SELECT shipment_no, store_franchise_name, pickup_date, state, driver_id, transporter, address_id FROM shipments';
+
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $res[] = $row;
+        }
+        return $res;
     }
 
     function getResource(int $id): ?array
