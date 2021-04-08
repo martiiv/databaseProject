@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * Test class for the company endpoints
  * Tests all the endpoints mentioned in the endpoint list concerning company
  * @author Martin Iversen
@@ -199,7 +199,7 @@ class companyTest extends \Codeception\Test\Unit
     /*
      * Method for creating a ski
      * Tests the following endpoint:
-     * /company/storekeeper/ski/{:id} //TODO denne må kanskje bort
+     * /company/storekeeper/ski/{:id} //TODO ID må kanskje bort
      */
     public function createSkiTest(ApiTester $I){
         $I->haveHttpHeader('Content-Type', 'application/json');

@@ -44,7 +44,7 @@ class ShipmentModel extends DB
     {
         $res = array();
 
-        $transporterArray = $this->addTransporter($resource);
+        $transporterArray = (new TransporterModel())->addTransporter($resource);
 
         $this->db->beginTransaction();
         $query = 'INSERT INTO shipments (shipment_no, store_franchise_name, pickup_date, state, driver_id, transporter, address_id) VALUES (:shipment_no, :store_franchise_name, :pickup_date, :state, :driver_id, :transporter, :address_id)';
@@ -71,50 +71,9 @@ class ShipmentModel extends DB
         return $res;
     }
 
-    // TODO - move addTransporter to separate transporter file
-    function addTransporter(array $resource): array
-    {
-        $this->db->beginTransaction();
-
-        $res = array();
-
-        $transporter = $resource['transporter'];
-
-        $queryTransporter = 'INSERT INTO transporters (name) VALUES (:name)';
-
-        $stmt = $this->db->prepare($queryTransporter);
-        $stmt->bindValue(':name', $transporter);
-        $stmt->execute();
-        $this->db->commit();
-
-        $res['name'] = $transporter;
-        return $res;
-    }
-
-    // TODO - move editTransporter to separate transporter file
-    function editTransporter(array $resource, string $oldName): array
-    {
-        $this->db->beginTransaction();
-
-        $res = array();
-
-        $transporter = $resource['transporter'];
-
-        $queryTransporter = 'UPDATE transporters SET name = (:name) WHERE name = (:oldName)';
-
-        $stmt = $this->db->prepare($queryTransporter);
-        $stmt->bindValue(':name', $transporter);
-        $stmt->bindValue(':oldName', $oldName);
-        $stmt->execute();
-        $this->db->commit();
-
-        $res['name'] = $transporter;
-        return $res;
-    }
-
     function updateResource(array $resource, string $oldName, int $oldShipment_no): array
     {
-        $transporterArray = $this->editTransporter($resource, $oldName);
+        $transporterArray = (new TransporterModel())->editTransporter($resource, $oldName);
 
         $res = array();
 

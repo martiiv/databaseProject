@@ -29,6 +29,14 @@ class ShipmentTest extends \Codeception\Test\Unit
     }
 
     // tests
+    public function testGetResource()
+    {
+        $shipmentHandler = new ShipmentHandler();
+        $shipment = $shipmentHandler->getResource(1);
+        print(json_encode($shipment));
+    }
+
+    // tests
     public function testCreateResource()
     {
         // Delete this instance from the DB if you want to re-run the test
