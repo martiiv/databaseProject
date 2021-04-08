@@ -1,5 +1,5 @@
 <?php
-/*
+/**
  * Test class for the company endpoints
  * Tests all the endpoints mentioned in the endpoint list concerning company
  * @author Martin Iversen
