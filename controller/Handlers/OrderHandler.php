@@ -12,4 +12,9 @@ class OrderHandler
     {
         return (new OrderModel())->getCollection();
     }
+
+    public function createResource(array $arr): ?int
+    {
+        return (new OrderModel())->createResource($arr);
+    }
 }

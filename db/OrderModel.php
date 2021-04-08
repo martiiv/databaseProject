@@ -42,18 +42,22 @@ class OrderModel extends DB
         return $res;
     }
 
+    // TODO - Make order_no autogenerate
     function createResource(array $resource): int
     {
         $this->db->beginTransaction();
-        $query = 'INSERT INTO orders (total_price, status, customer_id) VALUES (:total_price, :status, :customer_id)';
+        $query = 'INSERT INTO orders (order_no, total_price, status, customer_id) VALUES (:order_no, :total_price, :status, :customer_id)';
 
         $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':order_no', $resource['order_no']);
         $stmt->bindValue(':total_price', $resource['total_price']);
         $stmt->bindValue(':status', $resource['status']);
         $stmt->bindValue(':customer_id', $resource['customer_id']);
         $stmt->execute();
         $this->db->commit();
-        return $this->db->lastInsertId();;
+
+        return $resource['order_no'];
+        //return $this->db->lastInsertId();
     }
 
     function updateResource(array $resource): array

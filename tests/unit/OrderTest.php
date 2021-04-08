@@ -32,6 +32,7 @@ class OrderTest extends \Codeception\Test\Unit
 
     }
 
+    // tests
     public function testGetCollection()
     {
         $orderHandler = new OrderHandler();
@@ -40,5 +41,24 @@ class OrderTest extends \Codeception\Test\Unit
             print(json_encode($order));
             print("\n");
         }
+    }
+
+    // tests
+    public function testCreateResource()
+    {
+        // Delete this instance from the DB if you want to re-run the test
+        // Optionally change the values
+        $arr = array (
+            'order_no' => 12479,
+            'total_price' => 14500,
+            'status' => "new",
+            'customer_id' => 1
+        );
+
+        $orderHandler = new OrderHandler();
+        $newOrder = $orderHandler->createResource($arr);
+        print($newOrder);
+        print($arr['order_no']);
+        $this->assertEquals($newOrder, $arr['order_no']);
     }
 }
