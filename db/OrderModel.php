@@ -42,9 +42,18 @@ class OrderModel extends DB
         return $res;
     }
 
-    function createResource(array $resource): array
+    function createResource(array $resource): int
     {
-        // TODO: Implement createResource() method.
+        $this->db->beginTransaction();
+        $query = 'INSERT INTO orders (total_price, status, customer_id) VALUES (:total_price, :status, :customer_id)';
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':total_price', $resource['total_price']);
+        $stmt->bindValue(':status', $resource['status']);
+        $stmt->bindValue(':customer_id', $resource['customer_id']);
+        $stmt->execute();
+        $this->db->commit();
+        return $this->db->lastInsertId();;
     }
 
     function updateResource(array $resource): array
