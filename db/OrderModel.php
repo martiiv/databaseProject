@@ -6,6 +6,8 @@ require_once 'DB.php';
  */
 class OrderModel extends DB
 {
+    // TODO - add order_created_date column in orders
+
     public function __construct()
     {
         parent::__construct();
