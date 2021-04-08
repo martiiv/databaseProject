@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 26. Mar, 2021 15:24 PM
+-- Generation Time: 08. Apr, 2021 23:22 PM
 -- Tjener-versjon: 10.4.17-MariaDB
 -- PHP Version: 8.0.2
 
@@ -672,14 +672,14 @@ ALTER TABLE `individual_stores`
 -- Begrensninger for tabell `items_picked`
 --
 ALTER TABLE `items_picked`
-  ADD CONSTRAINT `items_picked_ibfk_1` FOREIGN KEY (`shipment_no`) REFERENCES `shipments` (`shipment_no`),
+  ADD CONSTRAINT `items_picked_ibfk_1` FOREIGN KEY (`shipment_no`) REFERENCES `shipments` (`shipment_no`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `items_picked_ibfk_2` FOREIGN KEY (`product_no`) REFERENCES `product` (`product_no`);
 
 --
 -- Begrensninger for tabell `orders`
 --
 ALTER TABLE `orders`
-  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`shipment_no`) REFERENCES `shipments` (`shipment_no`);
+  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`shipment_no`) REFERENCES `shipments` (`shipment_no`) ON DELETE SET NULL ON UPDATE SET NULL;
 
 --
 -- Begrensninger for tabell `order_items`

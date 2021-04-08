@@ -67,32 +67,20 @@ class OrderModel extends DB
         //return $this->db->lastInsertId();
     }
 
-    function updateResource(array $resource, int $old_Order_no): int
+    function updateResource(array $resource): ?int
     {
-        //$transporterArray = $this->editTransporter($resource, $old_Order_no);
 
         $this->db->beginTransaction();
-
-        $res = array();
-
-        $query = 'UPDATE orders SET order_no = (:order_no), total_price = (:total_price), 
-                     status = (:status), customer_id = (:customer_id) WHERE order_no = (:old_Order_no)';
-
+        $query = 'UPDATE orders SET status=:status WHERE order_no=:order_no';
         $stmt = $this->db->prepare($query);
-        $stmt->bindValue(':order_no', $resource['order_no']);
-        $stmt->bindValue(':total_price', $resource['total_price']);
         $stmt->bindValue(':status', $resource['status']);
-        $stmt->bindValue(':customer_id', $resource['customer_id']);
-        $stmt->bindValue(':old_Order_no', $old_Order_no);
+        $stmt->bindValue(':order_no', $resource['order_no']);
         $stmt->execute();
-
-        $res['order_no'] = $resource['order_no'];
-        $res['total_price'] = $resource['total_price'];
-        $res['status'] = $resource['status'];
-        $res['customer_id'] = $resource['customer_id'];
         $this->db->commit();
 
-        return $resource['order_no'];
+        $shipment_no = $this->getShipmentNo($resource['order_no']);
+        if ($shipment_no == "") return null;
+        return $shipment_no;
     }
 
     function deleteResource(int $id): string
@@ -115,5 +103,21 @@ class OrderModel extends DB
             $success = "Failed to delete order with order number: " . strval($id) . ".";
             return $success;
         }
+    }
+
+    private function getShipmentNo(int $id)
+    {
+        $res = array();
+        $query = 'SELECT shipment_no FROM orders WHERE order_no = :id';
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':id', $id);
+        $stmt->execute();
+
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $res['shipment_no'] = $row['shipment_no'];
+        }
+
+        return $res['shipment_no'];
     }
 }
