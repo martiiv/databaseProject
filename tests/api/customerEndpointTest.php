@@ -1,10 +1,19 @@
 <?php
-/*
- * Fil som inneholder alle endpoint testene som angår company endpointet
- * Martin Iversen
- * 22.03.2021
- */
-class customerAPITest{
+
+class customerEndpointTest extends \Codeception\Test\Unit
+{
+    /**
+     * @var \ApiTester
+     */
+    protected $tester;
+    
+    protected function _before()
+    {
+    }
+
+    protected function _after()
+    {
+    }
 
     /*
      * Metode som henter ut en kundes ordre
@@ -16,10 +25,10 @@ class customerAPITest{
         $I->seeResponseCodeIs(200);
         $I->seeResponseIsJson();
         $I->seeResponseContainsJson(['order_no'=> '12478',
-                                     'total_price'=>'12000',
-                                     'status'=>'new',
-                                     'customer_id'=>2,
-                                     'shipment_no'=>'NULL']);
+            'total_price'=>'12000',
+            'status'=>'new',
+            'customer_id'=>2,
+            'shipment_no'=>'NULL']);
     }
 
     /*
@@ -31,10 +40,10 @@ class customerAPITest{
         $I->seeResponseCodeIs(200);
         $I->seeResponseIsJson();
         $I->seeResponseContainsJson(['order_no'=> 15232,
-                                     'total_price'=>34000,
-                                     'status'=>'new',
-                                     'customer_id'=>1,
-                                     'shipment_no'=>NULL]);
+            'total_price'=>34000,
+            'status'=>'new',
+            'customer_id'=>1,
+            'shipment_no'=>NULL]);
     }
 
     /*
@@ -44,16 +53,16 @@ class customerAPITest{
     public function addOrderTest(ApiTester $I){
         $I->haveHttpHeader('Content-Type', 'application/json');
         $I->sendPost('/customer/order/place/1', [   'order_no'=> 'selvlaga',
-                                                        'total_price'=>25000,
-                                                        'status'=>'new',
-                                                        'customer_id'=>1,
-                                                        'shipment_no'=>NULL]);
+            'total_price'=>25000,
+            'status'=>'new',
+            'customer_id'=>1,
+            'shipment_no'=>NULL]);
         $I->seeResponseCodeIs(201);
         $I->seeInDatabase((string)[ 'order_no'=> 'selvlaga',
-                                    'total_price'=>25000,
-                                    'status'=>'new',
-                                    'customer_id'=>1,
-                                    'shipment_no'=>NULL]);
+            'total_price'=>25000,
+            'status'=>'new',
+            'customer_id'=>1,
+            'shipment_no'=>NULL]);
     }
 
     //TODO Status kode for delete og no greier med sletting
@@ -72,10 +81,10 @@ class customerAPITest{
         $I->sendPut('/customer/order/3/15231/split', [ 'order_no'=> 'Selvgenerert']);
         $I->seeResponseCodeIs(201);
         $I->seeInDatabase((string)[ 'order_no' => 'selvgenerert',
-                                    'total_price' => 0,
-                                    'status' => 'new',
-                                    'customer_id'=>3,
-                                    'shipment_no'=>NULL]);
+            'total_price' => 0,
+            'status' => 'new',
+            'customer_id'=>3,
+            'shipment_no'=>NULL]);
     }
 
     /*
@@ -88,6 +97,6 @@ class customerAPITest{
         $I->seeResponseCodeIs(200);
         $I->seeResponseIsJson();
         $I->seeResponseContainsJson([   'production_plan_period'=> '',
-                                        'no_of_skis'=>'']);
+            'no_of_skis'=>'']);
     }
 }
