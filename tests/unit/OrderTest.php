@@ -69,7 +69,7 @@ class OrderTest extends \Codeception\Test\Unit
         $arr = array (
             'order_no' => 12480,
             'total_price' => 1400,
-            'status' => "used",
+            'status' => "open",
             'customer_id' => 1,
         );
 

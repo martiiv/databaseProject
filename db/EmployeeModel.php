@@ -48,6 +48,7 @@ class EmployeeModel extends DB
         $res = array();
         $query = 'INSERT INTO employees (number, name, department) VALUES (:number, :name, :department)';
 
+        // TODO - check for valid department
         $stmt = $this->db->prepare($query);
         $stmt->bindValue(':number', $resource['number']);
         $stmt->bindValue(':name', $resource['name']);
