@@ -27,7 +27,17 @@ class ShipmentModel extends DB
 
     function getResource(int $id): ?array
     {
-        // TODO: Implement getResource() method.
+        $res = array();
+        $query = 'SELECT shipment_no, store_franchise_name, pickup_date, state, driver_id, transporter, address_id FROM shipments WHERE shipment_no = :id';
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':id', $id);
+        $stmt->execute();
+
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $res[] = $row;
+        }
+        return $res;
     }
 
     function createResource(array $resource): array

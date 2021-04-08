@@ -27,4 +27,12 @@ class ShipmentTest extends \Codeception\Test\Unit
             print("\n");
         }
     }
+
+    // tests
+    public function testGetResource()
+    {
+        $shipmentHandler = new ShipmentHandler();
+        $shipments = $shipmentHandler->getResource(1);
+        print(json_encode($shipments));
+    }
 }
