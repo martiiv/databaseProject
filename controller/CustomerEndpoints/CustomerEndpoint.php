@@ -45,7 +45,10 @@ class CustomerEndpoint
             $shipment_no = (new OrderModel())->updateResource($resource);
 
             // TODO: delete shipment will not work because of improper database design.
-            (new ShipmentModel())->deleteResource($shipment_no);
+            if ($shipment_no != null) {
+                (new ShipmentModel())->deleteResource($shipment_no);
+            }
+
 
             $res['result'] = $uri[3] . " canceled";
             $res['status'] =  RESTConstants::HTTP_OK;

@@ -67,7 +67,7 @@ class OrderModel extends DB
         //return $this->db->lastInsertId();
     }
 
-    function updateResource(array $resource): int
+    function updateResource(array $resource): ?int
     {
 
         $this->db->beginTransaction();
@@ -78,7 +78,9 @@ class OrderModel extends DB
         $stmt->execute();
         $this->db->commit();
 
-        return $this->getShipmentNo($resource['order_no']);
+        $shipment_no = $this->getShipmentNo($resource['order_no']);
+        if ($shipment_no == "") return null;
+        return $shipment_no;
     }
 
     function deleteResource(int $id): string
