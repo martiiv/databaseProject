@@ -71,6 +71,7 @@ class ShipmentModel extends DB
         return $res;
     }
 
+    // TODO - move addTransporter to separate transporter file
     function addTransporter(array $resource): array
     {
         $this->db->beginTransaction();
@@ -90,9 +91,60 @@ class ShipmentModel extends DB
         return $res;
     }
 
-    function updateResource(array $resource): array
+    // TODO - move editTransporter to separate transporter file
+    function editTransporter(array $resource, string $oldName): array
     {
-        // TODO: Implement updateResource() method.
+        $this->db->beginTransaction();
+
+        $res = array();
+
+        $transporter = $resource['transporter'];
+
+        $queryTransporter = 'UPDATE transporters SET name = (:name) WHERE name = (:oldName)';
+
+        $stmt = $this->db->prepare($queryTransporter);
+        $stmt->bindValue(':name', $transporter);
+        $stmt->bindValue(':oldName', $oldName);
+        $stmt->execute();
+        $this->db->commit();
+
+        $res['name'] = $transporter;
+        return $res;
+    }
+
+    function updateResource(array $resource, string $oldName, int $oldShipment_no): array
+    {
+        $transporterArray = $this->editTransporter($resource, $oldName);
+
+        $res = array();
+
+        $this->db->beginTransaction();
+
+        $query = 'UPDATE shipments SET shipment_no = (:shipment_no), store_franchise_name = (:store_franchise_name), 
+                     pickup_date = (:pickup_date), state = (:state), driver_id = (:driver_id), 
+                     transporter = (:transporter), address_id = (:address_id) WHERE shipment_no = (:oldShipment_no)';
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':shipment_no', $resource['shipment_no']);
+        $stmt->bindValue(':store_franchise_name', $resource['store_franchise_name']);
+        $stmt->bindValue(':pickup_date', $resource['pickup_date']);
+        $stmt->bindValue(':state', $resource['state']);
+        $stmt->bindValue(':driver_id', $resource['driver_id']);
+        $stmt->bindValue(':transporter',  $transporterArray['name']);
+        $stmt->bindValue(':address_id', $resource['address_id']);
+        $stmt->bindValue(':oldShipment_no', $oldShipment_no);
+        $stmt->execute();
+
+        $res['shipment_no'] = $resource['shipment_no'];
+        $res['store_franchise_name'] = $resource['store_franchise_name'];
+        $res['pickup_date'] = $resource['pickup_date'];
+        $res['state'] = $resource['state'];
+        $res['driver_id'] = $resource['driver_id'];
+        $res['transporter'] =  $transporterArray['name'];
+        $res['address_id'] = $resource['address_id'];
+        $this->db->commit();
+
+        return $res;
     }
 
     function deleteResource(int $id)

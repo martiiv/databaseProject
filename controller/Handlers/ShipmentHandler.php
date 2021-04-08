@@ -17,4 +17,9 @@ class ShipmentHandler
     {
         return (new ShipmentModel())->createResource($arr);
     }
+
+    public function updateResource(array $arr, string $oldName, int $oldShipment_no): ?array
+    {
+        return (new ShipmentModel())->updateResource($arr, $oldName, $oldShipment_no);
+    }
 }
