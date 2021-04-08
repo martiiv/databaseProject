@@ -1,5 +1,5 @@
 <?php
-require_once "controller/EmployeeHandler.php";
+require_once "controller/Handlers/EmployeeHandler.php";
 require_once "db/EmployeeModel.php";
 
 class EmployeeTest extends \Codeception\Test\Unit
