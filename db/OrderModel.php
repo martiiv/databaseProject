@@ -13,12 +13,17 @@ class OrderModel extends DB
         parent::__construct();
     }
 
-    function getCollection(array $query = null): array
+    function getCollection(string $customer = null): array
     {
         $res = array();
-        $query = 'SELECT order_no, total_price, status, customer_id, shipment_no FROM orders';
-
-        $stmt = $this->db->prepare($query);
+        if ($customer == null) {
+            $query = 'SELECT order_no, total_price, status, customer_id, shipment_no FROM orders';
+            $stmt = $this->db->prepare($query);
+        } else {
+            $query = 'SELECT order_no, total_price, status, customer_id, shipment_no FROM orders WHERE customer_id = :customer_id';
+            $stmt = $this->db->prepare($query);
+            $stmt->bindValue(':customer_id', $customer);
+        }
         $stmt->execute();
 
         while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
