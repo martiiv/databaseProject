@@ -22,4 +22,9 @@ class OrderHandler
     {
         return (new OrderModel())->updateResource($arr, $old_Order_no);
     }
+
+    public function deleteResource(int $id): ?string
+    {
+        return (new OrderModel())->deleteResource($id);
+    }
 }

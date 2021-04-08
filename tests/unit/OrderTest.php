@@ -81,5 +81,14 @@ class OrderTest extends \Codeception\Test\Unit
         $this->assertEquals($updatedOrder, $arr['order_no']);
     }
 
+    // tests
+    public function testDeleteResource()
+    {
+        $id = 12480;
+        $idTemp = "Successfully deleted order with order number: " . strval($id) . ".";
 
+        $orderHandler = new OrderHandler();
+        $deletedOrder = $orderHandler->deleteResource($id);
+        $this->assertEquals($deletedOrder, $idTemp);
+    }
 }

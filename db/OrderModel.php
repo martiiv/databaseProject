@@ -88,8 +88,25 @@ class OrderModel extends DB
         return $resource['order_no'];
     }
 
-    function deleteResource(int $id)
+    function deleteResource(int $id): string
     {
-        // TODO: Implement deleteResource() method.
+        $this->db->beginTransaction();
+
+        $query = 'DELETE FROM orders WHERE order_no = (:id)';
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':id', $id);
+        $stmt->execute();
+
+        $this->db->commit();
+
+        $success = "Successfully deleted order with order number: " . strval($id) . ".";
+
+        if (strlen($success) != 0) {
+            return $success;
+        } else {
+            $success = "Failed to delete order with order number: " . strval($id) . ".";
+            return $success;
+        }
     }
 }
