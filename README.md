@@ -37,11 +37,36 @@ Codeception tests are unstable and might not work
 - 2 
 - 3 
 
+**Endpoint cases:**
+
+http://localhost/customer/order/
+
+http://localhost/customer/order/2
+
+http://localhost/customer/order/2/12478
+
+http://localhost/customer/order/place/{:customer_id}/{:order_no}
+
+Json body:    
+ ```
+{
+    "Active": 2,
+    "Intrasonic": 1,
+    "Endurance" : 5,
+    "Race Pro" : 4
+}
+``` 
+
+http://localhost/api/storekeeper/order/update/15232/status/ready/
+
+http://localhost/customer/order/cancel/2/15232
+
+
 <h2>Functionality:</h2>
 
 **To create an order send a POST request to this endpoint:** 
 
-**http://localhost/customer/order/place/{:customer_id}/{:order_no}** , Please provide the following body:
+**http://localhost/customer/order/place/{:customer_id}/{:order_no}** , Please provide the following **Json** body:
     
  ```
 {
