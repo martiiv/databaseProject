@@ -6,7 +6,9 @@ This is the main project of the Database course
 
 <h3>Comments about submission:</h3>
 
-**The tester has to set up their own test server to test api endopoint functionality**
+**The tester has to set up their own test server to test api endpoint functionality**
+
+This projects functions and tests have been heavily influenced by the rest api sample project provided by the course 
 
 When testing order placement please use the following ski models:
  - Active
@@ -39,9 +41,9 @@ Codeception tests are unstable and might not work
 
 **http://localhost/customer/order/{:customer_id}/{:order_no}** (if no customer_id and order_no is provided the endpoint will list all orders)    
     
-**To update the status of an order to ready send a PUT request to this endpoint:**
+**To update the status of an order to ready send a PUT request to this endpoint(ready is the only acceptable status on this endpoint):**
 
-**http://localhost/api/storekeeper/order/update/12478/status/ready/** 
+**http://localhost/api/storekeeper/order/update/{:customer_id}/status/{:status}/** 
 
 **To delete an order send a DELETE request to this endpoint:**
 
