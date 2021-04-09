@@ -22,8 +22,8 @@ Codeception tests are unstable and might not work
 2. Configure .htaccess file
 3. Setup deployment: PHPStorm: settings -> Build Execution Deployment -> Deployment -> + -> localhost -> 
     - local path: path to repo, 
-    - deployment path: path before endpoint (localhost/api/v.01), 
-    - webPath: api
+    - deployment path: path before endpoint (/dbproject-33/v0.1), 
+    - webPath: dbproject-33
 4. Right click root directory -> Deployment -> Upload to localhost 
 5. Call endpoints in postman   
 
