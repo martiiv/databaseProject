@@ -63,6 +63,7 @@ class OrderModel extends DB
         $stmt->execute();
         $this->db->commit();
 
+
         return $resource['order_no'];
         //return $this->db->lastInsertId();
     }
