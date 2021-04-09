@@ -19,11 +19,17 @@ class StorekeeperEndpoint
 
             $resource = array();
             $resource['order_no'] = $uri[2];
-            $resource['status'] = $uri[4];
-            $shipment_no = (new OrderModel())->updateResource($resource);
+            if ($uri[4] == ("ready")) {
+                $resource['status'] = $uri[4];
+                (new OrderModel())->updateResource($resource);
 
-            $res['result'] = "Order: " . $uri[2] . " successfully updated";
-            $res['status'] =  RESTConstants::HTTP_OK;
+                // TODO - add check if order_no exists
+                $res['result'] = "Order: " . $uri[2] . " successfully updated";
+                $res['status'] =  RESTConstants::HTTP_OK;
+            } else {
+                $res['result'] = "Order: " . $uri[2] . " failed to update.";
+                $res['status'] =  RESTConstants::HTTP_FORBIDDEN;
+            }
             return $res;
         }
         else {
