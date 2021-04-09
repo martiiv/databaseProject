@@ -70,7 +70,6 @@ class OrderModel extends DB
 
     function updateResource(array $resource): ?int
     {
-
         $this->db->beginTransaction();
         $query = 'UPDATE orders SET status=:status WHERE order_no=:order_no';
         $stmt = $this->db->prepare($query);
@@ -79,6 +78,7 @@ class OrderModel extends DB
         $stmt->execute();
         $this->db->commit();
 
+        // TODO - move logic to controller
         $shipment_no = $this->getShipmentNo($resource['order_no']);
         if ($shipment_no == "") return null;
         return $shipment_no;

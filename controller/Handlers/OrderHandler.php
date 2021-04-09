@@ -18,9 +18,9 @@ class OrderHandler
         return (new OrderModel())->createResource($arr);
     }
 
-    public function updateResource(array $arr, int $old_Order_no): ?int
+    public function updateResource(array $arr): ?int
     {
-        return (new OrderModel())->updateResource($arr, $old_Order_no);
+        return (new OrderModel())->updateResource($arr);
     }
 
     public function deleteResource(int $id): ?string

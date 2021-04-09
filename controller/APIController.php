@@ -1,6 +1,7 @@
 <?php
 require_once 'RESTConstants.php';
 require_once 'controller/CustomerEndpoints/CustomerEndpoint.php';
+require_once 'controller/CompanyEndpoints/StorekeeperEndpoint.php';
 require_once 'db/AuthorisationModel.php';
 require_once 'errors.php';
 
@@ -31,6 +32,9 @@ class APIController
         switch ($uri[0]) {
             case RESTConstants::ENDPOINT_CUSTOMER:
                 $endpoint = new CustomerEndpoint();
+                break;
+            case RESTConstants::ENDPOINT_STOREKEEPER:
+                $endpoint = new StorekeeperEndpoint();
                 break;
         }
         return $endpoint->handleRequest(array_slice($uri, 1), $requestMethod, $queries, $payload);

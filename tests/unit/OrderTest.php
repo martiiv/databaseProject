@@ -67,24 +67,20 @@ class OrderTest extends \Codeception\Test\Unit
     {
         // Change the values in this instance if you want to re-run the test
         $arr = array (
-            'order_no' => 12480,
-            'total_price' => 1400,
-            'status' => "used",
-            'customer_id' => 1,
+            // TODO - fix broken after fixed for API
+            'order_no' => 12479,
+            'status' => "open",
         );
 
-        // The old order number needs to be updated after you have updated it if you want to rerun it
-        $old_Order_no = 12479;
-
         $orderHandler = new OrderHandler();
-        $updatedOrder = $orderHandler->updateResource($arr, $old_Order_no);
-        $this->assertEquals($updatedOrder, $arr['order_no']);
+        $updatedOrderStatement = $orderHandler->updateResource($arr);
+        $this->assertEquals(null, $updatedOrderStatement);
     }
 
     // tests
     public function testDeleteResource()
     {
-        $id = 12480;
+        $id = 12479;
         $idTemp = "Successfully deleted order with order number: " . strval($id) . ".";
 
         $orderHandler = new OrderHandler();

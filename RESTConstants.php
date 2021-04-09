@@ -26,6 +26,7 @@ class RESTConstants
 
     // Defined application endpoints
     const ENDPOINT_CUSTOMER = "customer";
+    const ENDPOINT_STOREKEEPER = "storekeeper";
 
     // Defined database errors
     const DB_ERR_ATTRIBUTE_MISSING = 1;
