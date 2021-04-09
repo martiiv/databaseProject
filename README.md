@@ -8,9 +8,11 @@ This is the main project of the Database course
 
 **The tester has to set up their own test server to test api endpoint functionality**
 
-This projects functions and tests have been heavily influenced by the rest api sample project provided by the course 
+**Use software like postman to make API requests**
 
 **When placing orders, the tester will have to pass in order number(this number will be auto generated in the future), please do not create several orders with the same order number when testing** 
+
+This projects functions and tests have been heavily influenced by the rest api sample project provided by the course 
 
 Codeception tests are unstable and might not work  
 
@@ -39,13 +41,13 @@ Codeception tests are unstable and might not work
 
 **Endpoint cases:**
 
-http://localhost/customer/order/
+**GET:** http://localhost/customer/order/
 
-http://localhost/customer/order/2
+**GET:** http://localhost/customer/order/2
 
-http://localhost/customer/order/2/12478
+**GET:** http://localhost/customer/order/2/12478
 
-http://localhost/customer/order/place/{:customer_id}/{:order_no}
+**POST:** http://localhost/customer/order/place/2/24
 
 Json body:    
  ```
@@ -57,9 +59,9 @@ Json body:
 }
 ``` 
 
-http://localhost/api/storekeeper/order/update/15232/status/ready/
+**PUT:** http://localhost/api/storekeeper/order/update/15232/status/ready/
 
-http://localhost/customer/order/cancel/2/15232
+**DELETE:** http://localhost/customer/order/cancel/2/15232
 
 
 <h2>Functionality:</h2>
