@@ -19,7 +19,14 @@ Codeception tests are unstable and might not work
 <h2>Deployment guide</h2>
 
 1. Download git repo
-2. Configure .htaccess file
+2. Configure .htaccess file with the following data:
+
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule dbproject-33/(.*)$ dbproject-33/v0.1/api.php?request=$1 [QSA,NC,L]
+
 3. Setup deployment: PHPStorm: settings -> Build Execution Deployment -> Deployment -> + -> localhost -> 
     - local path: path to repo, 
     - deployment path: path before endpoint (/dbproject-33/v0.1), 
@@ -52,13 +59,13 @@ Codeception tests are unstable and might not work
 
 **Endpoint cases:**
 
-**GET:** http://localhost/customer/order/
+**GET:** http://localhost/dbproject-33/customer/order/
 
-**GET:** http://localhost/customer/order/2
+**GET:** http://localhost/dbproject-33/customer/order/2
 
-**GET:** http://localhost/customer/order/2/12478
+**GET:** http://localhost/dbproject-33/customer/order/2/12478
 
-**POST:** http://localhost/customer/order/place/2/24
+**POST:** http://localhost/dbproject-33/customer/order/place/2/24
 
 Json body:    
  ```
@@ -70,16 +77,16 @@ Json body:
 }
 ``` 
 
-**PUT:** http://localhost/api/storekeeper/order/update/15232/status/ready/
+**PUT:** http://localhost/dbproject-33/storekeeper/order/update/15232/status/ready/
 
-**DELETE:** http://localhost/customer/order/cancel/2/15232
+**DELETE:** http://localhost/dbproject-33/customer/order/cancel/2/15232
 
 
 <h2>Functionality:</h2>
 
 **To create an order send a POST request to this endpoint:** 
 
-**http://localhost/customer/order/place/{:customer_id}/{:order_no}** , Please provide the following **Json** body:
+**http://localhost/dbproject-33/customer/order/place/{:customer_id}/{:order_no}** , Please provide the following **Json** body:
     
  ```
 {
@@ -93,16 +100,16 @@ Json body:
 
 **To get orders in the database send a GET request to the following endpoint:**
 
-**http://localhost/customer/order/** For all orders
+**http://localhost/dbproject-33/customer/order/** For all orders
 
-**http://localhost/customer/order/{:customer_id}** For all orders for a costumer
+**http://localhost/dbproject-33/customer/order/{:customer_id}** For all orders for a costumer
 
-**http://localhost/customer/order/{:customer_id}/{:order_no}** For a specific order     
+**http://localhost/dbproject-33/customer/order/{:customer_id}/{:order_no}** For a specific order     
     
 **To update the status of an order to ready send a PUT request to this endpoint(ready is the only acceptable status on this endpoint):**
 
-**http://localhost/api/storekeeper/order/update/{:customer_id}/status/{:status}/** 
+**http://localhost/dbproject-33/storekeeper/order/update/{:customer_id}/status/{:status}/** 
 
 **To delete an order send a DELETE request to this endpoint:**
 
-**http://localhost/customer/order/cancel/{:customer_id}/{:order_no}**
+**http://localhost/dbproject-33/customer/order/cancel/{:customer_id}/{:order_no}**
