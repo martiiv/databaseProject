@@ -1,38 +1,53 @@
-<h1>Project Databases and Database systems</h1>
-
-This is the main project of the Database course
-
 <h1>Deployment guide for peer review:</h1>
 
 <h3>Comments about submission:</h3>
 
-**The tester has to set up their own test server to test api endpoint functionality see deployment guide**
+**The tester has to set up their own local test server to test API endpoint functionality ([deployment guide](#local-deployment-guide))**
 
 **Use software like postman to make API requests**
 
 **When placing orders, the tester will have to pass in order number(this number will be auto generated in the future), please do not create several orders with the same order number when testing** 
 
-This projects functions and tests have been heavily influenced by the rest api sample project provided by the course 
+This projects functions and tests have been heavily influenced by the rest API sample project provided by the course professor, Rune Hjelsvold .
 
-Codeception tests are unstable and might not work  
+Codeception API tests are not configured yet and might not work .
 
-<h2>Deployment guide</h2>
+<h2>Local deployment guide</h2>
 
 1. Download git repo
-2. Configure .htaccess file with the following data:
+2. Configure .htaccess file (located in *xampp/htdocs/*) with the following data:
 
+```bash
 <IfModule mod_rewrite.c>
 RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule dbproject-33/(.*)$ dbproject-33/v0.1/api.php?request=$1 [QSA,NC,L]
+```
 
-3. Setup deployment: PHPStorm: settings -> Build Execution Deployment -> Deployment -> + -> localhost -> 
-    - local path: path to repo, 
-    - deployment path: path before endpoint (/dbproject-33/v0.1), 
-    - webPath: dbproject-33
-4. Right click root directory -> Deployment -> Upload to localhost 
-5. Call endpoints in postman   
+3. Setup PHPStorm: settings -> Build Execution Deployment -> Deployment -> + -> localhost -> 
+
+    Connection:
+
+    - Folder: Path to *xampp/htdocs/*
+    - Web server URL: http://localhost
+
+    Mappings:
+
+    - Deployment path: `dbproject-33/v0.1`
+    - Web path: `/dbproject-33`
+
+    Excluded Paths: Exclude local paths; tests, doc and vendor folders.
+
+4. Start XAMPP: Apache + MySQL
+
+5. Import database with the test data from `dbproject-33\doc\physical_database\assignment_project_with_data.sql`
+
+6. Configure dbCredentials.php (copy-paste dbCredentialsTemplate.php and rename) with *DB_NAME*, *DB_USER* and *DB_PWD*.
+
+7. Right click root directory -> Deployment -> Upload to localhost 
+
+8. Call endpoints in postman  (**see examples below**)
 
 <h2>Test data:</h2>
 
@@ -75,7 +90,7 @@ Json body:
     "Endurance" : 5,
     "Race Pro" : 4
 }
-``` 
+ ```
 
 **PUT:** http://localhost/dbproject-33/storekeeper/order/update/15232/status/ready/
 
@@ -84,19 +99,19 @@ Json body:
 
 <h2>Functionality:</h2>
 
-**To create an order send a POST request to this endpoint:** 
+**To create an order send a POST request to this endpoint with *ski_model* and *amount*** 
 
-**http://localhost/dbproject-33/customer/order/place/{:customer_id}/{:order_no}** , Please provide the following **Json** body:
+**http://localhost/dbproject-33/customer/order/place/{:customer_id}/{:order_no}** , Please provide the following **JSON** body:
     
+
  ```
 {
-    "ski_model" : amount,
     "Active": 2,
     "Intrasonic": 1,
     "Endurance" : 5,
     "Race Pro" : 4
 }
-``` 
+ ```
 
 **To get orders in the database send a GET request to the following endpoint:**
 
@@ -105,7 +120,7 @@ Json body:
 **http://localhost/dbproject-33/customer/order/{:customer_id}** For all orders for a costumer
 
 **http://localhost/dbproject-33/customer/order/{:customer_id}/{:order_no}** For a specific order     
-    
+
 **To update the status of an order to ready send a PUT request to this endpoint(ready is the only acceptable status on this endpoint):**
 
 **http://localhost/dbproject-33/storekeeper/order/update/{:customer_id}/status/{:status}/** 
