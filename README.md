@@ -6,7 +6,7 @@ This is the main project of the Database course
 
 <h3>Comments about submission:</h3>
 
-**The tester has to set up their own test server to test api endpoint functionality**
+**The tester has to set up their own test server to test api endpoint functionality see deployment guide**
 
 **Use software like postman to make API requests**
 
@@ -15,6 +15,17 @@ This is the main project of the Database course
 This projects functions and tests have been heavily influenced by the rest api sample project provided by the course 
 
 Codeception tests are unstable and might not work  
+
+<h2>Deployment guide</h2>
+
+1. Download git repo
+2. Configure .htaccess file
+3. Setup deployment: PHPStorm: settings -> Build Execution Deployment -> Deployment -> + -> localhost -> 
+    - local path: path to repo, 
+    - deployment path: path before endpoint (localhost/api/v.01), 
+    - webPath: api
+4. Right click root directory -> Deployment -> Upload to localhost 
+5. Call endpoints in postman   
 
 <h2>Test data:</h2>
 
