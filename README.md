@@ -1,4 +1,4 @@
-## Project Databases and Database systems
+<h1>Project Databases and Database systems</h1>
 
 This is the main project of the Database course
 
@@ -10,22 +10,38 @@ This is the main project of the Database course
 
 This projects functions and tests have been heavily influenced by the rest api sample project provided by the course 
 
-When testing order placement please use the following ski models:
+**When placing orders, the tester will have to pass in order number(this number will be auto generated in the future), please do not create several orders with the same order number when testing** 
+
+Codeception tests are unstable and might not work  
+
+<h2>Test data:</h2>
+
+**When testing order placement please use the following ski models:**
  - Active
  - Active Pro
  - Endurance
  - Intrasonic
  - Race Pro
  - Race Speed
- - Redline
+ - Redline 
 
-Codeception tests are unstable and might not work  
+**Existing order numbers:** 
+ - 12478
+ - 19324
+ - 46029 
+ - 15231 
+ - 15232
 
-<h3>Functionality:</h3>
+**Existing customer numbers:** 
+- 1
+- 2 
+- 3 
+
+<h2>Functionality:</h2>
 
 **To create an order send a POST request to this endpoint:** 
 
-**http://localhost/customer/order/place/{:customer_id}** , Please provide the following body:
+**http://localhost/customer/order/place/{:customer_id}/{:order_no}** , Please provide the following body:
     
  ```
 {
@@ -37,9 +53,13 @@ Codeception tests are unstable and might not work
 }
 ``` 
 
-**To get all orders in the database send a GET request to the following endpoint:**
+**To get orders in the database send a GET request to the following endpoint:**
 
-**http://localhost/customer/order/{:customer_id}/{:order_no}** (if no customer_id and order_no is provided the endpoint will list all orders)    
+**http://localhost/customer/order/** For all orders
+
+**http://localhost/customer/order/{:customer_id}** For all orders for a costumer
+
+**http://localhost/customer/order/{:customer_id}/{:order_no}** For a specific order     
     
 **To update the status of an order to ready send a PUT request to this endpoint(ready is the only acceptable status on this endpoint):**
 
