@@ -2,10 +2,10 @@
 -- version 5.0.4
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost
--- Generation Time: 24. Mar, 2021 12:25 PM
+-- Host: 127.0.0.1
+-- Generation Time: 19. Apr, 2021 09:39 AM
 -- Tjener-versjon: 10.4.17-MariaDB
--- PHP Version: 8.0.0
+-- PHP Version: 8.0.2
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -61,6 +61,19 @@ CREATE TABLE `county` (
 -- --------------------------------------------------------
 
 --
+-- Tabellstruktur for tabell `customers`
+--
+
+CREATE TABLE `customers` (
+  `id` int(11) NOT NULL,
+  `name` varchar(100) CHARACTER SET utf8 COLLATE utf8_danish_ci NOT NULL,
+  `start_date` date NOT NULL,
+  `end_date` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_danish_ci;
+
+-- --------------------------------------------------------
+
+--
 -- Tabellstruktur for tabell `customer_representative`
 --
 
@@ -88,10 +101,6 @@ CREATE TABLE `employees` (
 
 CREATE TABLE `franchises` (
   `customer_id` int(11) NOT NULL,
-  `name` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL,
-  `start_date` date NOT NULL,
-  `end_date` date DEFAULT NULL,
-  `contract_duration` date GENERATED ALWAYS AS (case when `end_date` is null then to_days(curdate()) - to_days(`start_date`) else to_days(`end_date`) - to_days(`start_date`) end) VIRTUAL,
   `buying_price` int(11) NOT NULL,
   `address_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_danish_ci;
@@ -117,10 +126,6 @@ CREATE TABLE `history` (
 
 CREATE TABLE `individual_stores` (
   `customer_id` int(11) NOT NULL,
-  `name` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL,
-  `start_date` date NOT NULL,
-  `end_date` date DEFAULT NULL,
-  `contract_duration` date GENERATED ALWAYS AS (case when `end_date` is null then to_days(curdate()) - to_days(`start_date`) else to_days(`end_date`) - to_days(`start_date`) end) VIRTUAL,
   `buying_price` int(11) NOT NULL,
   `address_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_danish_ci;
@@ -148,7 +153,7 @@ CREATE TABLE `orders` (
   `total_price` int(11) NOT NULL,
   `status` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL,
   `customer_id` int(11) NOT NULL,
-  `shipment_no` int(11) NOT NULL
+  `shipment_no` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_danish_ci;
 
 -- --------------------------------------------------------
@@ -190,14 +195,14 @@ CREATE TABLE `production_list` (
 -- --------------------------------------------------------
 
 --
--- Tabellstruktur for tabell `production_Plan`
+-- Tabellstruktur for tabell `production_plan`
 --
 
-CREATE TABLE `production_Plan` (
+CREATE TABLE `production_plan` (
   `start_date` date NOT NULL,
   `end_date` date NOT NULL,
   `no_of_skis_per_day` int(11) NOT NULL,
-  `production_planner_number` int(11) NOT NULL
+  `production_planner_number` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_danish_ci;
 
 -- --------------------------------------------------------
@@ -222,7 +227,7 @@ CREATE TABLE `shipments` (
   `pickup_date` date DEFAULT NULL,
   `state` tinyint(1) NOT NULL,
   `driver_id` int(11) DEFAULT NULL,
-  `transporter` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL,
+  `transporter` varchar(100) COLLATE utf8mb4_danish_ci DEFAULT NULL,
   `address_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_danish_ci;
 
@@ -239,9 +244,9 @@ CREATE TABLE `ski_type` (
   `grip_system` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL,
   `size` int(11) NOT NULL,
   `weight_class` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL,
-  `description` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL,
+  `description` varchar(255) COLLATE utf8mb4_danish_ci DEFAULT NULL,
   `historical` tinyint(1) NOT NULL,
-  `photo_url` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL,
+  `photo_url` varchar(255) COLLATE utf8mb4_danish_ci DEFAULT NULL,
   `retail_price` int(11) NOT NULL,
   `production_date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_danish_ci;
@@ -264,10 +269,6 @@ CREATE TABLE `storekeeper` (
 
 CREATE TABLE `team_skiers` (
   `customer_id` int(11) NOT NULL,
-  `name` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL,
-  `start_date` date NOT NULL,
-  `end_date` date DEFAULT NULL,
-  `contract_duration` date GENERATED ALWAYS AS (case when `end_date` is null then to_days(curdate()) - to_days(`start_date`) else to_days(`end_date`) - to_days(`start_date`) end) VIRTUAL,
   `dob` date NOT NULL,
   `club` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL,
   `no_skies_per_year` int(11) DEFAULT NULL
@@ -308,6 +309,12 @@ ALTER TABLE `county`
   ADD PRIMARY KEY (`county_no`);
 
 --
+-- Indexes for table `customers`
+--
+ALTER TABLE `customers`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `customer_representative`
 --
 ALTER TABLE `customer_representative`
@@ -330,7 +337,7 @@ ALTER TABLE `franchises`
 -- Indexes for table `history`
 --
 ALTER TABLE `history`
-  ADD PRIMARY KEY (`date`),
+  ADD PRIMARY KEY (`date`,`order_no`) USING BTREE,
   ADD KEY `order_no` (`order_no`),
   ADD KEY `employee_no` (`employee_no`);
 
@@ -353,7 +360,8 @@ ALTER TABLE `items_picked`
 --
 ALTER TABLE `orders`
   ADD PRIMARY KEY (`order_no`),
-  ADD KEY `shipment_no` (`shipment_no`);
+  ADD KEY `shipment_no` (`shipment_no`),
+  ADD KEY `customer_id` (`customer_id`);
 
 --
 -- Indexes for table `order_items`
@@ -378,9 +386,9 @@ ALTER TABLE `production_list`
   ADD KEY `ski_type_model` (`ski_type_model`);
 
 --
--- Indexes for table `production_Plan`
+-- Indexes for table `production_plan`
 --
-ALTER TABLE `production_Plan`
+ALTER TABLE `production_plan`
   ADD PRIMARY KEY (`start_date`,`end_date`),
   ADD KEY `production_planner_number` (`production_planner_number`);
 
@@ -430,7 +438,37 @@ ALTER TABLE `transporters`
 -- AUTO_INCREMENT for table `address`
 --
 ALTER TABLE `address`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10000;
+
+--
+-- AUTO_INCREMENT for table `customers`
+--
+ALTER TABLE `customers`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10000;
+
+--
+-- AUTO_INCREMENT for table `employees`
+--
+ALTER TABLE `employees`
+  MODIFY `number` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10000;
+
+--
+-- AUTO_INCREMENT for table `orders`
+--
+ALTER TABLE `orders`
+  MODIFY `order_no` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10000;
+
+--
+-- AUTO_INCREMENT for table `product`
+--
+ALTER TABLE `product`
+  MODIFY `product_no` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10000;
+
+--
+-- AUTO_INCREMENT for table `shipments`
+--
+ALTER TABLE `shipments`
+  MODIFY `shipment_no` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10000;
 
 --
 -- Begrensninger for dumpede tabeller
@@ -452,84 +490,92 @@ ALTER TABLE `city`
 -- Begrensninger for tabell `customer_representative`
 --
 ALTER TABLE `customer_representative`
-  ADD CONSTRAINT `Customer_representative_ibfk_1` FOREIGN KEY (`number`) REFERENCES `employees` (`number`);
+  ADD CONSTRAINT `Customer_representative_ibfk_1` FOREIGN KEY (`number`) REFERENCES `employees` (`number`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Begrensninger for tabell `franchises`
 --
 ALTER TABLE `franchises`
-  ADD CONSTRAINT `franchises_ibfk_1` FOREIGN KEY (`address_id`) REFERENCES `address` (`id`);
+  ADD CONSTRAINT `franchises_ibfk_1` FOREIGN KEY (`address_id`) REFERENCES `address` (`id`),
+  ADD CONSTRAINT `franchises_ibfk_2` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Begrensninger for tabell `history`
 --
 ALTER TABLE `history`
-  ADD CONSTRAINT `history_ibfk_1` FOREIGN KEY (`order_no`) REFERENCES `orders` (`order_no`),
-  ADD CONSTRAINT `history_ibfk_2` FOREIGN KEY (`employee_no`) REFERENCES `employees` (`number`);
+  ADD CONSTRAINT `history_ibfk_1` FOREIGN KEY (`order_no`) REFERENCES `orders` (`order_no`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Begrensninger for tabell `individual_stores`
 --
 ALTER TABLE `individual_stores`
-  ADD CONSTRAINT `individual_stores_ibfk_1` FOREIGN KEY (`address_id`) REFERENCES `address` (`id`);
+  ADD CONSTRAINT `individual_stores_ibfk_1` FOREIGN KEY (`address_id`) REFERENCES `address` (`id`),
+  ADD CONSTRAINT `individual_stores_ibfk_2` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Begrensninger for tabell `items_picked`
 --
 ALTER TABLE `items_picked`
-  ADD CONSTRAINT `items_picked_ibfk_1` FOREIGN KEY (`shipment_no`) REFERENCES `shipments` (`shipment_no`),
+  ADD CONSTRAINT `items_picked_ibfk_1` FOREIGN KEY (`shipment_no`) REFERENCES `shipments` (`shipment_no`) ON DELETE CASCADE,
   ADD CONSTRAINT `items_picked_ibfk_2` FOREIGN KEY (`product_no`) REFERENCES `product` (`product_no`);
 
 --
 -- Begrensninger for tabell `orders`
 --
 ALTER TABLE `orders`
-  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`shipment_no`) REFERENCES `shipments` (`shipment_no`);
+  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`shipment_no`) REFERENCES `shipments` (`shipment_no`) ON DELETE SET NULL,
+  ADD CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Begrensninger for tabell `order_items`
 --
 ALTER TABLE `order_items`
-  ADD CONSTRAINT `order_items_ibfk_2` FOREIGN KEY (`ski_type`) REFERENCES `ski_type` (`model`),
-  ADD CONSTRAINT `order_items_ibfk_3` FOREIGN KEY (`order_no`) REFERENCES `orders` (`order_no`);
+  ADD CONSTRAINT `order_items_ibfk_2` FOREIGN KEY (`ski_type`) REFERENCES `ski_type` (`model`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `order_items_ibfk_3` FOREIGN KEY (`order_no`) REFERENCES `orders` (`order_no`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Begrensninger for tabell `product`
 --
 ALTER TABLE `product`
-  ADD CONSTRAINT `product_ibfk_1` FOREIGN KEY (`ski_type`) REFERENCES `ski_type` (`model`);
+  ADD CONSTRAINT `product_ibfk_1` FOREIGN KEY (`ski_type`) REFERENCES `ski_type` (`model`) ON UPDATE CASCADE;
 
 --
 -- Begrensninger for tabell `production_list`
 --
 ALTER TABLE `production_list`
-  ADD CONSTRAINT `FK_production_period` FOREIGN KEY (`production_plan_start_date`,`production_plan_end_date`) REFERENCES `production_Plan` (`start_date`, `end_date`),
-  ADD CONSTRAINT `production_list_ibfk_1` FOREIGN KEY (`ski_type_model`) REFERENCES `ski_type` (`model`);
+  ADD CONSTRAINT `FK_production_period` FOREIGN KEY (`production_plan_start_date`,`production_plan_end_date`) REFERENCES `production_plan` (`start_date`, `end_date`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `production_list_ibfk_1` FOREIGN KEY (`ski_type_model`) REFERENCES `ski_type` (`model`) ON UPDATE CASCADE;
 
 --
--- Begrensninger for tabell `production_Plan`
+-- Begrensninger for tabell `production_plan`
 --
-ALTER TABLE `production_Plan`
-  ADD CONSTRAINT `production_Plan_ibfk_1` FOREIGN KEY (`production_planner_number`) REFERENCES `production_planner` (`number`);
+ALTER TABLE `production_plan`
+  ADD CONSTRAINT `production_plan_ibfk_1` FOREIGN KEY (`production_planner_number`) REFERENCES `production_planner` (`number`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Begrensninger for tabell `production_planner`
 --
 ALTER TABLE `production_planner`
-  ADD CONSTRAINT `Production_planner_ibfk_1` FOREIGN KEY (`number`) REFERENCES `employees` (`number`);
+  ADD CONSTRAINT `Production_planner_ibfk_1` FOREIGN KEY (`number`) REFERENCES `employees` (`number`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Begrensninger for tabell `shipments`
 --
 ALTER TABLE `shipments`
-  ADD CONSTRAINT `shipments_ibfk_1` FOREIGN KEY (`transporter`) REFERENCES `transporters` (`name`),
-  ADD CONSTRAINT `shipments_ibfk_2` FOREIGN KEY (`address_id`) REFERENCES `address` (`id`);
+  ADD CONSTRAINT `shipments_ibfk_1` FOREIGN KEY (`transporter`) REFERENCES `transporters` (`name`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `shipments_ibfk_2` FOREIGN KEY (`address_id`) REFERENCES `address` (`id`) ON UPDATE CASCADE;
 
 --
 -- Begrensninger for tabell `storekeeper`
 --
 ALTER TABLE `storekeeper`
-  ADD CONSTRAINT `Storekeeper_ibfk_1` FOREIGN KEY (`number`) REFERENCES `employees` (`number`);
+  ADD CONSTRAINT `Storekeeper_ibfk_1` FOREIGN KEY (`number`) REFERENCES `employees` (`number`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Begrensninger for tabell `team_skiers`
+--
+ALTER TABLE `team_skiers`
+  ADD CONSTRAINT `team_skiers_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

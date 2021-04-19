@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 08. Apr, 2021 23:22 PM
+-- Generation Time: 19. Apr, 2021 10:35 AM
 -- Tjener-versjon: 10.4.17-MariaDB
 -- PHP Version: 8.0.2
 
@@ -40,10 +40,10 @@ CREATE TABLE `address` (
 --
 
 INSERT INTO `address` (`postal_code`, `city_id`, `street_name`, `house_no`, `id`) VALUES
-(150, 51234, 'Langkaia', 1, 1),
-(5130, 15422, 'Myrdalsvegen', 22, 2),
-(6005, 23124, 'Tøffeveien', 35, 3),
-(3085, 13513, 'Taperveien', 45, 4);
+(150, 51234, 'Langkaia', 1, 10000),
+(5130, 15422, 'Myrdalsvegen', 22, 10001),
+(6005, 23124, 'Tøffeveien', 35, 10002),
+(3085, 13513, 'Taperveien', 45, 10003);
 
 -- --------------------------------------------------------
 
@@ -91,6 +91,28 @@ INSERT INTO `county` (`county_no`, `name`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Tabellstruktur for tabell `customers`
+--
+
+CREATE TABLE `customers` (
+  `id` int(11) NOT NULL,
+  `name` varchar(100) CHARACTER SET utf8 COLLATE utf8_danish_ci NOT NULL,
+  `start_date` date NOT NULL,
+  `end_date` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_danish_ci;
+
+--
+-- Dataark for tabell `customers`
+--
+
+INSERT INTO `customers` (`id`, `name`, `start_date`, `end_date`) VALUES
+(10000, 'Gamletorvet sport Oslo sportslager', '2021-03-01', '2035-03-05'),
+(10001, 'Han Raske', '2021-03-01', '2023-05-03'),
+(10002, 'XXL', '2021-03-01', '2040-03-05');
+
+-- --------------------------------------------------------
+
+--
 -- Tabellstruktur for tabell `customer_representative`
 --
 
@@ -103,8 +125,8 @@ CREATE TABLE `customer_representative` (
 --
 
 INSERT INTO `customer_representative` (`number`) VALUES
-(1),
-(4);
+(10000),
+(10003);
 
 -- --------------------------------------------------------
 
@@ -123,11 +145,11 @@ CREATE TABLE `employees` (
 --
 
 INSERT INTO `employees` (`number`, `name`, `department`) VALUES
-(1, 'Ragnhild', 'Customer-Rep'),
-(2, 'Tord', 'Storekeeper'),
-(3, 'Pelle', 'Production-Planner'),
-(4, 'Oline', 'Customer-Rep'),
-(5, 'Polse', 'Customer-Rep');
+(10000, 'Ragnhild', 'Customer-Rep'),
+(10001, 'Tord', 'Storekeeper'),
+(10002, 'Pelle', 'Production-Planner'),
+(10003, 'Oline', 'Customer-Rep'),
+(10004, 'Polse', 'Production-Planner');
 
 -- --------------------------------------------------------
 
@@ -137,10 +159,6 @@ INSERT INTO `employees` (`number`, `name`, `department`) VALUES
 
 CREATE TABLE `franchises` (
   `customer_id` int(11) NOT NULL,
-  `name` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL,
-  `start_date` date NOT NULL,
-  `end_date` date DEFAULT NULL,
-  `contract_duration` date GENERATED ALWAYS AS (case when `end_date` is null then to_days(curdate()) - to_days(`start_date`) else to_days(`end_date`) - to_days(`start_date`) end) VIRTUAL,
   `buying_price` int(11) NOT NULL,
   `address_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_danish_ci;
@@ -149,8 +167,8 @@ CREATE TABLE `franchises` (
 -- Dataark for tabell `franchises`
 --
 
-INSERT INTO `franchises` (`customer_id`, `name`, `start_date`, `end_date`, `buying_price`, `address_id`) VALUES
-(3, 'XXL', '2021-03-01', '2040-03-05', 500, 2);
+INSERT INTO `franchises` (`customer_id`, `buying_price`, `address_id`) VALUES
+(10002, 500, 10001);
 
 -- --------------------------------------------------------
 
@@ -160,7 +178,7 @@ INSERT INTO `franchises` (`customer_id`, `name`, `start_date`, `end_date`, `buyi
 
 CREATE TABLE `history` (
   `date` datetime NOT NULL DEFAULT current_timestamp(),
-  `status` int(11) NOT NULL,
+  `status` varchar(25) COLLATE utf8mb4_danish_ci NOT NULL,
   `order_no` int(11) NOT NULL,
   `employee_no` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_danish_ci;
@@ -170,12 +188,11 @@ CREATE TABLE `history` (
 --
 
 INSERT INTO `history` (`date`, `status`, `order_no`, `employee_no`) VALUES
-('2020-06-25 00:00:00', 0, 12478, 4),
-('2020-06-26 00:00:00', 0, 12478, 1),
-('2020-06-27 00:00:00', 0, 12478, 2),
-('2021-04-22 00:00:00', 0, 15232, 1),
-('2021-04-23 00:00:00', 0, 15232, 4),
-('2021-04-24 00:00:00', 0, 15232, 2);
+('2020-06-25 00:00:00', 'open', 10005, 10003),
+('2020-06-26 00:00:00', 'skis available', 10005, 10000),
+('2020-06-27 00:00:00', 'ready', 10005, 10001),
+('2021-04-22 00:00:00', 'open', 10007, 10000),
+('2021-04-23 00:00:00', 'skis available', 10007, 10003);
 
 -- --------------------------------------------------------
 
@@ -185,10 +202,6 @@ INSERT INTO `history` (`date`, `status`, `order_no`, `employee_no`) VALUES
 
 CREATE TABLE `individual_stores` (
   `customer_id` int(11) NOT NULL,
-  `name` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL,
-  `start_date` date NOT NULL,
-  `end_date` date DEFAULT NULL,
-  `contract_duration` date GENERATED ALWAYS AS (case when `end_date` is null then to_days(curdate()) - to_days(`start_date`) else to_days(`end_date`) - to_days(`start_date`) end) VIRTUAL,
   `buying_price` int(11) NOT NULL,
   `address_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_danish_ci;
@@ -197,8 +210,8 @@ CREATE TABLE `individual_stores` (
 -- Dataark for tabell `individual_stores`
 --
 
-INSERT INTO `individual_stores` (`customer_id`, `name`, `start_date`, `end_date`, `buying_price`, `address_id`) VALUES
-(1, 'Gamletorvet sport Oslo sportslager', '2021-03-01', '2035-03-05', 1000, 1);
+INSERT INTO `individual_stores` (`customer_id`, `buying_price`, `address_id`) VALUES
+(10000, 1000, 10000);
 
 -- --------------------------------------------------------
 
@@ -217,10 +230,10 @@ CREATE TABLE `items_picked` (
 --
 
 INSERT INTO `items_picked` (`amount`, `shipment_no`, `product_no`) VALUES
-(200, 1, 240444),
-(150, 1, 592903),
-(25, 2, 834480),
-(50, 2, 975634);
+(50, 10000, 10005),
+(25, 10000, 10008),
+(200, 10001, 10003),
+(150, 10001, 10007);
 
 -- --------------------------------------------------------
 
@@ -241,11 +254,11 @@ CREATE TABLE `orders` (
 --
 
 INSERT INTO `orders` (`order_no`, `total_price`, `status`, `customer_id`, `shipment_no`) VALUES
-(12478, 12000, 'new', 2, NULL),
-(15231, 2500, 'new', 3, 1),
-(15232, 34000, 'new', 1, 2),
-(19324, 2000, 'new', 3, NULL),
-(46029, 1000, 'new', 2, NULL);
+(10005, 12000, 'ready', 10001, NULL),
+(10006, 2500, 'new', 10002, 10001),
+(10007, 34000, 'skis available', 10000, 10000),
+(10008, 2000, 'new', 10002, NULL),
+(10009, 1000, 'new', 10001, NULL);
 
 -- --------------------------------------------------------
 
@@ -264,11 +277,11 @@ CREATE TABLE `order_items` (
 --
 
 INSERT INTO `order_items` (`amount`, `order_no`, `ski_type`) VALUES
-(200, 12478, 'Active Pro'),
-(50, 15231, 'Race Pro'),
-(150, 15232, 'Redline'),
-(30, 19324, 'Race Speed'),
-(25, 46029, 'Intrasonic');
+(200, 10005, 'Active Pro'),
+(50, 10006, 'Race Pro'),
+(150, 10007, 'Redline'),
+(30, 10008, 'Race Speed'),
+(25, 10009, 'Intrasonic');
 
 -- --------------------------------------------------------
 
@@ -286,15 +299,15 @@ CREATE TABLE `product` (
 --
 
 INSERT INTO `product` (`product_no`, `ski_type`) VALUES
-(202315, 'Active Pro'),
-(329781, 'Active Pro'),
-(885235, 'Active Pro'),
-(240444, 'Race Pro'),
-(881273, 'Race pro'),
-(975634, 'Race pro'),
-(328833, 'Redline'),
-(592903, 'Redline'),
-(834480, 'Redline');
+(10000, 'Active Pro'),
+(10001, 'Active Pro'),
+(10002, 'Active Pro'),
+(10003, 'Race Pro'),
+(10004, 'Race pro'),
+(10005, 'Race pro'),
+(10006, 'Redline'),
+(10007, 'Redline'),
+(10008, 'Redline');
 
 -- --------------------------------------------------------
 
@@ -328,7 +341,7 @@ CREATE TABLE `production_plan` (
   `start_date` date NOT NULL,
   `end_date` date NOT NULL,
   `no_of_skis_per_day` int(11) NOT NULL,
-  `production_planner_number` int(11) NOT NULL
+  `production_planner_number` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_danish_ci;
 
 --
@@ -336,11 +349,11 @@ CREATE TABLE `production_plan` (
 --
 
 INSERT INTO `production_plan` (`start_date`, `end_date`, `no_of_skis_per_day`, `production_planner_number`) VALUES
-('2021-04-22', '2021-05-19', 1500, 5),
-('2021-05-22', '2021-06-17', 1400, 3),
-('2021-06-18', '2021-07-15', 1600, 3),
-('2021-07-16', '2021-08-13', 1800, 3),
-('2021-08-14', '2021-09-11', 2000, 5);
+('2021-04-22', '2021-05-19', 1500, 10004),
+('2021-05-22', '2021-06-17', 1400, 10002),
+('2021-06-18', '2021-07-15', 1600, 10002),
+('2021-07-16', '2021-08-13', 1800, 10002),
+('2021-08-14', '2021-09-11', 2000, 10004);
 
 -- --------------------------------------------------------
 
@@ -357,8 +370,8 @@ CREATE TABLE `production_planner` (
 --
 
 INSERT INTO `production_planner` (`number`) VALUES
-(3),
-(5);
+(10002),
+(10004);
 
 -- --------------------------------------------------------
 
@@ -368,11 +381,11 @@ INSERT INTO `production_planner` (`number`) VALUES
 
 CREATE TABLE `shipments` (
   `shipment_no` int(11) NOT NULL,
-  `store_franchise_name` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL,
+  `customer_name` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL,
   `pickup_date` date DEFAULT NULL,
   `state` tinyint(1) NOT NULL,
   `driver_id` int(11) DEFAULT NULL,
-  `transporter` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL,
+  `transporter` varchar(100) COLLATE utf8mb4_danish_ci DEFAULT NULL,
   `address_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_danish_ci;
 
@@ -380,9 +393,9 @@ CREATE TABLE `shipments` (
 -- Dataark for tabell `shipments`
 --
 
-INSERT INTO `shipments` (`shipment_no`, `store_franchise_name`, `pickup_date`, `state`, `driver_id`, `transporter`, `address_id`) VALUES
-(1, 'XXL', '2021-04-25', 0, 1, 'Einars levering', 2),
-(2, 'Gamletorvet sport Oslo sportslager', '2021-06-28', 0, 2, 'Gro Anitas postservice', 1);
+INSERT INTO `shipments` (`shipment_no`, `customer_name`, `pickup_date`, `state`, `driver_id`, `transporter`, `address_id`) VALUES
+(10000, 'Gamletorvet sport Oslo sportslager', '2021-06-28', 0, 2, 'Gro Anitas postservice', 10000),
+(10001, 'XXL', '2021-04-25', 0, 1, 'Einars levering', 10001);
 
 -- --------------------------------------------------------
 
@@ -397,9 +410,9 @@ CREATE TABLE `ski_type` (
   `grip_system` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL,
   `size` int(11) NOT NULL,
   `weight_class` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL,
-  `description` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL,
+  `description` varchar(255) COLLATE utf8mb4_danish_ci DEFAULT NULL,
   `historical` tinyint(1) NOT NULL,
-  `photo_url` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL,
+  `photo_url` varchar(255) COLLATE utf8mb4_danish_ci DEFAULT NULL,
   `retail_price` int(11) NOT NULL,
   `production_date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_danish_ci;
@@ -409,13 +422,13 @@ CREATE TABLE `ski_type` (
 --
 
 INSERT INTO `ski_type` (`model`, `ski_type`, `temperature`, `grip_system`, `size`, `weight_class`, `description`, `historical`, `photo_url`, `retail_price`, `production_date`) VALUES
-('Active', 'classic', 'cold', 'wax', 142, '20-30', 'Bra ski', 0, 'bildet', 1200, '2021-03-20'),
-('Active Pro', 'skate', 'warm', 'intelligrip', 147, '30-40', 'Rævva ski', 0, 'bildet', 1400, '2021-04-02'),
-('Endurance', 'double-pole', 'warm', 'wax', 152, '40-50', 'Ok ski', 0, 'bildet', 1500, '2021-12-03'),
-('Intrasonic', 'classic', 'cold', 'intelligrip', 157, '40-50', 'Litt bra ski', 0, 'bildet', 1500, '2021-10-05'),
-('Race Pro', 'skate', 'warm', 'wax', 162, '50-60', 'Ræser ski', 0, 'bildet', 2200, '2021-04-28'),
-('Race Speed', 'double-pole', 'warm', 'intelligrip', 167, '70-80', 'Beste skia', 0, 'bildet', 36000, '2017-01-01'),
-('Redline', 'skate', 'cold', 'wax', 172, '80-90', 'Verste skia', 0, 'bildet', 200, '2012-07-22');
+('Active', 'classic', 'cold', 'wax', 142, '20-30', 'Bra ski', 0, NULL, 1200, '2021-03-20'),
+('Active Pro', 'skate', 'warm', 'intelligrip', 147, '30-40', 'Rævva ski', 0, NULL, 1400, '2021-04-02'),
+('Endurance', 'double-pole', 'warm', 'wax', 152, '40-50', 'Ok ski', 0, NULL, 1500, '2021-12-03'),
+('Intrasonic', 'classic', 'cold', 'intelligrip', 157, '40-50', 'Litt bra ski', 0, NULL, 1500, '2021-10-05'),
+('Race Pro', 'skate', 'warm', 'wax', 162, '50-60', 'Ræser ski', 0, NULL, 2200, '2021-04-28'),
+('Race Speed', 'double-pole', 'warm', 'intelligrip', 167, '70-80', 'Beste skia', 0, NULL, 36000, '2017-01-01'),
+('Redline', 'skate', 'cold', 'wax', 172, '80-90', 'Verste skia', 0, NULL, 200, '2012-07-22');
 
 -- --------------------------------------------------------
 
@@ -432,7 +445,7 @@ CREATE TABLE `storekeeper` (
 --
 
 INSERT INTO `storekeeper` (`number`) VALUES
-(2);
+(10001);
 
 -- --------------------------------------------------------
 
@@ -442,10 +455,6 @@ INSERT INTO `storekeeper` (`number`) VALUES
 
 CREATE TABLE `team_skiers` (
   `customer_id` int(11) NOT NULL,
-  `name` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL,
-  `start_date` date NOT NULL,
-  `end_date` date DEFAULT NULL,
-  `contract_duration` date GENERATED ALWAYS AS (case when `end_date` is null then to_days(curdate()) - to_days(`start_date`) else to_days(`end_date`) - to_days(`start_date`) end) VIRTUAL,
   `dob` date NOT NULL,
   `club` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL,
   `no_skies_per_year` int(11) DEFAULT NULL
@@ -455,8 +464,8 @@ CREATE TABLE `team_skiers` (
 -- Dataark for tabell `team_skiers`
 --
 
-INSERT INTO `team_skiers` (`customer_id`, `name`, `start_date`, `end_date`, `dob`, `club`, `no_skies_per_year`) VALUES
-(2, 'Han Raske', '2021-03-01', '2023-05-03', '1995-05-01', 'Gutta', 15);
+INSERT INTO `team_skiers` (`customer_id`, `dob`, `club`, `no_skies_per_year`) VALUES
+(10001, '1995-05-01', 'Gutta', 15);
 
 -- --------------------------------------------------------
 
@@ -503,6 +512,12 @@ ALTER TABLE `county`
   ADD PRIMARY KEY (`county_no`);
 
 --
+-- Indexes for table `customers`
+--
+ALTER TABLE `customers`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `customer_representative`
 --
 ALTER TABLE `customer_representative`
@@ -525,7 +540,7 @@ ALTER TABLE `franchises`
 -- Indexes for table `history`
 --
 ALTER TABLE `history`
-  ADD PRIMARY KEY (`date`),
+  ADD PRIMARY KEY (`date`,`order_no`) USING BTREE,
   ADD KEY `order_no` (`order_no`),
   ADD KEY `employee_no` (`employee_no`);
 
@@ -548,7 +563,8 @@ ALTER TABLE `items_picked`
 --
 ALTER TABLE `orders`
   ADD PRIMARY KEY (`order_no`),
-  ADD KEY `shipment_no` (`shipment_no`);
+  ADD KEY `shipment_no` (`shipment_no`),
+  ADD KEY `customer_id` (`customer_id`);
 
 --
 -- Indexes for table `order_items`
@@ -625,7 +641,37 @@ ALTER TABLE `transporters`
 -- AUTO_INCREMENT for table `address`
 --
 ALTER TABLE `address`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10004;
+
+--
+-- AUTO_INCREMENT for table `customers`
+--
+ALTER TABLE `customers`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10003;
+
+--
+-- AUTO_INCREMENT for table `employees`
+--
+ALTER TABLE `employees`
+  MODIFY `number` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10005;
+
+--
+-- AUTO_INCREMENT for table `orders`
+--
+ALTER TABLE `orders`
+  MODIFY `order_no` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10010;
+
+--
+-- AUTO_INCREMENT for table `product`
+--
+ALTER TABLE `product`
+  MODIFY `product_no` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10009;
+
+--
+-- AUTO_INCREMENT for table `shipments`
+--
+ALTER TABLE `shipments`
+  MODIFY `shipment_no` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10002;
 
 --
 -- Begrensninger for dumpede tabeller
@@ -647,84 +693,92 @@ ALTER TABLE `city`
 -- Begrensninger for tabell `customer_representative`
 --
 ALTER TABLE `customer_representative`
-  ADD CONSTRAINT `Customer_representative_ibfk_1` FOREIGN KEY (`number`) REFERENCES `employees` (`number`);
+  ADD CONSTRAINT `Customer_representative_ibfk_1` FOREIGN KEY (`number`) REFERENCES `employees` (`number`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Begrensninger for tabell `franchises`
 --
 ALTER TABLE `franchises`
-  ADD CONSTRAINT `franchises_ibfk_1` FOREIGN KEY (`address_id`) REFERENCES `address` (`id`);
+  ADD CONSTRAINT `franchises_ibfk_1` FOREIGN KEY (`address_id`) REFERENCES `address` (`id`),
+  ADD CONSTRAINT `franchises_ibfk_2` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Begrensninger for tabell `history`
 --
 ALTER TABLE `history`
-  ADD CONSTRAINT `history_ibfk_1` FOREIGN KEY (`order_no`) REFERENCES `orders` (`order_no`),
-  ADD CONSTRAINT `history_ibfk_2` FOREIGN KEY (`employee_no`) REFERENCES `employees` (`number`);
+  ADD CONSTRAINT `history_ibfk_1` FOREIGN KEY (`order_no`) REFERENCES `orders` (`order_no`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Begrensninger for tabell `individual_stores`
 --
 ALTER TABLE `individual_stores`
-  ADD CONSTRAINT `individual_stores_ibfk_1` FOREIGN KEY (`address_id`) REFERENCES `address` (`id`);
+  ADD CONSTRAINT `individual_stores_ibfk_1` FOREIGN KEY (`address_id`) REFERENCES `address` (`id`),
+  ADD CONSTRAINT `individual_stores_ibfk_2` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Begrensninger for tabell `items_picked`
 --
 ALTER TABLE `items_picked`
-  ADD CONSTRAINT `items_picked_ibfk_1` FOREIGN KEY (`shipment_no`) REFERENCES `shipments` (`shipment_no`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `items_picked_ibfk_1` FOREIGN KEY (`shipment_no`) REFERENCES `shipments` (`shipment_no`) ON DELETE CASCADE,
   ADD CONSTRAINT `items_picked_ibfk_2` FOREIGN KEY (`product_no`) REFERENCES `product` (`product_no`);
 
 --
 -- Begrensninger for tabell `orders`
 --
 ALTER TABLE `orders`
-  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`shipment_no`) REFERENCES `shipments` (`shipment_no`) ON DELETE SET NULL ON UPDATE SET NULL;
+  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`shipment_no`) REFERENCES `shipments` (`shipment_no`) ON DELETE SET NULL,
+  ADD CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Begrensninger for tabell `order_items`
 --
 ALTER TABLE `order_items`
-  ADD CONSTRAINT `order_items_ibfk_2` FOREIGN KEY (`ski_type`) REFERENCES `ski_type` (`model`),
-  ADD CONSTRAINT `order_items_ibfk_3` FOREIGN KEY (`order_no`) REFERENCES `orders` (`order_no`);
+  ADD CONSTRAINT `order_items_ibfk_2` FOREIGN KEY (`ski_type`) REFERENCES `ski_type` (`model`) ON UPDATE CASCADE,
+  ADD CONSTRAINT `order_items_ibfk_3` FOREIGN KEY (`order_no`) REFERENCES `orders` (`order_no`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Begrensninger for tabell `product`
 --
 ALTER TABLE `product`
-  ADD CONSTRAINT `product_ibfk_1` FOREIGN KEY (`ski_type`) REFERENCES `ski_type` (`model`);
+  ADD CONSTRAINT `product_ibfk_1` FOREIGN KEY (`ski_type`) REFERENCES `ski_type` (`model`) ON UPDATE CASCADE;
 
 --
 -- Begrensninger for tabell `production_list`
 --
 ALTER TABLE `production_list`
-  ADD CONSTRAINT `FK_production_period` FOREIGN KEY (`production_plan_start_date`,`production_plan_end_date`) REFERENCES `production_plan` (`start_date`, `end_date`),
-  ADD CONSTRAINT `production_list_ibfk_1` FOREIGN KEY (`ski_type_model`) REFERENCES `ski_type` (`model`);
+  ADD CONSTRAINT `FK_production_period` FOREIGN KEY (`production_plan_start_date`,`production_plan_end_date`) REFERENCES `production_plan` (`start_date`, `end_date`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `production_list_ibfk_1` FOREIGN KEY (`ski_type_model`) REFERENCES `ski_type` (`model`) ON UPDATE CASCADE;
 
 --
 -- Begrensninger for tabell `production_plan`
 --
 ALTER TABLE `production_plan`
-  ADD CONSTRAINT `production_Plan_ibfk_1` FOREIGN KEY (`production_planner_number`) REFERENCES `production_planner` (`number`);
+  ADD CONSTRAINT `production_plan_ibfk_1` FOREIGN KEY (`production_planner_number`) REFERENCES `production_planner` (`number`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Begrensninger for tabell `production_planner`
 --
 ALTER TABLE `production_planner`
-  ADD CONSTRAINT `Production_planner_ibfk_1` FOREIGN KEY (`number`) REFERENCES `employees` (`number`);
+  ADD CONSTRAINT `Production_planner_ibfk_1` FOREIGN KEY (`number`) REFERENCES `employees` (`number`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Begrensninger for tabell `shipments`
 --
 ALTER TABLE `shipments`
-  ADD CONSTRAINT `shipments_ibfk_1` FOREIGN KEY (`transporter`) REFERENCES `transporters` (`name`),
-  ADD CONSTRAINT `shipments_ibfk_2` FOREIGN KEY (`address_id`) REFERENCES `address` (`id`);
+  ADD CONSTRAINT `shipments_ibfk_1` FOREIGN KEY (`transporter`) REFERENCES `transporters` (`name`) ON DELETE SET NULL ON UPDATE CASCADE,
+  ADD CONSTRAINT `shipments_ibfk_2` FOREIGN KEY (`address_id`) REFERENCES `address` (`id`) ON UPDATE CASCADE;
 
 --
 -- Begrensninger for tabell `storekeeper`
 --
 ALTER TABLE `storekeeper`
-  ADD CONSTRAINT `Storekeeper_ibfk_1` FOREIGN KEY (`number`) REFERENCES `employees` (`number`);
+  ADD CONSTRAINT `Storekeeper_ibfk_1` FOREIGN KEY (`number`) REFERENCES `employees` (`number`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Begrensninger for tabell `team_skiers`
+--
+ALTER TABLE `team_skiers`
+  ADD CONSTRAINT `team_skiers_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
