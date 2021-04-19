@@ -76,7 +76,7 @@ class CustomerEndpoint
 
 
             $res['result'] = $uri[3] . " canceled";
-            $res['status'] =  RESTConstants::HTTP_OK;
+            $res['status'] = RESTConstants::HTTP_OK;
             return $res;
         }
         else {
