@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 16. Apr, 2021 13:25 PM
+-- Generation Time: 19. Apr, 2021 09:39 AM
 -- Tjener-versjon: 10.4.17-MariaDB
 -- PHP Version: 8.0.2
 
@@ -337,7 +337,7 @@ ALTER TABLE `franchises`
 -- Indexes for table `history`
 --
 ALTER TABLE `history`
-  ADD PRIMARY KEY (`date`),
+  ADD PRIMARY KEY (`date`,`order_no`) USING BTREE,
   ADD KEY `order_no` (`order_no`),
   ADD KEY `employee_no` (`employee_no`);
 
@@ -438,13 +438,37 @@ ALTER TABLE `transporters`
 -- AUTO_INCREMENT for table `address`
 --
 ALTER TABLE `address`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10000;
 
 --
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10000;
+
+--
+-- AUTO_INCREMENT for table `employees`
+--
+ALTER TABLE `employees`
+  MODIFY `number` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10000;
+
+--
+-- AUTO_INCREMENT for table `orders`
+--
+ALTER TABLE `orders`
+  MODIFY `order_no` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10000;
+
+--
+-- AUTO_INCREMENT for table `product`
+--
+ALTER TABLE `product`
+  MODIFY `product_no` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10000;
+
+--
+-- AUTO_INCREMENT for table `shipments`
+--
+ALTER TABLE `shipments`
+  MODIFY `shipment_no` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10000;
 
 --
 -- Begrensninger for dumpede tabeller
@@ -466,7 +490,7 @@ ALTER TABLE `city`
 -- Begrensninger for tabell `customer_representative`
 --
 ALTER TABLE `customer_representative`
-  ADD CONSTRAINT `Customer_representative_ibfk_1` FOREIGN KEY (`number`) REFERENCES `employees` (`number`);
+  ADD CONSTRAINT `Customer_representative_ibfk_1` FOREIGN KEY (`number`) REFERENCES `employees` (`number`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Begrensninger for tabell `franchises`
