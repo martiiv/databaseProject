@@ -46,16 +46,14 @@ class EmployeeModel extends DB
         $this->db->beginTransaction();
 
         $res = array();
-        $query = 'INSERT INTO employees (number, name, department) VALUES (:number, :name, :department)';
+        $query = 'INSERT INTO employees (name, department) VALUES (:name, :department)';
 
         // TODO - check for valid department
         $stmt = $this->db->prepare($query);
-        $stmt->bindValue(':number', $resource['number']);
         $stmt->bindValue(':name', $resource['name']);
         $stmt->bindValue(':department', $resource['department']);
         $stmt->execute();
 
-        $res['number'] = $resource['number']; //intval($this->db->lastInsertId());
         $res['name'] = $resource['name'];
         $res['department'] = $resource['department'];
         $this->db->commit();
@@ -64,21 +62,19 @@ class EmployeeModel extends DB
     }
 
 
-    function updateResource(array $resource, int $oldID): array
+    function updateResource(array $resource, string $oldName): array
     {
         $this->db->beginTransaction();
 
         $res = array();
-        $query = 'UPDATE employees SET number = (:number), name = (:name), department = (:department) WHERE number = (:oldID)';
+        $query = 'UPDATE employees SET name = (:name), department = (:department) WHERE name = (:oldName)';
 
         $stmt = $this->db->prepare($query);
-        $stmt->bindValue(':number', $resource['number']);
         $stmt->bindValue(':name', $resource['name']);
         $stmt->bindValue(':department', $resource['department']);
-        $stmt->bindValue(':oldID', $oldID);
+        $stmt->bindValue(':oldName', $oldName);
         $stmt->execute();
 
-        $res['number'] = $resource['number'];
         $res['name'] = $resource['name'];
         $res['department'] = $resource['department'];
         $this->db->commit();

@@ -44,7 +44,6 @@ class EmployeeTest extends \Codeception\Test\Unit
         // Delete this instance from the DB if you want to re-run the test
         // Optionally change the values
         $arr = array (
-            'number' => 6,
             'name' => "Morten",
             'department' => "Storekeeper"
         );
@@ -61,16 +60,15 @@ class EmployeeTest extends \Codeception\Test\Unit
     {
         // Change the values in this instance if you want to re-run the test
         $arr = array (
-            'number' => 7,
-            'name' => "Morten",
+            'name' => "Rive Rolf",
             'department' => "Storekeeper"
         );
 
-        // The ID needs to be updated after you have updated it if you want to rerun it
-        $oldID = 6;
+        // The name needs to be updated after you have updated it if you want to rerun it
+        $oldName = "Morten";
 
         $employeeHandler = new EmployeeHandler();
-        $updatedEmployee = $employeeHandler->updateResource($arr, $oldID);
+        $updatedEmployee = $employeeHandler->updateResource($arr, $oldName);
         print(json_encode($updatedEmployee));
         print(json_encode($arr));
         $this->assertEquals(json_encode($updatedEmployee), json_encode($arr));
