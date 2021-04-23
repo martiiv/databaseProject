@@ -73,4 +73,14 @@ class CustomerTest extends \Codeception\Test\Unit
         $this->assertEquals(json_encode($updatedCustomer), json_encode($arr));
     }
 
+    // tests
+    public function testDeleteResource()
+    {
+        $id = 10003;
+        $success = 0;
+
+        $customerHandler = new CustomerHandler();
+        $deletedCustomer = $customerHandler->deleteResource($id);
+        $this->assertEquals($deletedCustomer, $success);
+    }
 }

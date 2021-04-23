@@ -22,4 +22,9 @@ class CustomerHandler
     {
         return (new CustomerModel())->updateResource($arr, $oldName);
     }
+
+    public function deleteResource(int $id): ?string
+    {
+        return (new CustomerModel())->deleteResource($id);
+    }
 }

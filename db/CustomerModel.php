@@ -81,8 +81,21 @@ class CustomerModel extends DB
         return $res;
     }
 
-    function deleteResource(int $id)
+    function deleteResource(int $id): string
     {
-        // TODO: Implement deleteResource() method.
+        $this->db->beginTransaction();
+
+        $query = 'DELETE FROM customers WHERE id = (:id)';
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':id', $id);
+        $stmt->execute();
+
+        $this->db->commit();
+
+        if ($this->getResource($id) == null) {
+            return 0;
+        }
+        return 1;
     }
 }
