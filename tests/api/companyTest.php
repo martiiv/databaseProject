@@ -15,8 +15,7 @@ class companyTest extends \Codeception\Test\Unit
     
     protected function _before()
     {
-        //TODO HER LEGGER VI INN EN ORDRE SOM VI KAN TESTE MED OGSÅ OPPDATERER VI I FUNKSJONENE UNDER
-        //TODO HER LEGGER VI INN EN PRODUCTION PLAN SOM VI KAN TESTE MED OGSÅ OPPDATERER VI I FUNKSJONENE UNDER
+
     }
 
     protected function _after()
@@ -42,7 +41,7 @@ class companyTest extends \Codeception\Test\Unit
             'shipment_no'=>'integer']);
 
         $I->assertEquals(1, count(json_decode($I->grabResponse())));
-        $I->seeResponseContainsJson(array(['order_no'=> 15231, 'total_price'=>2500, 'status'=>'new', 'customer_id'=>3, 'shipment_no'=>1]));
+        $I->seeResponseContainsJson(array(['order_no'=> 10005, 'total_price'=>12000, 'status'=>'ready', 'customer_id'=>10001, 'shipment_no'=>NULL]));
     }
 
     /*
@@ -52,7 +51,7 @@ class companyTest extends \Codeception\Test\Unit
      */
     public function getOrder(ApiTester $I){
         $I->haveHttpHeader('Content-Type','application/json');
-        $I->sendGet('/company/customer-rep/order/15231');
+        $I->sendGet('/company/customer-rep/order/10006');
         $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
         $I->seeResponseIsJson();
         $I->seeResponseMatchesJsonType([
@@ -63,7 +62,7 @@ class companyTest extends \Codeception\Test\Unit
             'shipment_no'=>'integer']);
 
         $I->assertEquals(1, count(json_decode($I->grabResponse())));
-        $I->seeResponseContainsJson(array(['order_no'=> 15231, 'total_price'=>2500, 'status'=>'new', 'customer_id'=>3, 'shipment_no'=>1]));
+        $I->seeResponseContainsJson(array(['order_no'=> 10006, 'total_price'=>2500, 'status'=>'new', 'customer_id'=>10002, 'shipment_no'=>10001]));
 
     }
 
@@ -73,12 +72,7 @@ class companyTest extends \Codeception\Test\Unit
      * /company/customer-rep/order/{:id}{?state=open}}
      */
     public function changeStatusOpen(ApiTester $I){
-        $I->sendPut('/company/costumer-rep/order/15231?status=open',
-            ['order_no' => 15231,
-                'total_price' => 345000,
-                'status' => 'open',
-                'customer_id'=>3,
-                'shipment_no'=>1]);
+        $I->sendPut('/company/costumer-rep/order/10006?status=open');
 
         $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
         $I->seeResponseIsJson();
@@ -89,8 +83,8 @@ class companyTest extends \Codeception\Test\Unit
             'customer_id'=>'integer',
             'shipment_no'=>'integer']);
 
-        $I->seeResponseContainsJson(array(['order_no' => 15231, 'total_price' => 345000, 'status' => 'open', 'customer_id'=>3, 'shipment_no'=>1]));
-        $I->seeInDatabase(['order_no' => 15231, 'total_price' => 345000, 'status' => 'open', 'customer_id'=>3, 'shipment_no'=>1]);
+        $I->seeResponseContainsJson(array(['order_no' => 10006, 'total_price' => 2500, 'status' => 'open', 'customer_id'=>10002, 'shipment_no'=>10001]));
+        $I->seeInDatabase(['order_no' => 10006, 'total_price' => 2500, 'status' => 'open', 'customer_id'=>10002, 'shipment_no'=>10001]);
     }
 
     /*
@@ -100,12 +94,7 @@ class companyTest extends \Codeception\Test\Unit
      */
     public function changeStatusAvailable(ApiTester $I){
         $I->haveHttpHeader('Content-Type', 'application/json');
-        $I->sendPut('/company/costumer-rep/order/15231?status=available',
-            ['order_no' => 15231,
-                'total_price' => 345000,
-                'status' => 'available',
-                'customer_id'=>3,
-                'shipment_no'=>1]);
+        $I->sendPut('/company/costumer-rep/order/10006?status=skis_available');
 
         $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
         $I->seeResponseIsJson();
@@ -116,8 +105,8 @@ class companyTest extends \Codeception\Test\Unit
             'customer_id'=>'integer',
             'shipment_no'=>'integer']);
 
-        $I->seeResponseContainsJson(array(['order_no' => 15231, 'total_price' => 345000, 'status' => 'available', 'customer_id'=>3, 'shipment_no'=>1]));
-        $I->seeInDatabase(['order_no' => 15231, 'total_price' => 345000, 'status' => 'available', 'customer_id'=>3, 'shipment_no'=>1]);
+        $I->seeResponseContainsJson(array(['order_no' => 10006, 'total_price' => 2500, 'status' => 'skis_available', 'customer_id'=>10002, 'shipment_no'=>10001]));
+        $I->seeInDatabase(['order_no' => 10006, 'total_price' => 2500, 'status' => 'skis_available', 'customer_id'=>10002, 'shipment_no'=>10001]);
     }
 
     /*
@@ -137,7 +126,7 @@ class companyTest extends \Codeception\Test\Unit
             'shipment_no'=>'integer']);
 
         $I->assertEquals(1, json_decode($I->grabResponse()));
-        $I->seeResponseContainsJson(['order_no' => 15231, 'total_price' => 345000, 'status' => 'skis_available', 'customer_id'=>3, 'shipment_no'=>1]);
+        $I->seeResponseContainsJson(['order_no' => 10007, 'total_price' => 34000, 'status' => 'skis_available', 'customer_id'=>10000, 'shipment_no'=>10000]);
     }
 
 
@@ -148,12 +137,7 @@ class companyTest extends \Codeception\Test\Unit
      */
     public function changeStatusReady(ApiTester $I){
         $I->haveHttpHeader('Content-Type', 'application/json');
-        $I->sendPut('/company/storekeeper/order/15231?state=ready',[
-            'order_no' => 15231,
-            'total_price' => 345000,
-            'status' => 'ready',
-            'customer_id'=>3,
-            'shipment_no'=>1]);
+        $I->sendPut('/company/storekeeper/order/10006?state=ready');
 
         $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
         $I->seeResponseIsJson();
@@ -164,23 +148,24 @@ class companyTest extends \Codeception\Test\Unit
             'customer_id'=>'integer',
             'shipment_no'=>'integer']);
 
-        $I->seeResponseContainsJson(array(['order_no' => 15231, 'total_price' => 345000, 'status' => 'ready', 'customer_id'=>3, 'shipment_no'=>1]));
-        $I->seeInDatabase(['order_no' => 15231, 'total_price' => 345000, 'status' => 'ready', 'customer_id'=>3, 'shipment_no'=>1]);
+        $I->seeResponseContainsJson(array(['order_no' => 10006, 'total_price' => 2500, 'status' => 'ready', 'customer_id'=>10002, 'shipment_no'=>10001]));
+        $I->seeInDatabase(['order_no' => 10006, 'total_price' => 2500, 'status' => 'ready', 'customer_id'=>10002, 'shipment_no'=>10001]);
     }
 
     /*
      * Method for creating a shipment
      * Tests the following endpoint:
      * /company/customer-rep/shipment/
+     * TODO FÅ TAK I SHIPMENT ID
      */
     public function createShipmentTest(ApiTester $I){
-        $I->sendPost('/company/costumer-rep/shipment/',[
-            'shipment_no' =>4,
-            'store_franchise_name' => 'XXL',
-            'pickup_date' => '2021-05-31',
-            'state' => 0,
-            'transporter' => 'Einars levering',
-            'driver_id' => 2]);
+        $I->sendPost('/company/costumer-rep/shipment/{:id}', [
+            'customer_name' => 'XXL',
+            'pickup_date' => '21.05.2022',
+            'state' => '0',
+            'driver_id' => 2,
+            'transporter' => 'Gro Anitas postservice',
+            'address_id' => 10001]);
 
         $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
         $I->seeResponseIsJson();
@@ -192,25 +177,25 @@ class companyTest extends \Codeception\Test\Unit
             'transporter' => 'string',
             'driver_id' => 'integer']);
 
-        $I->seeResponseContainsJson(array([ 'shipment_no' =>3, 'store_franchise_name' => 'XXL', 'pickup_date' => '2021-05-31', 'state' => 0, 'transporter' => 'Einars levering', 'driver_id' => 2]));
-        $I->seeInDatabase([ 'shipment_no' =>3, 'store_franchise_name' => 'XXL', 'pickup_date' => '2021-05-31', 'state' => 0, 'transporter' => 'Einars levering', 'driver_id' => 2]);
+        $I->seeResponseContainsJson(array(['shipment_no' =>'FIKS D HER','customer_name' => 'XXL', 'pickup_date' => '21.05.2022', 'state' => '0', 'driver_id' => 2, 'transporter' => 'Gro Anitas postservice', 'address_id' => 10001]));
+        $I->seeInDatabase(['shipment_no' =>'FIKS D HER','customer_name' => 'XXL', 'pickup_date' => '21.05.2022', 'state' => '0', 'driver_id' => 2, 'transporter' => 'Gro Anitas postservice', 'address_id' => 10001]);
     }
 
     /*
      * Method for creating a ski
      * Tests the following endpoint:
-     * /company/storekeeper/ski/{:id} //TODO ID må kanskje bort
+     * /company/storekeeper/ski/
      */
     public function createSkiTest(ApiTester $I){
         $I->haveHttpHeader('Content-Type', 'application/json');
-        $I->sendPost('/company/storekeeper/ski', [
+        $I->sendPost('/company/storekeeper/ski',[
             'model'=> 'Active',
             'ski_type'=>'classic',
             'temperature'=>'warm',
             'grip_system'=>'wax',
             'size'=>225,
             'weight_class'=>'20-30',
-            'description'=>'bra ski',
+            'description'=>'Test ski',
             'historical'=>0,
             'photo_url'=>'u/tull/bildet',
             'retail_price'=>3600,
@@ -231,8 +216,8 @@ class companyTest extends \Codeception\Test\Unit
             'retail_price'=>'integer',
             'production_date'=>'date']);
 
-        $I->seeResponseContainsJson(array(['model'=> 'Active', 'ski_type'=>'classic', 'temperature'=>'warm', 'grip_system'=>'wax', 'size'=>225, 'weight_class'=>'20-30', 'description'=>'bra ski', 'historical'=>0, 'photo_url'=>'u/tull/bildet', 'retail_price'=>3600, 'production_date'=>'21.07.2035']));
-        $I->seeInDatabase(['model'=> 'Active', 'ski_type'=>'classic', 'temperature'=>'warm', 'grip_system'=>'wax', 'size'=>225, 'weight_class'=>'20-30', 'description'=>'bra ski', 'historical'=>0, 'photo_url'=>'u/tull/bildet', 'retail_price'=>3600, 'production_date'=>'21.07.2035']);
+        $I->seeResponseContainsJson(array(['model'=> 'Active', 'ski_type'=>'classic', 'temperature'=>'warm', 'grip_system'=>'wax', 'size'=>225, 'weight_class'=>'20-30', 'description'=>'Test ski', 'historical'=>0, 'photo_url'=>'u/tull/bildet', 'retail_price'=>3600, 'production_date'=>'21.07.2035']));
+        $I->seeInDatabase(['model'=> 'Active', 'ski_type'=>'classic', 'temperature'=>'warm', 'grip_system'=>'wax', 'size'=>225, 'weight_class'=>'20-30', 'description'=>'Test ski', 'historical'=>0, 'photo_url'=>'u/tull/bildet', 'retail_price'=>3600, 'production_date'=>'21.07.2035']);
     }
 
     /*
@@ -246,7 +231,7 @@ class companyTest extends \Codeception\Test\Unit
             'start_date'=> '25-04-2021',
             'end_date'=>'22-05-2021',
             'no_of_skis_per_day'=>1600,
-            'production_planner_number'=>3]);
+            'production_planner_number'=>10004]);
 
         $I->seeResponseCodeIs(\Codeception\Util\HttpCode::CREATED);
         $I->seeResponseIsJson();
@@ -256,7 +241,7 @@ class companyTest extends \Codeception\Test\Unit
             'no_of_skis_per_day'=>'integer',
             'production_planner_number'=>'integer']);
 
-        $I->seeResponseContainsJson(array([ 'start_date'=> '25-04-2021', 'end_date'=>'22-05-2021', 'no_of_skis_per_day'=>1600, 'production_planner_number'=>3]));
-        $I->seeInDatabase([ 'start_date'=> '25-04-2021', 'end_date'=>'22-05-2021', 'no_of_skis_per_day'=>1600, 'production_planner_number'=>3]);
+        $I->seeResponseContainsJson(array([ 'start_date'=> '25-04-2021', 'end_date'=>'22-05-2021', 'no_of_skis_per_day'=>1600, 'production_planner_number'=>10004]));
+        $I->seeInDatabase([ 'start_date'=> '25-04-2021', 'end_date'=>'22-05-2021', 'no_of_skis_per_day'=>1600, 'production_planner_number'=>10004]);
     }
 }
