@@ -47,7 +47,14 @@ RewriteRule dbproject-33/(.*)$ dbproject-33/v0.1/api.php?request=$1 [QSA,NC,L]
 
 7. Right click root directory -> Deployment -> Upload to localhost 
 
-8. Call endpoints in postman  (**see examples below**)
+8. Configure Postman with authorization cookie: 
+
+    1. I assume that you have now created a request and is ready to send it to the API. Under the send button, click on "Cookies".
+    2. Input the domain that you are using to access the API (probably localhost or 127.0.0.1), and press "Add".
+    3. "Add cookie". Modify the cookie name and value, `Cookie_3=value;` -> `auth_token=EENV2yeVpGZCT8eCKxWh19fz9SZ4bA1Wh19GGkoQd4T8bHYtALHoQB6f82qqMxoh;`
+    4. Do not modify anything else, just save!
+
+9. Call endpoints in postman  (**see examples below**)
 
 <h2>Test data:</h2>
 
