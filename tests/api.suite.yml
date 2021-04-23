@@ -7,17 +7,17 @@ modules:
                 part: Json
         - \Helper\Api
 
-      - Db:
-          dsn: 'mysql:host=localhost;dbname=testDB'
-          user: 'root'
-          password: ''
-          dump: 'tests/_data/testData.sql'
-          populate: true
-          cleanup: true
-          reconnect: true
-          waitlock: 10
-          initial_queries:
-            - 'CREATE DATABASE IF NOT EXISTS temp_db;'
-            - 'USE temp_db;'
-            - 'SET NAMES utf8;'
+        - Db:
+            dsn: 'mysql:host=localhost;dbname=assignment_project'
+            user: 'root'
+            password: ''
+            dump: 'tests/_data/testData.sql'
+            populate: true
+            cleanup: true
+            reconnect: true
+            waitlock: 10
+            initial_queries:
+              - 'CREATE DATABASE IF NOT EXISTS temp_db;'
+              - 'USE temp_db;'
+              - 'SET NAMES utf8;'
         - Asserts
