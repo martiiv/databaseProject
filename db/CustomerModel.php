@@ -4,7 +4,7 @@ require_once 'DB.php';
 /**
  * Class OrderModel
  */
-class CustomerModel extends AbstractModel
+class CustomerModel extends DB
 {
     public function __construct()
     {
@@ -13,7 +13,16 @@ class CustomerModel extends AbstractModel
 
     function getCollection(array $query = null): array
     {
-        // TODO: Implement getCollection() method.
+        $res = array();
+        $query = 'SELECT id, name, start_date, end_date FROM customers';
+
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $res[] = $row;
+        }
+        return $res;
     }
 
     function getResource(int $id): ?array
