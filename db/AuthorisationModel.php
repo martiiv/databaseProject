@@ -17,20 +17,18 @@ class AuthorisationModel extends DB
      * @return bool indicating whether the token was successfully verified
      */
     public function isValid(string $token): bool {
-        return true;
-        // TODO: Implement authorisation
-        /*$query = 'SELECT COUNT(*) FROM auth_token WHERE token = :token';
+        $query = 'SELECT COUNT(*) FROM auth_token WHERE token = :token';
 
         $stmt = $this->db->prepare($query);
         $stmt->bindValue(':token', $token);
         $stmt->execute();
 
         $row = $stmt->fetch(PDO::FETCH_NUM);
+
         if ($row[0] == 0) {
             return false;
         } else {
             return true;
-        }*/
+        }
     }
-
 }
