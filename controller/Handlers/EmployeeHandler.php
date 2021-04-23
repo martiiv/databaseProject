@@ -18,9 +18,9 @@ class EmployeeHandler
         return (new EmployeeModel())->createResource($arr);
     }
 
-    public function updateResource(array $arr, int $oldID): ?array
+    public function updateResource(array $arr, string $oldName): ?array
     {
-        return (new EmployeeModel())->updateResource($arr, $oldID);
+        return (new EmployeeModel())->updateResource($arr, $oldName);
     }
 
     public function deleteResource(int $id): ?string

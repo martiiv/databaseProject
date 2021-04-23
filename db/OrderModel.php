@@ -69,7 +69,7 @@ class OrderModel extends DB
     function updateResource(array $resource): ?int
     {
         $this->db->beginTransaction();
-        $query = 'UPDATE orders SET status=:status WHERE order_no=:order_no';
+        $query = 'UPDATE orders SET status = :status WHERE order_no = :order_no';
         $stmt = $this->db->prepare($query);
         $stmt->bindValue(':status', $resource['status']);
         $stmt->bindValue(':order_no', $resource['order_no']);
@@ -84,6 +84,7 @@ class OrderModel extends DB
 
     function deleteResource(int $id): string
     {
+        $success = "";
         $this->db->beginTransaction();
 
         $query = 'DELETE FROM orders WHERE order_no = (:id)';
@@ -96,12 +97,10 @@ class OrderModel extends DB
 
         $success = "Successfully deleted order with order number: " . strval($id) . ".";
 
-        if (strlen($success) != 0) {
-            return $success;
-        } else {
+        if (strlen($success) == 0) {
             $success = "Failed to delete order with order number: " . strval($id) . ".";
-            return $success;
         }
+        return $success;
     }
 
     private function getShipmentNo(int $id)

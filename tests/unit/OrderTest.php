@@ -29,7 +29,6 @@ class OrderTest extends \Codeception\Test\Unit
             print(json_encode($o));
             print("\n");
         }
-
     }
 
     // tests
@@ -49,17 +48,14 @@ class OrderTest extends \Codeception\Test\Unit
         // Delete this instance from the DB if you want to re-run the test
         // Optionally change the values
         $arr = array (
-            'order_no' => 12479,
             'total_price' => 14500,
             'status' => "new",
-            'customer_id' => 1
+            'customer_id' => 10000
         );
 
         $orderHandler = new OrderHandler();
         $newOrder = $orderHandler->createResource($arr);
-        print($newOrder);
-        print($arr['order_no']);
-        $this->assertEquals($newOrder, $arr['order_no']);
+        $this->assertNotEquals(0, $newOrder);
     }
 
     // tests
@@ -68,7 +64,7 @@ class OrderTest extends \Codeception\Test\Unit
         // Change the values in this instance if you want to re-run the test
         $arr = array (
             // TODO - fix broken after fixed for API
-            'order_no' => 12479,
+            'order_no' => 10017,
             'status' => "open",
         );
 
@@ -80,7 +76,8 @@ class OrderTest extends \Codeception\Test\Unit
     // tests
     public function testDeleteResource()
     {
-        $id = 12479;
+        // Due to AUTO_INCREMENT you have to change this value every time until testdb.sql is set up properly
+        $id = 10017;
         $idTemp = "Successfully deleted order with order number: " . strval($id) . ".";
 
         $orderHandler = new OrderHandler();
