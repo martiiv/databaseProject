@@ -41,7 +41,7 @@ RewriteRule dbproject-33/(.*)$ dbproject-33/v0.1/api.php?request=$1 [QSA,NC,L]
 
 4. Start XAMPP: Apache + MySQL
 
-5. Import database with the test data from `dbproject-33\doc\physical_database\assignment_project_with_data.sql`
+5. Import database with the test data from `dbproject-33\doc\physical_database\testData.sql`
 
 6. Configure dbCredentials.php (copy-paste dbCredentialsTemplate.php and rename) with *DB_NAME*, *DB_USER* and *DB_PWD*.
 

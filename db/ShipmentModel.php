@@ -1,5 +1,6 @@
 <?php
 require_once 'DB.php';
+require_once 'db/TransporterModel.php';
 
 /**
  * Class OrderModel
@@ -14,7 +15,7 @@ class ShipmentModel extends DB
     function getCollection(array $query = null): array
     {
         $res = array();
-        $query = 'SELECT shipment_no, store_franchise_name, pickup_date, state, driver_id, transporter, address_id FROM shipments';
+        $query = 'SELECT shipment_no, customer_name, pickup_date, state, driver_id, transporter, address_id FROM shipments';
 
         $stmt = $this->db->prepare($query);
         $stmt->execute();
@@ -28,7 +29,7 @@ class ShipmentModel extends DB
     function getResource(int $id): ?array
     {
         $res = array();
-        $query = 'SELECT shipment_no, store_franchise_name, pickup_date, state, driver_id, transporter, address_id FROM shipments WHERE shipment_no = :id';
+        $query = 'SELECT shipment_no, customer_name, pickup_date, state, driver_id, transporter, address_id FROM shipments WHERE shipment_no = :id';
 
         $stmt = $this->db->prepare($query);
         $stmt->bindValue(':id', $id);
@@ -47,11 +48,10 @@ class ShipmentModel extends DB
         $transporterArray = (new TransporterModel())->addTransporter($resource);
 
         $this->db->beginTransaction();
-        $query = 'INSERT INTO shipments (shipment_no, store_franchise_name, pickup_date, state, driver_id, transporter, address_id) VALUES (:shipment_no, :store_franchise_name, :pickup_date, :state, :driver_id, :transporter, :address_id)';
+        $query = 'INSERT INTO shipments (customer_name, pickup_date, state, driver_id, transporter, address_id) VALUES (:customer_name, :pickup_date, :state, :driver_id, :transporter, :address_id)';
 
         $stmt = $this->db->prepare($query);
-        $stmt->bindValue(':shipment_no', $resource['shipment_no']);
-        $stmt->bindValue(':store_franchise_name', $resource['store_franchise_name']);
+        $stmt->bindValue(':customer_name', $resource['customer_name']);
         $stmt->bindValue(':pickup_date', $resource['pickup_date']);
         $stmt->bindValue(':state', $resource['state']);
         $stmt->bindValue(':driver_id', $resource['driver_id']);
@@ -59,8 +59,7 @@ class ShipmentModel extends DB
         $stmt->bindValue(':address_id', $resource['address_id']);
         $stmt->execute();
 
-        $res['shipment_no'] = $resource['shipment_no'];
-        $res['store_franchise_name'] = $resource['store_franchise_name'];
+        $res['customer_name'] = $resource['customer_name'];
         $res['pickup_date'] = $resource['pickup_date'];
         $res['state'] = $resource['state'];
         $res['driver_id'] = $resource['driver_id'];
@@ -79,13 +78,12 @@ class ShipmentModel extends DB
 
         $this->db->beginTransaction();
 
-        $query = 'UPDATE shipments SET shipment_no = (:shipment_no), store_franchise_name = (:store_franchise_name), 
+        $query = 'UPDATE shipments SET customer_name = (:customer_name), 
                      pickup_date = (:pickup_date), state = (:state), driver_id = (:driver_id), 
                      transporter = (:transporter), address_id = (:address_id) WHERE shipment_no = (:oldShipment_no)';
 
         $stmt = $this->db->prepare($query);
-        $stmt->bindValue(':shipment_no', $resource['shipment_no']);
-        $stmt->bindValue(':store_franchise_name', $resource['store_franchise_name']);
+        $stmt->bindValue(':customer_name', $resource['customer_name']);
         $stmt->bindValue(':pickup_date', $resource['pickup_date']);
         $stmt->bindValue(':state', $resource['state']);
         $stmt->bindValue(':driver_id', $resource['driver_id']);
@@ -94,8 +92,7 @@ class ShipmentModel extends DB
         $stmt->bindValue(':oldShipment_no', $oldShipment_no);
         $stmt->execute();
 
-        $res['shipment_no'] = $resource['shipment_no'];
-        $res['store_franchise_name'] = $resource['store_franchise_name'];
+        $res['customer_name'] = $resource['customer_name'];
         $res['pickup_date'] = $resource['pickup_date'];
         $res['state'] = $resource['state'];
         $res['driver_id'] = $resource['driver_id'];

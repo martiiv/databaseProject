@@ -42,13 +42,12 @@ class ShipmentTest extends \Codeception\Test\Unit
         // Delete this instance from the DB if you want to re-run the test
         // Optionally change the values
         $arr = array (
-            'shipment_no' => 3,
-            'store_franchise_name' => "Sport 1 Oslo",
+            'customer_name' => "Sport 1 Oslo",
             'pickup_date' => '2021-05-12',
             'state' => 0,
             'driver_id' => 3,
             'transporter' => "Magnus' transporting AS",
-            'address_id' => 3,
+            'address_id' => 10000,
         );
 
         $shipmentHandler = new ShipmentHandler();
@@ -63,17 +62,16 @@ class ShipmentTest extends \Codeception\Test\Unit
     {
         // Change the values in this instance if you want to re-run the test
         $arr = array (
-            'shipment_no' => 4,
-            'store_franchise_name' => "Mega Sport Oslo",
+            'customer_name' => "Mega Sport Oslo",
             'pickup_date' => '2021-05-18',
             'state' => 0,
             'driver_id' => 4,
             'transporter' => "Ole Joar's Pickup Service",
-            'address_id' => 4,
+            'address_id' => 10000,
         );
 
         // The old shipment number needs to be updated after you have updated it if you want to rerun it
-        $oldShipment_no = 3;
+        $oldShipment_no = 10000;
         $oldName = "Magnus' transporting AS";
 
         $shipmentHandler = new ShipmentHandler();
