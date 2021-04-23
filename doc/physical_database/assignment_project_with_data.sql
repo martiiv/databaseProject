@@ -243,6 +243,7 @@ INSERT INTO `items_picked` (`amount`, `shipment_no`, `product_no`) VALUES
 
 CREATE TABLE `orders` (
   `order_no` int(11) NOT NULL,
+  `created` datetime NOT NULL DEFAULT current_timestamp(),
   `total_price` int(11) NOT NULL,
   `status` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL,
   `customer_id` int(11) NOT NULL,
