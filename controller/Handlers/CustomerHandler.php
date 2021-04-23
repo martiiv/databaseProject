@@ -17,4 +17,9 @@ class CustomerHandler
     {
         return (new CustomerModel())->createResource($arr);
     }
+
+    public function updateResource(array $arr, string $oldName): ?array
+    {
+        return (new CustomerModel())->updateResource($arr, $oldName);
+    }
 }

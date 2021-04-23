@@ -54,4 +54,23 @@ class CustomerTest extends \Codeception\Test\Unit
         $this->assertEquals(json_encode($newCustomer), json_encode($arr));
     }
 
+    // tests
+    public function testUpdateResource()
+    {
+        // Change the values in this instance if you want to re-run the test
+        $arr = array (
+            'name' => "Sport1 Oslo",
+            'end_date' => '2024-10-12'
+        );
+
+        // The name needs to be updated after you have updated it if you want to rerun it
+        $oldName = "Epic ski store";
+
+        $customerHandler = new CustomerHandler();
+        $updatedCustomer = $customerHandler->updateResource($arr, $oldName);
+        print(json_encode($updatedCustomer));
+        print(json_encode($arr));
+        $this->assertEquals(json_encode($updatedCustomer), json_encode($arr));
+    }
+
 }

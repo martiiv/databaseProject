@@ -61,9 +61,24 @@ class CustomerModel extends DB
         return $res;
     }
 
-    function updateResource(array $resource): array
+    function updateResource(array $resource, string $oldName): array
     {
-        // TODO: Implement updateResource() method.
+        $this->db->beginTransaction();
+
+        $res = array();
+        $query = 'UPDATE customers SET name = (:name), end_date = (:end_date) WHERE name = (:oldName)';
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':name', $resource['name']);
+        $stmt->bindValue(':end_date', $resource['end_date']);
+        $stmt->bindValue(':oldName', $oldName);
+        $stmt->execute();
+
+        $res['name'] = $resource['name'];
+        $res['end_date'] = $resource['end_date'];
+        $this->db->commit();
+
+        return $res;
     }
 
     function deleteResource(int $id)
