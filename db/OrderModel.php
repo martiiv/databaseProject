@@ -60,10 +60,10 @@ class OrderModel extends DB
         $stmt->bindValue(':status', $resource['status']);
         $stmt->bindValue(':customer_id', $resource['customer_id']);
         $stmt->execute();
-        $order_id = $this->db->lastInsertId();
+        $id = $this->db->lastInsertId();
         $this->db->commit();
 
-        return $order_id;
+        return $id;
     }
 
     function updateResource(array $resource): ?int
