@@ -11,7 +11,7 @@ class SkiModel extends DB
 
     public function getSkiType(string $model): array {
         $res = array();
-        $query = 'SELECT * FROM ski_type WHERE model = :model';
+        $query = 'SELECT model, ski_type, temperature, grip_system, size, weight_class, description, historical, photo_url, retail_price, production_date FROM ski_type WHERE model = :model';
 
         $stmt = $this->db->prepare($query);
         $stmt->bindValue(':model', $model);

@@ -150,6 +150,7 @@ CREATE TABLE `items_picked` (
 
 CREATE TABLE `orders` (
   `order_no` int(11) NOT NULL,
+  `created` datetime NOT NULL DEFAULT current_timestamp(),
   `total_price` int(11) NOT NULL,
   `status` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL,
   `customer_id` int(11) NOT NULL,
@@ -283,6 +284,16 @@ CREATE TABLE `team_skiers` (
 CREATE TABLE `transporters` (
   `name` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_danish_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Dataark for tabell `auth_token`
+--
+
+INSERT INTO `auth_token` (`token`) VALUES
+('EENV2yeVpGZCT8eCKxWh19fz9SZ4bA1Wh19GGkoQd4T8bHYtALHoQB6f82qqMxoh');
+COMMIT;
 
 --
 -- Indexes for dumped tables

@@ -26,15 +26,14 @@ class customerEndpointTest extends \Codeception\Test\Unit
      * Method for creating order
      * Tests the following endpoint:
      * /customer/order/place/{:customer_id}
+     * TODO Hente total pris og ordre id
      */
     public function addOrder(ApiTester $I){
         $I->haveHttpHeader('Content-Type', 'application/json');
-        $I->sendPost('/customer/order/place/1', [
-            'order_no'=> 453221,
-            'total_price'=>25000,
-            'status'=>'new',
-            'customer_id'=>1,
-            'shipment_no'=>NULL]);
+        $I->sendPost('/customer/order/place/10001', [
+            'Active Pro' => 5,
+            'Redline:' => 3,
+            'Race Pro' => 10]);
 
         $I->seeResponseCodeIs(\Codeception\Util\HttpCode::CREATED);
         $I->seeResponseIsJson();
@@ -45,8 +44,8 @@ class customerEndpointTest extends \Codeception\Test\Unit
             'customer_id'=>'integer',
             'shipment_no'=>'integer']);
 
-        $I->seeResponseContainsJson(array(['order_no'=> 453221,'total_price'=>25000, 'status'=>'new', 'customer_id'=>1, 'shipment_no'=>NULL]));
-        $I->seeInDatabase(['order_no'=> 453221,'total_price'=>25000, 'status'=>'new', 'customer_id'=>1, 'shipment_no'=>NULL]);
+        $I->seeResponseContainsJson(array(['order_no'=> NULL,'total_price'=>NULL, 'status'=>'new', 'customer_id'=>10001, 'shipment_no'=>NULL]));
+        $I->seeInDatabase(['order_no'=> NULL,'total_price'=>NULL, 'status'=>'new', 'customer_id'=>10001, 'shipment_no'=>NULL]);
     }
 
     /*
