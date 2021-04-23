@@ -244,9 +244,9 @@ CREATE TABLE `ski_type` (
   `grip_system` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL,
   `size` int(11) NOT NULL,
   `weight_class` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL,
-  `description` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL,
+  `description` varchar(255) COLLATE utf8mb4_danish_ci DEFAULT NULL,
   `historical` tinyint(1) NOT NULL,
-  `photo_url` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL,
+  `photo_url` varchar(255) COLLATE utf8mb4_danish_ci DEFAULT NULL,
   `retail_price` int(11) NOT NULL,
   `production_date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_danish_ci;
