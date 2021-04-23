@@ -95,7 +95,7 @@ class CustomerEndpoint
      */
     private function handlePostRequest($uri, $payload): array
     {
-        if ($uri[0] == "order" && $uri[1] == "place" && count($uri) == 4) {
+        if ($uri[0] == "order" && $uri[1] == "place" && count($uri) == 3) {
             $model = new SkiModel();
             $skis = array();
 
@@ -112,7 +112,6 @@ class CustomerEndpoint
 
             // Prepare filter
             $filter = array();
-            $filter['order_no'] = $uri[3];
             $filter['total_price'] = 0;
             $filter['status'] = "new";
             $filter['customer_id'] = $uri[2];
