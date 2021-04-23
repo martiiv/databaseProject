@@ -1,5 +1,5 @@
 <?php
-
+require_once 'RESTConstants.php';
 
 class OrderHandler
 {
@@ -20,8 +20,8 @@ class OrderHandler
 
     public function updateResource(array $arr): ?int
     {
-        if ($arr['order_no'] != "") throw new APIException(RESTConstants::HTTP_BAD_REQUEST, $message = "No order number provided");
-        if ($arr['status'] != "") throw new APIException(RESTConstants::HTTP_BAD_REQUEST, $message = "No status provided");
+        if ($arr['order_no'] == "") throw new APIException(RESTConstants::HTTP_BAD_REQUEST, $message = "No order number provided");
+        if ($arr['status'] == "") throw new APIException(RESTConstants::HTTP_BAD_REQUEST, $message = "No status provided");
         return (new OrderModel())->updateResource($arr);
 
     }
