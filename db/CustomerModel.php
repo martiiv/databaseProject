@@ -42,7 +42,23 @@ class CustomerModel extends DB
 
     function createResource(array $resource): array
     {
-        // TODO: Implement createResource() method.
+        $this->db->beginTransaction();
+
+        $res = array();
+        $query = 'INSERT INTO customers (name, start_date, end_date) VALUES (:name, :start_date, :end_date)';
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':name', $resource['name']);
+        $stmt->bindValue(':start_date', $resource['start_date']);
+        $stmt->bindValue(':end_date', $resource['end_date']);
+        $stmt->execute();
+
+        $res['name'] = $resource['name'];
+        $res['start_date'] = $resource['start_date'];
+        $res['end_date'] = $resource['end_date'];
+        $this->db->commit();
+
+        return $res;
     }
 
     function updateResource(array $resource): array

@@ -36,4 +36,22 @@ class CustomerTest extends \Codeception\Test\Unit
         print(json_encode($customers));
     }
 
+    // tests
+    public function testCreateResource()
+    {
+        // Delete this instance from the DB if you want to re-run the test
+        // Optionally change the values
+        $arr = array (
+            'name' => "Epic ski store",
+            'start_date' => '2020-10-12',
+            'end_date' => '2022-10-12'
+        );
+
+        $customerHandler = new CustomerHandler();
+        $newCustomer = $customerHandler->createResource($arr);
+        print(json_encode($newCustomer));
+        print(json_encode($arr));
+        $this->assertEquals(json_encode($newCustomer), json_encode($arr));
+    }
+
 }

@@ -12,4 +12,9 @@ class CustomerHandler
     {
         return (new CustomerModel())->getResource($id);
     }
+
+    public function createResource(array $arr): ?array
+    {
+        return (new CustomerModel())->createResource($arr);
+    }
 }
