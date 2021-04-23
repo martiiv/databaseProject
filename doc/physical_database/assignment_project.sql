@@ -285,6 +285,16 @@ CREATE TABLE `transporters` (
   `name` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_danish_ci;
 
+-- --------------------------------------------------------
+
+--
+-- Dataark for tabell `auth_token`
+--
+
+INSERT INTO `auth_token` (`token`) VALUES
+('EENV2yeVpGZCT8eCKxWh19fz9SZ4bA1Wh19GGkoQd4T8bHYtALHoQB6f82qqMxoh');
+COMMIT;
+
 --
 -- Indexes for dumped tables
 --
