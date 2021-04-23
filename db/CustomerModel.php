@@ -27,7 +27,17 @@ class CustomerModel extends DB
 
     function getResource(int $id): ?array
     {
-        // TODO: Implement getResource() method.
+        $res = array();
+        $query = 'SELECT id, name, start_date, end_date FROM customers WHERE id = :id';
+
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':id', $id);
+        $stmt->execute();
+
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $res[] = $row;
+        }
+        return $res;
     }
 
     function createResource(array $resource): array

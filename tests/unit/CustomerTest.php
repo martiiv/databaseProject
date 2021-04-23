@@ -28,4 +28,12 @@ class CustomerTest extends \Codeception\Test\Unit
         }
     }
 
+    // tests
+    public function testGetResource()
+    {
+        $customerHandler = new CustomerHandler();
+        $customers = $customerHandler->getResource(10000);
+        print(json_encode($customers));
+    }
+
 }
