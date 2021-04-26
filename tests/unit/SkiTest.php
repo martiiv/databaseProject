@@ -1,11 +1,23 @@
 <?php
+require_once "controller/Handlers/SkiModelHandler.php";
+require_once "db/SkiModel.php";
 
+/**
+ * Class SkiTest created for running unit tests on the ski_type entity
+ * Has the following functions:
+ *                              testCreateResource
+ *                              testUpdateResource
+ *                              testDeleteResource
+ * @author Martin Iversen
+ * @date 26.04.2021
+ * @version 0.8
+ */
 class SkiTest extends \Codeception\Test\Unit
 {
     /**
      * @var \UnitTester
      */
-    protected $tester;
+    protected UnitTester $tester;
     
     protected function _before()
     {
@@ -15,8 +27,11 @@ class SkiTest extends \Codeception\Test\Unit
     {
     }
 
-    // tests
-    public function testCreateRecource()
+    /**
+     * Function testCreateResource
+     * Creates a ski_type in the database
+     */
+    public function testCreateResource()
     {
         $array = array(
             'model'=> 'UnitTestSki',
@@ -35,16 +50,22 @@ class SkiTest extends \Codeception\Test\Unit
         $this -> assertNotEquals(0,$newSki);
     }
 
+    /**
+     * Function testUpdateResource
+     * Updates the historical value of a ski_type
+     * The historical value can only be set to one(1) indicating that the ski_type is out of production
+     * @throws APIException if the historical value is 0
+     */
     public function testUpdateResource(){
         $arr = array(
-            'ski_model' => 'Active',
+            'model' => 'Active',
             'historical' => 1
         );
 
         $skiModelHandler = new SkiModelHandler();
         $updateSkiModelStatement = $skiModelHandler->updateResource($arr);
+
+        $this->tester->seeInDatabase('ski_type',['model'=>'Active', 'historical'=>1]);
         $this->assertNotEquals(null,$updateSkiModelStatement);
     }
-
-
 }
