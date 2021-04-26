@@ -84,7 +84,7 @@ class companyTest extends \Codeception\Test\Unit
             'shipment_no'=>'integer']);
 
         $I->seeResponseContainsJson(array(['order_no' => 10006, 'total_price' => 2500, 'status' => 'open', 'customer_id'=>10002, 'shipment_no'=>10001]));
-        $I->seeInDatabase(['order_no' => 10006, 'total_price' => 2500, 'status' => 'open', 'customer_id'=>10002, 'shipment_no'=>10001]);
+        $I->seeInDatabase('orders',['order_no' => 10006, 'total_price' => 2500, 'status' => 'open', 'customer_id'=>10002, 'shipment_no'=>10001]);
     }
 
     /*
@@ -106,7 +106,7 @@ class companyTest extends \Codeception\Test\Unit
             'shipment_no'=>'integer']);
 
         $I->seeResponseContainsJson(array(['order_no' => 10006, 'total_price' => 2500, 'status' => 'skis_available', 'customer_id'=>10002, 'shipment_no'=>10001]));
-        $I->seeInDatabase(['order_no' => 10006, 'total_price' => 2500, 'status' => 'skis_available', 'customer_id'=>10002, 'shipment_no'=>10001]);
+        $I->seeInDatabase('orders',['order_no' => 10006, 'total_price' => 2500, 'status' => 'skis_available', 'customer_id'=>10002, 'shipment_no'=>10001]);
     }
 
     /*
@@ -126,7 +126,7 @@ class companyTest extends \Codeception\Test\Unit
             'shipment_no'=>'integer']);
 
         $I->assertEquals(1, json_decode($I->grabResponse()));
-        $I->seeResponseContainsJson(['order_no' => 10007, 'total_price' => 34000, 'status' => 'skis_available', 'customer_id'=>10000, 'shipment_no'=>10000]);
+        $I->seeResponseContainsJson('orders',['order_no' => 10007, 'total_price' => 34000, 'status' => 'skis_available', 'customer_id'=>10000, 'shipment_no'=>10000]);
     }
 
 
@@ -149,17 +149,17 @@ class companyTest extends \Codeception\Test\Unit
             'shipment_no'=>'integer']);
 
         $I->seeResponseContainsJson(array(['order_no' => 10006, 'total_price' => 2500, 'status' => 'ready', 'customer_id'=>10002, 'shipment_no'=>10001]));
-        $I->seeInDatabase(['order_no' => 10006, 'total_price' => 2500, 'status' => 'ready', 'customer_id'=>10002, 'shipment_no'=>10001]);
+        $I->seeInDatabase('orders',['order_no' => 10006, 'total_price' => 2500, 'status' => 'ready', 'customer_id'=>10002, 'shipment_no'=>10001]);
     }
 
     /*
      * Method for creating a shipment
      * Tests the following endpoint:
      * /company/customer-rep/shipment/
-     * TODO FÅ TAK I SHIPMENT ID
+     * TODO Sjekk om kan kjøre uten shipment id i seeindatabase()
      */
     public function createShipmentTest(ApiTester $I){
-        $I->sendPost('/company/costumer-rep/shipment/{:id}', [
+        $I->sendPost('/company/costumer-rep/shipment/{:id}',[
             'customer_name' => 'XXL',
             'pickup_date' => '21.05.2022',
             'state' => '0',
@@ -177,8 +177,8 @@ class companyTest extends \Codeception\Test\Unit
             'transporter' => 'string',
             'driver_id' => 'integer']);
 
-        $I->seeResponseContainsJson(array(['shipment_no' =>'FIKS D HER','customer_name' => 'XXL', 'pickup_date' => '21.05.2022', 'state' => '0', 'driver_id' => 2, 'transporter' => 'Gro Anitas postservice', 'address_id' => 10001]));
-        $I->seeInDatabase(['shipment_no' =>'FIKS D HER','customer_name' => 'XXL', 'pickup_date' => '21.05.2022', 'state' => '0', 'driver_id' => 2, 'transporter' => 'Gro Anitas postservice', 'address_id' => 10001]);
+        $I->seeResponseContainsJson(array(['customer_name' => 'XXL', 'pickup_date' => '21.05.2022', 'state' => '0', 'driver_id' => 2, 'transporter' => 'Gro Anitas postservice', 'address_id' => 10001]));
+        $I->seeInDatabase('shipments',['customer_name' => 'XXL', 'pickup_date' => '21.05.2022', 'state' => '0', 'driver_id' => 2, 'transporter' => 'Gro Anitas postservice', 'address_id' => 10001]);
     }
 
     /*
@@ -217,7 +217,7 @@ class companyTest extends \Codeception\Test\Unit
             'production_date'=>'date']);
 
         $I->seeResponseContainsJson(array(['model'=> 'Active', 'ski_type'=>'classic', 'temperature'=>'warm', 'grip_system'=>'wax', 'size'=>225, 'weight_class'=>'20-30', 'description'=>'Test ski', 'historical'=>0, 'photo_url'=>'u/tull/bildet', 'retail_price'=>3600, 'production_date'=>'21.07.2035']));
-        $I->seeInDatabase(['model'=> 'Active', 'ski_type'=>'classic', 'temperature'=>'warm', 'grip_system'=>'wax', 'size'=>225, 'weight_class'=>'20-30', 'description'=>'Test ski', 'historical'=>0, 'photo_url'=>'u/tull/bildet', 'retail_price'=>3600, 'production_date'=>'21.07.2035']);
+        $I->seeInDatabase('ski_type',['model'=> 'Active', 'ski_type'=>'classic', 'temperature'=>'warm', 'grip_system'=>'wax', 'size'=>225, 'weight_class'=>'20-30', 'description'=>'Test ski', 'historical'=>0, 'photo_url'=>'u/tull/bildet', 'retail_price'=>3600, 'production_date'=>'21.07.2035']);
     }
 
     /*
@@ -242,6 +242,6 @@ class companyTest extends \Codeception\Test\Unit
             'production_planner_number'=>'integer']);
 
         $I->seeResponseContainsJson(array([ 'start_date'=> '25-04-2021', 'end_date'=>'22-05-2021', 'no_of_skis_per_day'=>1600, 'production_planner_number'=>10004]));
-        $I->seeInDatabase([ 'start_date'=> '25-04-2021', 'end_date'=>'22-05-2021', 'no_of_skis_per_day'=>1600, 'production_planner_number'=>10004]);
+        $I->seeInDatabase('production_plan',['start_date'=> '25-04-2021', 'end_date'=>'22-05-2021', 'no_of_skis_per_day'=>1600, 'production_planner_number'=>10004]);
     }
 }
