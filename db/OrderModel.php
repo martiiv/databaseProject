@@ -63,18 +63,22 @@ class OrderModel extends DB
         return $id;
     }
 
-    function updateResource(array $resource): ?int
+    function updateResource(array $resource): ?array
     {
+        $arr = array();
         $this->db->beginTransaction();
         $query = 'UPDATE orders SET status = :status WHERE order_no = :order_no';
         $stmt = $this->db->prepare($query);
         $stmt->bindValue(':status', $resource['status']);
         $stmt->bindValue(':order_no', $resource['order_no']);
         $stmt->execute();
-        $id = $this->db->lastInsertId();
+
+        $arr['status'] = $resource['status'];
+        $arr['order_no'] = $resource['order_no'];
+
         $this->db->commit();
 
-        return $id;
+        return $arr;
     }
 
     function deleteResource(int $id): string

@@ -18,7 +18,7 @@ class OrderHandler
         return (new OrderModel())->createResource($arr);
     }
 
-    public function updateResource(array $arr): ?int
+    public function updateResource(array $arr): ?array
     {
         if ($arr['order_no'] == "") throw new APIException(RESTConstants::HTTP_BAD_REQUEST, $message = "No order number provided");
         if ($arr['status'] == "") throw new APIException(RESTConstants::HTTP_BAD_REQUEST, $message = "No status provided");
