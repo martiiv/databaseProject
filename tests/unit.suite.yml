@@ -21,4 +21,4 @@ modules:
                   - 'USE assignment_project;'
                   - 'SET NAMES utf8;'
               populator: 'mysql -u $user -h $host $dbname < $dump'
-    step_decorators: ~        
+    step_decorators: ~
