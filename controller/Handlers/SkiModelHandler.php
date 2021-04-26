@@ -19,7 +19,7 @@ class SkiModelHandler
     }
 
     /**
-     * @throws APIException
+     * @throws APIException if either the ski model is empty or the historical is 0
      */
     public function updateResource(array $arr): ?int
     {

@@ -1,7 +1,17 @@
 <?php
 require_once 'DB.php';
 
-
+/**
+ * Class SkiModel contains all functionality for handling the ski_type entity
+ * Contains the following functions:
+ *                                  createSkiType
+ *                                  updateSkiType
+ *                                  getSkiType
+ *                                  deleteSkiType
+ * @author Martin Iversen
+ * @date 26.04.2021
+ * @version 0.8
+ */
 class SkiModel extends DB
 {
     public function __construct()
@@ -9,6 +19,12 @@ class SkiModel extends DB
         parent::__construct();
     }
 
+    /**
+     * Function createSkiType
+     * Creates a ski_type in the database
+     * @param array $resource the array containing the fields for the entity
+     * @return array The created entity of type Ski_type
+     */
     public function createSkiType(array $resource){
         $this->db->beginTransaction();
         $query =
@@ -32,6 +48,12 @@ class SkiModel extends DB
         return $resource;
     }
 
+    /**
+     * Function getSkiType
+     * Returns a specific ski_type from the database given a ski_model name
+     * @param string $model the ski_model name of the ski_type you want
+     * @return array        the array of information about the returned ski_type
+     */
     public function getSkiType(string $model): array {
         $res = array();
         $query = 'SELECT model, ski_type, temperature, grip_system, size, weight_class, description, historical, photo_url, retail_price, production_date FROM ski_type WHERE model = :model';
@@ -47,7 +69,13 @@ class SkiModel extends DB
         return $res;
     }
 
-    public function updateResouce(array $resource): array{
+    /**
+     * updateSkitype
+     * Updates the historical value of a given ski type
+     * @param array $resource the array containing the ski_model to be changed and the historical value 1
+     * @return array          returns the ski model you changed
+     */
+    public function updateSkitype(array $resource): array{
         $this->db->beginTransaction();
         $query = 'UPDATE ski_type SET  historical = :historical WHERE ski_model = :ski_model';
         $stmt = $this->db->prepare($query);
@@ -59,7 +87,13 @@ class SkiModel extends DB
         return $resource['ski_model'];
     }
 
-    public function deleteResource(string $ski_model): string{
+    /**
+     * deleteSkitype
+     * Deletes a ski_type given a ski_model
+     * @param string $ski_model The model name of the ski you want to delete
+     * @return string A fitting message either success or failure
+     */
+    public function deleteSkitype(string $ski_model): string{
         $success = "";
         $this->db->beginTransaction();
 
