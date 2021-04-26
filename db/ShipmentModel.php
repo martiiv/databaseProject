@@ -72,32 +72,25 @@ class ShipmentModel extends DB
 
     function updateResource(array $resource, string $oldName, int $oldShipment_no): array
     {
-        $transporterArray = (new TransporterModel())->editTransporter($resource, $oldName);
+        if (strlen($oldName != 0)){
+            (new TransporterModel())->editTransporter($resource, $oldName);
+        }
 
         $res = array();
 
         $this->db->beginTransaction();
 
-        $query = 'UPDATE shipments SET customer_name = (:customer_name), 
-                     pickup_date = (:pickup_date), state = (:state), driver_id = (:driver_id), 
-                     transporter = (:transporter), address_id = (:address_id) WHERE shipment_no = (:oldShipment_no)';
+        $query = 'UPDATE shipments SET pickup_date = (:pickup_date), state = (:state) WHERE shipment_no = (:oldShipment_no)';
 
         $stmt = $this->db->prepare($query);
-        $stmt->bindValue(':customer_name', $resource['customer_name']);
         $stmt->bindValue(':pickup_date', $resource['pickup_date']);
         $stmt->bindValue(':state', $resource['state']);
-        $stmt->bindValue(':driver_id', $resource['driver_id']);
-        $stmt->bindValue(':transporter',  $transporterArray['name']);
-        $stmt->bindValue(':address_id', $resource['address_id']);
         $stmt->bindValue(':oldShipment_no', $oldShipment_no);
         $stmt->execute();
 
-        $res['customer_name'] = $resource['customer_name'];
         $res['pickup_date'] = $resource['pickup_date'];
         $res['state'] = $resource['state'];
-        $res['driver_id'] = $resource['driver_id'];
-        $res['transporter'] =  $transporterArray['name'];
-        $res['address_id'] = $resource['address_id'];
+        $res['transporter'] = $resource['transporter'];
         $this->db->commit();
 
         return $res;
