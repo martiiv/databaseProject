@@ -33,6 +33,7 @@ class CustomerTest extends \Codeception\Test\Unit
     {
         $customerHandler = new CustomerHandler();
         $customers = $customerHandler->getResource(10000);
+        $this->assertEquals(10000, $customers[0]['id']);
         print(json_encode($customers));
     }
 

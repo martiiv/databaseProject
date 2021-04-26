@@ -26,7 +26,6 @@ class SkiModel extends DB
         $stmt->bindValue(':historical', $resource['historical']);
         $stmt->bindValue(':photo_url', $resource['photo_url']);
         $stmt->bindValue(':retail_price', $resource['retail_price']);
-        $stmt->bindValue(':production_date', $resource['production_date']); //Production date skal inn i product
         $stmt->execute();
         $this->db->commit();
 
@@ -46,6 +45,18 @@ class SkiModel extends DB
         }
 
         return $res;
+    }
+
+    public function updateResouce(array $resource): array{
+        $this->db->beginTransaction();
+        $query = 'UPDATE ski_type SET  historical = :historical WHERE ski_model = :ski_model';
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':historical',$resource['historical']);
+        $stmt->bindValue(':ski_model', $resource['ski_model']);
+        $stmt->execute();
+        $this->db->commit();
+
+        return $resource['ski_model'];
     }
 
 }
