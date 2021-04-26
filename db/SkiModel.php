@@ -59,4 +59,24 @@ class SkiModel extends DB
         return $resource['ski_model'];
     }
 
+    public function deleteResource(string $ski_model): string{
+        $success = "";
+        $this->db->beginTransaction();
+
+        $query = 'DELETE FROM ski_type WHERE ski_model = (:ski_model)';
+
+        $stmt = $this->db->prepare( $query);
+        $stmt->bindValue(':ski_model',$ski_model);
+        $stmt->execute();
+
+        $this->db->commit();
+
+        $success = 'Succesfully deleted ski type with ski model:'. strval($ski_model).'.';
+
+        if(strlen($success)==0) {
+            $success = 'Failed to delete ski type with ski model:'.strval($ski_model).'.';
+        }
+        return $success;
+    }
+
 }

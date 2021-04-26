@@ -35,6 +35,9 @@ class SkiTest extends \Codeception\Test\Unit
         $this -> assertNotEquals(0,$newSki);
     }
 
+    /**
+     * @throws APIException
+     */
     public function testUpdateResource(){
         $arr = array(
             'ski_model' => 'Active',
@@ -44,6 +47,15 @@ class SkiTest extends \Codeception\Test\Unit
         $skiModelHandler = new SkiModelHandler();
         $updateSkiModelStatement = $skiModelHandler->updateResource($arr);
         $this->assertNotEquals(null,$updateSkiModelStatement);
+    }
+
+    public function testDeleteResource(){
+        $ski_model = 'Active Pro';
+        $ski_modelTemp = 'Succesfully deleted ski type with ski model name '.strval($ski_model).'.';
+
+        $skiModelHandler = new SkiModelHandler();
+        $deletedSkiType = $skiModelHandler->deleteResource($ski_model);
+        $this->assertEquals($deletedSkiType, $ski_modelTemp);
     }
 
 

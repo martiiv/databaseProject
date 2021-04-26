@@ -29,8 +29,8 @@ class SkiModelHandler
         return (new SkiModel())->updateResource($arr);
     }
 
-    public function deleteResource(int $id): ?string
+    public function deleteResource(string $ski_model): ?string
     {
-        return (new SkiModel())->deleteResource($id);
+        return (new SkiModel())->deleteResource($ski_model);
     }
 }
