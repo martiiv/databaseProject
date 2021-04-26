@@ -7,5 +7,18 @@ modules:
     enabled:
         - Asserts
         - \Helper\Unit
-
+        - Db:
+              dsn: 'mysql:host=localhost;dbname=assignment_project'
+              user: 'root'
+              password: ''
+              dump: 'tests/_data/testData.sql'
+              populate: true
+              cleanup: true
+              reconnect: true
+              waitlock: 10
+              initial_queries:
+                  - 'CREATE DATABASE IF NOT EXISTS assignment_project;'
+                  - 'USE assignment_project;'
+                  - 'SET NAMES utf8;'
+              populator: 'mysql -u $user -h $host $dbname < $dump'
     step_decorators: ~

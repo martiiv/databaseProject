@@ -292,6 +292,7 @@ INSERT INTO `order_items` (`amount`, `order_no`, `ski_type`) VALUES
 
 CREATE TABLE `product` (
   `product_no` int(11) NOT NULL,
+  `production_date` date NOT NULL,
   `ski_type` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_danish_ci;
 
@@ -299,16 +300,16 @@ CREATE TABLE `product` (
 -- Dataark for tabell `product`
 --
 
-INSERT INTO `product` (`product_no`, `ski_type`) VALUES
-(10000, 'Active Pro'),
-(10001, 'Active Pro'),
-(10002, 'Active Pro'),
-(10003, 'Race Pro'),
-(10004, 'Race pro'),
-(10005, 'Race pro'),
-(10006, 'Redline'),
-(10007, 'Redline'),
-(10008, 'Redline');
+INSERT INTO `product` (`product_no`, `production_date`, `ski_type`) VALUES
+(10000, '2021-04-02', 'Active Pro'),
+(10001, '2021-04-04', 'Active Pro'),
+(10002, '2021-04-05', 'Active Pro'),
+(10003, '2021-04-28', 'Race Pro'),
+(10004, '2021-04-28', 'Race pro'),
+(10005, '2021-04-29', 'Race pro'),
+(10006, '2012-07-24', 'Redline'),
+(10007, '2012-07-25', 'Redline'),
+(10008, '2012-07-26', 'Redline');
 
 -- --------------------------------------------------------
 
@@ -414,22 +415,21 @@ CREATE TABLE `ski_type` (
   `description` varchar(255) COLLATE utf8mb4_danish_ci DEFAULT NULL,
   `historical` tinyint(1) NOT NULL,
   `photo_url` varchar(255) COLLATE utf8mb4_danish_ci DEFAULT NULL,
-  `retail_price` int(11) NOT NULL,
-  `production_date` date NOT NULL
+  `retail_price` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_danish_ci;
 
 --
 -- Dataark for tabell `ski_type`
 --
 
-INSERT INTO `ski_type` (`model`, `ski_type`, `temperature`, `grip_system`, `size`, `weight_class`, `description`, `historical`, `photo_url`, `retail_price`, `production_date`) VALUES
-('Active', 'classic', 'cold', 'wax', 142, '20-30', 'Bra ski', 0, NULL, 1200, '2021-03-20'),
-('Active Pro', 'skate', 'warm', 'intelligrip', 147, '30-40', 'Rævva ski', 0, NULL, 1400, '2021-04-02'),
-('Endurance', 'double-pole', 'warm', 'wax', 152, '40-50', 'Ok ski', 0, NULL, 1500, '2021-12-03'),
-('Intrasonic', 'classic', 'cold', 'intelligrip', 157, '40-50', 'Litt bra ski', 0, NULL, 1500, '2021-10-05'),
-('Race Pro', 'skate', 'warm', 'wax', 162, '50-60', 'Ræser ski', 0, NULL, 2200, '2021-04-28'),
-('Race Speed', 'double-pole', 'warm', 'intelligrip', 167, '70-80', 'Beste skia', 0, NULL, 36000, '2017-01-01'),
-('Redline', 'skate', 'cold', 'wax', 172, '80-90', 'Verste skia', 0, NULL, 200, '2012-07-22');
+INSERT INTO `ski_type` (`model`, `ski_type`, `temperature`, `grip_system`, `size`, `weight_class`, `description`, `historical`, `photo_url`, `retail_price`) VALUES
+('Active', 'classic', 'cold', 'wax', 142, '20-30', 'Bra ski', 0, NULL, 1200),
+('Active Pro', 'skate', 'warm', 'intelligrip', 147, '30-40', 'Rævva ski', 0, NULL, 1400),
+('Endurance', 'double-pole', 'warm', 'wax', 152, '40-50', 'Ok ski', 0, NULL, 1500),
+('Intrasonic', 'classic', 'cold', 'intelligrip', 157, '40-50', 'Litt bra ski', 0, NULL, 1500),
+('Race Pro', 'skate', 'warm', 'wax', 162, '50-60', 'Ræser ski', 0, NULL, 2200),
+('Race Speed', 'double-pole', 'warm', 'intelligrip', 167, '70-80', 'Beste skia', 0, NULL, 36000),
+('Redline', 'skate', 'cold', 'wax', 172, '80-90', 'Verste skia', 0, NULL, 200);
 
 -- --------------------------------------------------------
 

@@ -62,22 +62,17 @@ class ShipmentTest extends \Codeception\Test\Unit
     {
         // Change the values in this instance if you want to re-run the test
         $arr = array (
-            'customer_name' => "Mega Sport Oslo",
             'pickup_date' => '2021-05-18',
             'state' => 0,
-            'driver_id' => 4,
-            'transporter' => "Ole Joar's Pickup Service",
-            'address_id' => 10000,
+            'transporter' => "Martins HjemPaaDoora service"
         );
 
         // The old shipment number needs to be updated after you have updated it if you want to rerun it
         $oldShipment_no = 10000;
-        $oldName = "Magnus' transporting AS";
+        $oldName = "Gro Anitas postservice";
 
         $shipmentHandler = new ShipmentHandler();
         $updatedShipment = $shipmentHandler->updateResource($arr, $oldName, $oldShipment_no);
-        print(json_encode($updatedShipment));
-        print(json_encode($arr));
         $this->assertEquals(json_encode($updatedShipment), json_encode($arr));
     }
 
@@ -86,7 +81,7 @@ class ShipmentTest extends \Codeception\Test\Unit
     {
         // To rerun the delete tests, you need to delete the duplicated transporter from "transporters", because this
         // is not deleted upon deletion of a shipment.
-        $id = 4;
+        $id = 10000;
         $idTemp = "Successfully deleted shipment with shipment number: " . strval($id) . ".";
 
         $shipmentHandler = new ShipmentHandler();

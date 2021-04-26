@@ -7,9 +7,6 @@
 -- Tjener-versjon: 10.4.17-MariaDB
 -- PHP Version: 8.0.2
 
--- TEST DATABASE
--- WILL ONLY BE USED FOR CODE IN THE tests DIRECTORY
-
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
@@ -31,11 +28,11 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `address` (
-  `postal_code` int(4) NOT NULL,
-  `city_id` int(11) NOT NULL,
-  `street_name` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL,
-  `house_no` int(11) NOT NULL,
-  `id` int(11) NOT NULL
+                           `postal_code` int(4) NOT NULL,
+                           `city_id` int(11) NOT NULL,
+                           `street_name` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL,
+                           `house_no` int(11) NOT NULL,
+                           `id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_danish_ci;
 
 --
@@ -55,9 +52,9 @@ INSERT INTO `address` (`postal_code`, `city_id`, `street_name`, `house_no`, `id`
 --
 
 CREATE TABLE `city` (
-  `city_id` int(11) NOT NULL,
-  `name` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL,
-  `county_no` int(11) NOT NULL
+                        `city_id` int(11) NOT NULL,
+                        `name` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL,
+                        `county_no` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_danish_ci;
 
 --
@@ -77,8 +74,8 @@ INSERT INTO `city` (`city_id`, `name`, `county_no`) VALUES
 --
 
 CREATE TABLE `county` (
-  `county_no` int(11) NOT NULL,
-  `name` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL
+                          `county_no` int(11) NOT NULL,
+                          `name` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_danish_ci;
 
 --
@@ -98,10 +95,10 @@ INSERT INTO `county` (`county_no`, `name`) VALUES
 --
 
 CREATE TABLE `customers` (
-  `id` int(11) NOT NULL,
-  `name` varchar(100) CHARACTER SET utf8 COLLATE utf8_danish_ci NOT NULL,
-  `start_date` date NOT NULL,
-  `end_date` date DEFAULT NULL
+                             `id` int(11) NOT NULL,
+                             `name` varchar(100) CHARACTER SET utf8 COLLATE utf8_danish_ci NOT NULL,
+                             `start_date` date NOT NULL,
+                             `end_date` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_danish_ci;
 
 --
@@ -120,7 +117,7 @@ INSERT INTO `customers` (`id`, `name`, `start_date`, `end_date`) VALUES
 --
 
 CREATE TABLE `customer_representative` (
-  `number` int(11) NOT NULL
+    `number` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_danish_ci;
 
 --
@@ -138,9 +135,9 @@ INSERT INTO `customer_representative` (`number`) VALUES
 --
 
 CREATE TABLE `employees` (
-  `number` int(11) NOT NULL,
-  `name` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL,
-  `department` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL
+                             `number` int(11) NOT NULL,
+                             `name` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL,
+                             `department` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_danish_ci;
 
 --
@@ -161,9 +158,9 @@ INSERT INTO `employees` (`number`, `name`, `department`) VALUES
 --
 
 CREATE TABLE `franchises` (
-  `customer_id` int(11) NOT NULL,
-  `buying_price` int(11) NOT NULL,
-  `address_id` int(11) NOT NULL
+                              `customer_id` int(11) NOT NULL,
+                              `buying_price` int(11) NOT NULL,
+                              `address_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_danish_ci;
 
 --
@@ -180,10 +177,10 @@ INSERT INTO `franchises` (`customer_id`, `buying_price`, `address_id`) VALUES
 --
 
 CREATE TABLE `history` (
-  `date` datetime NOT NULL DEFAULT current_timestamp(),
-  `status` varchar(25) COLLATE utf8mb4_danish_ci NOT NULL,
-  `order_no` int(11) NOT NULL,
-  `employee_no` int(11) NOT NULL
+                           `date` datetime NOT NULL DEFAULT current_timestamp(),
+                           `status` varchar(25) COLLATE utf8mb4_danish_ci NOT NULL,
+                           `order_no` int(11) NOT NULL,
+                           `employee_no` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_danish_ci;
 
 --
@@ -204,9 +201,9 @@ INSERT INTO `history` (`date`, `status`, `order_no`, `employee_no`) VALUES
 --
 
 CREATE TABLE `individual_stores` (
-  `customer_id` int(11) NOT NULL,
-  `buying_price` int(11) NOT NULL,
-  `address_id` int(11) NOT NULL
+                                     `customer_id` int(11) NOT NULL,
+                                     `buying_price` int(11) NOT NULL,
+                                     `address_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_danish_ci;
 
 --
@@ -223,9 +220,9 @@ INSERT INTO `individual_stores` (`customer_id`, `buying_price`, `address_id`) VA
 --
 
 CREATE TABLE `items_picked` (
-  `amount` int(11) DEFAULT NULL,
-  `shipment_no` int(11) NOT NULL,
-  `product_no` int(11) NOT NULL
+                                `amount` int(11) DEFAULT NULL,
+                                `shipment_no` int(11) NOT NULL,
+                                `product_no` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_danish_ci;
 
 --
@@ -245,11 +242,12 @@ INSERT INTO `items_picked` (`amount`, `shipment_no`, `product_no`) VALUES
 --
 
 CREATE TABLE `orders` (
-  `order_no` int(11) NOT NULL,
-  `total_price` int(11) NOT NULL,
-  `status` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL,
-  `customer_id` int(11) NOT NULL,
-  `shipment_no` int(11) DEFAULT NULL
+                          `order_no` int(11) NOT NULL,
+                          `created` datetime NOT NULL DEFAULT current_timestamp(),
+                          `total_price` int(11) NOT NULL,
+                          `status` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL,
+                          `customer_id` int(11) NOT NULL,
+                          `shipment_no` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_danish_ci;
 
 --
@@ -259,7 +257,7 @@ CREATE TABLE `orders` (
 INSERT INTO `orders` (`order_no`, `total_price`, `status`, `customer_id`, `shipment_no`) VALUES
 (10005, 12000, 'ready', 10001, NULL),
 (10006, 2500, 'new', 10002, 10001),
-(10007, 34000, 'skis_available', 10000, 10000),
+(10007, 34000, 'skis available', 10000, 10000),
 (10008, 2000, 'new', 10002, NULL),
 (10009, 1000, 'new', 10001, NULL);
 
@@ -270,9 +268,9 @@ INSERT INTO `orders` (`order_no`, `total_price`, `status`, `customer_id`, `shipm
 --
 
 CREATE TABLE `order_items` (
-  `amount` int(11) DEFAULT NULL,
-  `order_no` int(11) NOT NULL,
-  `ski_type` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL
+                               `amount` int(11) DEFAULT NULL,
+                               `order_no` int(11) NOT NULL,
+                               `ski_type` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_danish_ci;
 
 --
@@ -293,8 +291,8 @@ INSERT INTO `order_items` (`amount`, `order_no`, `ski_type`) VALUES
 --
 
 CREATE TABLE `product` (
-  `product_no` int(11) NOT NULL,
-  `ski_type` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL
+                           `product_no` int(11) NOT NULL,
+                           `ski_type` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_danish_ci;
 
 --
@@ -319,10 +317,10 @@ INSERT INTO `product` (`product_no`, `ski_type`) VALUES
 --
 
 CREATE TABLE `production_list` (
-  `amount` int(11) NOT NULL,
-  `production_plan_start_date` date NOT NULL,
-  `production_plan_end_date` date NOT NULL,
-  `ski_type_model` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL
+                                   `amount` int(11) NOT NULL,
+                                   `production_plan_start_date` date NOT NULL,
+                                   `production_plan_end_date` date NOT NULL,
+                                   `ski_type_model` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_danish_ci;
 
 --
@@ -341,10 +339,10 @@ INSERT INTO `production_list` (`amount`, `production_plan_start_date`, `producti
 --
 
 CREATE TABLE `production_plan` (
-  `start_date` date NOT NULL,
-  `end_date` date NOT NULL,
-  `no_of_skis_per_day` int(11) NOT NULL,
-  `production_planner_number` int(11) DEFAULT NULL
+                                   `start_date` date NOT NULL,
+                                   `end_date` date NOT NULL,
+                                   `no_of_skis_per_day` int(11) NOT NULL,
+                                   `production_planner_number` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_danish_ci;
 
 --
@@ -365,7 +363,7 @@ INSERT INTO `production_plan` (`start_date`, `end_date`, `no_of_skis_per_day`, `
 --
 
 CREATE TABLE `production_planner` (
-  `number` int(11) NOT NULL
+    `number` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_danish_ci;
 
 --
@@ -383,13 +381,13 @@ INSERT INTO `production_planner` (`number`) VALUES
 --
 
 CREATE TABLE `shipments` (
-  `shipment_no` int(11) NOT NULL,
-  `customer_name` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL,
-  `pickup_date` date DEFAULT NULL,
-  `state` tinyint(1) NOT NULL,
-  `driver_id` int(11) DEFAULT NULL,
-  `transporter` varchar(100) COLLATE utf8mb4_danish_ci DEFAULT NULL,
-  `address_id` int(11) NOT NULL
+                             `shipment_no` int(11) NOT NULL,
+                             `customer_name` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL,
+                             `pickup_date` date DEFAULT NULL,
+                             `state` tinyint(1) NOT NULL,
+                             `driver_id` int(11) DEFAULT NULL,
+                             `transporter` varchar(100) COLLATE utf8mb4_danish_ci DEFAULT NULL,
+                             `address_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_danish_ci;
 
 --
@@ -407,17 +405,17 @@ INSERT INTO `shipments` (`shipment_no`, `customer_name`, `pickup_date`, `state`,
 --
 
 CREATE TABLE `ski_type` (
-  `model` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL,
-  `ski_type` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL,
-  `temperature` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL,
-  `grip_system` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL,
-  `size` int(11) NOT NULL,
-  `weight_class` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL,
-  `description` varchar(255) COLLATE utf8mb4_danish_ci DEFAULT NULL,
-  `historical` tinyint(1) NOT NULL,
-  `photo_url` varchar(255) COLLATE utf8mb4_danish_ci DEFAULT NULL,
-  `retail_price` int(11) NOT NULL,
-  `production_date` date NOT NULL
+                            `model` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL,
+                            `ski_type` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL,
+                            `temperature` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL,
+                            `grip_system` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL,
+                            `size` int(11) NOT NULL,
+                            `weight_class` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL,
+                            `description` varchar(255) COLLATE utf8mb4_danish_ci DEFAULT NULL,
+                            `historical` tinyint(1) NOT NULL,
+                            `photo_url` varchar(255) COLLATE utf8mb4_danish_ci DEFAULT NULL,
+                            `retail_price` int(11) NOT NULL,
+                            `production_date` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_danish_ci;
 
 --
@@ -440,7 +438,7 @@ INSERT INTO `ski_type` (`model`, `ski_type`, `temperature`, `grip_system`, `size
 --
 
 CREATE TABLE `storekeeper` (
-  `number` int(11) NOT NULL
+    `number` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_danish_ci;
 
 --
@@ -457,10 +455,10 @@ INSERT INTO `storekeeper` (`number`) VALUES
 --
 
 CREATE TABLE `team_skiers` (
-  `customer_id` int(11) NOT NULL,
-  `dob` date NOT NULL,
-  `club` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL,
-  `no_skies_per_year` int(11) DEFAULT NULL
+                               `customer_id` int(11) NOT NULL,
+                               `dob` date NOT NULL,
+                               `club` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL,
+                               `no_skies_per_year` int(11) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_danish_ci;
 
 --
@@ -477,7 +475,7 @@ INSERT INTO `team_skiers` (`customer_id`, `dob`, `club`, `no_skies_per_year`) VA
 --
 
 CREATE TABLE `transporters` (
-  `name` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL
+    `name` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_danish_ci;
 
 --
@@ -491,6 +489,24 @@ INSERT INTO `transporters` (`name`) VALUES
 ('Oles transport');
 
 --
+-- Tabellstruktur for tabell `auth_token`
+--
+
+CREATE TABLE `auth_token` (
+    `token` char(64) COLLATE utf8mb4_danish_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_danish_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Dataark for tabell `auth_token`
+--
+
+INSERT INTO `auth_token` (`token`) VALUES
+('EENV2yeVpGZCT8eCKxWh19fz9SZ4bA1Wh19GGkoQd4T8bHYtALHoQB6f82qqMxoh');
+COMMIT;
+
+--
 -- Indexes for dumped tables
 --
 
@@ -498,52 +514,52 @@ INSERT INTO `transporters` (`name`) VALUES
 -- Indexes for table `address`
 --
 ALTER TABLE `address`
-  ADD PRIMARY KEY (`id`),
+    ADD PRIMARY KEY (`id`),
   ADD KEY `address_ibfk_1` (`city_id`);
 
 --
 -- Indexes for table `city`
 --
 ALTER TABLE `city`
-  ADD PRIMARY KEY (`city_id`),
+    ADD PRIMARY KEY (`city_id`),
   ADD KEY `city_ibfk_1` (`county_no`);
 
 --
 -- Indexes for table `county`
 --
 ALTER TABLE `county`
-  ADD PRIMARY KEY (`county_no`);
+    ADD PRIMARY KEY (`county_no`);
 
 --
 -- Indexes for table `customers`
 --
 ALTER TABLE `customers`
-  ADD PRIMARY KEY (`id`);
+    ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `customer_representative`
 --
 ALTER TABLE `customer_representative`
-  ADD PRIMARY KEY (`number`);
+    ADD PRIMARY KEY (`number`);
 
 --
 -- Indexes for table `employees`
 --
 ALTER TABLE `employees`
-  ADD PRIMARY KEY (`number`);
+    ADD PRIMARY KEY (`number`);
 
 --
 -- Indexes for table `franchises`
 --
 ALTER TABLE `franchises`
-  ADD PRIMARY KEY (`customer_id`),
+    ADD PRIMARY KEY (`customer_id`),
   ADD KEY `address_id` (`address_id`);
 
 --
 -- Indexes for table `history`
 --
 ALTER TABLE `history`
-  ADD PRIMARY KEY (`date`,`order_no`) USING BTREE,
+    ADD PRIMARY KEY (`date`,`order_no`) USING BTREE,
   ADD KEY `order_no` (`order_no`),
   ADD KEY `employee_no` (`employee_no`);
 
@@ -551,21 +567,21 @@ ALTER TABLE `history`
 -- Indexes for table `individual_stores`
 --
 ALTER TABLE `individual_stores`
-  ADD PRIMARY KEY (`customer_id`),
+    ADD PRIMARY KEY (`customer_id`),
   ADD KEY `address_id` (`address_id`);
 
 --
 -- Indexes for table `items_picked`
 --
 ALTER TABLE `items_picked`
-  ADD PRIMARY KEY (`shipment_no`,`product_no`),
+    ADD PRIMARY KEY (`shipment_no`,`product_no`),
   ADD KEY `product_no` (`product_no`);
 
 --
 -- Indexes for table `orders`
 --
 ALTER TABLE `orders`
-  ADD PRIMARY KEY (`order_no`),
+    ADD PRIMARY KEY (`order_no`),
   ADD KEY `shipment_no` (`shipment_no`),
   ADD KEY `customer_id` (`customer_id`);
 
@@ -573,7 +589,7 @@ ALTER TABLE `orders`
 -- Indexes for table `order_items`
 --
 ALTER TABLE `order_items`
-  ADD PRIMARY KEY (`order_no`,`ski_type`),
+    ADD PRIMARY KEY (`order_no`,`ski_type`),
   ADD KEY `ski_type` (`ski_type`),
   ADD KEY `order_no` (`order_no`);
 
@@ -581,34 +597,34 @@ ALTER TABLE `order_items`
 -- Indexes for table `product`
 --
 ALTER TABLE `product`
-  ADD PRIMARY KEY (`product_no`),
+    ADD PRIMARY KEY (`product_no`),
   ADD KEY `ski_type` (`ski_type`);
 
 --
 -- Indexes for table `production_list`
 --
 ALTER TABLE `production_list`
-  ADD PRIMARY KEY (`production_plan_start_date`,`production_plan_end_date`,`ski_type_model`),
+    ADD PRIMARY KEY (`production_plan_start_date`,`production_plan_end_date`,`ski_type_model`),
   ADD KEY `ski_type_model` (`ski_type_model`);
 
 --
 -- Indexes for table `production_plan`
 --
 ALTER TABLE `production_plan`
-  ADD PRIMARY KEY (`start_date`,`end_date`),
+    ADD PRIMARY KEY (`start_date`,`end_date`),
   ADD KEY `production_planner_number` (`production_planner_number`);
 
 --
 -- Indexes for table `production_planner`
 --
 ALTER TABLE `production_planner`
-  ADD PRIMARY KEY (`number`);
+    ADD PRIMARY KEY (`number`);
 
 --
 -- Indexes for table `shipments`
 --
 ALTER TABLE `shipments`
-  ADD PRIMARY KEY (`shipment_no`),
+    ADD PRIMARY KEY (`shipment_no`),
   ADD KEY `transporter` (`transporter`),
   ADD KEY `address_id` (`address_id`);
 
@@ -616,25 +632,25 @@ ALTER TABLE `shipments`
 -- Indexes for table `ski_type`
 --
 ALTER TABLE `ski_type`
-  ADD PRIMARY KEY (`model`);
+    ADD PRIMARY KEY (`model`);
 
 --
 -- Indexes for table `storekeeper`
 --
 ALTER TABLE `storekeeper`
-  ADD PRIMARY KEY (`number`);
+    ADD PRIMARY KEY (`number`);
 
 --
 -- Indexes for table `team_skiers`
 --
 ALTER TABLE `team_skiers`
-  ADD PRIMARY KEY (`customer_id`);
+    ADD PRIMARY KEY (`customer_id`);
 
 --
 -- Indexes for table `transporters`
 --
 ALTER TABLE `transporters`
-  ADD PRIMARY KEY (`name`);
+    ADD PRIMARY KEY (`name`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -644,37 +660,37 @@ ALTER TABLE `transporters`
 -- AUTO_INCREMENT for table `address`
 --
 ALTER TABLE `address`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10004;
+    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10004;
 
 --
 -- AUTO_INCREMENT for table `customers`
 --
 ALTER TABLE `customers`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10003;
+    MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10003;
 
 --
 -- AUTO_INCREMENT for table `employees`
 --
 ALTER TABLE `employees`
-  MODIFY `number` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10005;
+    MODIFY `number` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10005;
 
 --
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `order_no` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10010;
+    MODIFY `order_no` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10010;
 
 --
 -- AUTO_INCREMENT for table `product`
 --
 ALTER TABLE `product`
-  MODIFY `product_no` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10009;
+    MODIFY `product_no` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10009;
 
 --
 -- AUTO_INCREMENT for table `shipments`
 --
 ALTER TABLE `shipments`
-  MODIFY `shipment_no` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10002;
+    MODIFY `shipment_no` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10002;
 
 --
 -- Begrensninger for dumpede tabeller
@@ -684,104 +700,104 @@ ALTER TABLE `shipments`
 -- Begrensninger for tabell `address`
 --
 ALTER TABLE `address`
-  ADD CONSTRAINT `address_ibfk_1` FOREIGN KEY (`city_id`) REFERENCES `city` (`city_id`) ON UPDATE CASCADE;
+    ADD CONSTRAINT `address_ibfk_1` FOREIGN KEY (`city_id`) REFERENCES `city` (`city_id`) ON UPDATE CASCADE;
 
 --
 -- Begrensninger for tabell `city`
 --
 ALTER TABLE `city`
-  ADD CONSTRAINT `city_ibfk_1` FOREIGN KEY (`county_no`) REFERENCES `county` (`county_no`) ON UPDATE CASCADE;
+    ADD CONSTRAINT `city_ibfk_1` FOREIGN KEY (`county_no`) REFERENCES `county` (`county_no`) ON UPDATE CASCADE;
 
 --
 -- Begrensninger for tabell `customer_representative`
 --
 ALTER TABLE `customer_representative`
-  ADD CONSTRAINT `Customer_representative_ibfk_1` FOREIGN KEY (`number`) REFERENCES `employees` (`number`) ON DELETE CASCADE ON UPDATE CASCADE;
+    ADD CONSTRAINT `Customer_representative_ibfk_1` FOREIGN KEY (`number`) REFERENCES `employees` (`number`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Begrensninger for tabell `franchises`
 --
 ALTER TABLE `franchises`
-  ADD CONSTRAINT `franchises_ibfk_1` FOREIGN KEY (`address_id`) REFERENCES `address` (`id`),
+    ADD CONSTRAINT `franchises_ibfk_1` FOREIGN KEY (`address_id`) REFERENCES `address` (`id`),
   ADD CONSTRAINT `franchises_ibfk_2` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Begrensninger for tabell `history`
 --
 ALTER TABLE `history`
-  ADD CONSTRAINT `history_ibfk_1` FOREIGN KEY (`order_no`) REFERENCES `orders` (`order_no`) ON DELETE CASCADE ON UPDATE CASCADE;
+    ADD CONSTRAINT `history_ibfk_1` FOREIGN KEY (`order_no`) REFERENCES `orders` (`order_no`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Begrensninger for tabell `individual_stores`
 --
 ALTER TABLE `individual_stores`
-  ADD CONSTRAINT `individual_stores_ibfk_1` FOREIGN KEY (`address_id`) REFERENCES `address` (`id`),
+    ADD CONSTRAINT `individual_stores_ibfk_1` FOREIGN KEY (`address_id`) REFERENCES `address` (`id`),
   ADD CONSTRAINT `individual_stores_ibfk_2` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Begrensninger for tabell `items_picked`
 --
 ALTER TABLE `items_picked`
-  ADD CONSTRAINT `items_picked_ibfk_1` FOREIGN KEY (`shipment_no`) REFERENCES `shipments` (`shipment_no`) ON DELETE CASCADE,
+    ADD CONSTRAINT `items_picked_ibfk_1` FOREIGN KEY (`shipment_no`) REFERENCES `shipments` (`shipment_no`) ON DELETE CASCADE,
   ADD CONSTRAINT `items_picked_ibfk_2` FOREIGN KEY (`product_no`) REFERENCES `product` (`product_no`);
 
 --
 -- Begrensninger for tabell `orders`
 --
 ALTER TABLE `orders`
-  ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`shipment_no`) REFERENCES `shipments` (`shipment_no`) ON DELETE SET NULL,
+    ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`shipment_no`) REFERENCES `shipments` (`shipment_no`) ON DELETE SET NULL,
   ADD CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Begrensninger for tabell `order_items`
 --
 ALTER TABLE `order_items`
-  ADD CONSTRAINT `order_items_ibfk_2` FOREIGN KEY (`ski_type`) REFERENCES `ski_type` (`model`) ON UPDATE CASCADE,
+    ADD CONSTRAINT `order_items_ibfk_2` FOREIGN KEY (`ski_type`) REFERENCES `ski_type` (`model`) ON UPDATE CASCADE,
   ADD CONSTRAINT `order_items_ibfk_3` FOREIGN KEY (`order_no`) REFERENCES `orders` (`order_no`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Begrensninger for tabell `product`
 --
 ALTER TABLE `product`
-  ADD CONSTRAINT `product_ibfk_1` FOREIGN KEY (`ski_type`) REFERENCES `ski_type` (`model`) ON UPDATE CASCADE;
+    ADD CONSTRAINT `product_ibfk_1` FOREIGN KEY (`ski_type`) REFERENCES `ski_type` (`model`) ON UPDATE CASCADE;
 
 --
 -- Begrensninger for tabell `production_list`
 --
 ALTER TABLE `production_list`
-  ADD CONSTRAINT `FK_production_period` FOREIGN KEY (`production_plan_start_date`,`production_plan_end_date`) REFERENCES `production_plan` (`start_date`, `end_date`) ON DELETE CASCADE ON UPDATE CASCADE,
+    ADD CONSTRAINT `FK_production_period` FOREIGN KEY (`production_plan_start_date`,`production_plan_end_date`) REFERENCES `production_plan` (`start_date`, `end_date`) ON DELETE CASCADE ON UPDATE CASCADE,
   ADD CONSTRAINT `production_list_ibfk_1` FOREIGN KEY (`ski_type_model`) REFERENCES `ski_type` (`model`) ON UPDATE CASCADE;
 
 --
 -- Begrensninger for tabell `production_plan`
 --
 ALTER TABLE `production_plan`
-  ADD CONSTRAINT `production_plan_ibfk_1` FOREIGN KEY (`production_planner_number`) REFERENCES `production_planner` (`number`) ON DELETE SET NULL ON UPDATE CASCADE;
+    ADD CONSTRAINT `production_plan_ibfk_1` FOREIGN KEY (`production_planner_number`) REFERENCES `production_planner` (`number`) ON DELETE SET NULL ON UPDATE CASCADE;
 
 --
 -- Begrensninger for tabell `production_planner`
 --
 ALTER TABLE `production_planner`
-  ADD CONSTRAINT `Production_planner_ibfk_1` FOREIGN KEY (`number`) REFERENCES `employees` (`number`) ON DELETE CASCADE ON UPDATE CASCADE;
+    ADD CONSTRAINT `Production_planner_ibfk_1` FOREIGN KEY (`number`) REFERENCES `employees` (`number`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Begrensninger for tabell `shipments`
 --
 ALTER TABLE `shipments`
-  ADD CONSTRAINT `shipments_ibfk_1` FOREIGN KEY (`transporter`) REFERENCES `transporters` (`name`) ON DELETE SET NULL ON UPDATE CASCADE,
+    ADD CONSTRAINT `shipments_ibfk_1` FOREIGN KEY (`transporter`) REFERENCES `transporters` (`name`) ON DELETE SET NULL ON UPDATE CASCADE,
   ADD CONSTRAINT `shipments_ibfk_2` FOREIGN KEY (`address_id`) REFERENCES `address` (`id`) ON UPDATE CASCADE;
 
 --
 -- Begrensninger for tabell `storekeeper`
 --
 ALTER TABLE `storekeeper`
-  ADD CONSTRAINT `Storekeeper_ibfk_1` FOREIGN KEY (`number`) REFERENCES `employees` (`number`) ON DELETE CASCADE ON UPDATE CASCADE;
+    ADD CONSTRAINT `Storekeeper_ibfk_1` FOREIGN KEY (`number`) REFERENCES `employees` (`number`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Begrensninger for tabell `team_skiers`
 --
 ALTER TABLE `team_skiers`
-  ADD CONSTRAINT `team_skiers_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+    ADD CONSTRAINT `team_skiers_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

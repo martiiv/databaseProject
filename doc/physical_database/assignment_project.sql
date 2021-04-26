@@ -177,6 +177,7 @@ CREATE TABLE `order_items` (
 
 CREATE TABLE `product` (
   `product_no` int(11) NOT NULL,
+  `production_date` date NOT NULL,
   `ski_type` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_danish_ci;
 
@@ -248,8 +249,7 @@ CREATE TABLE `ski_type` (
   `description` varchar(255) COLLATE utf8mb4_danish_ci DEFAULT NULL,
   `historical` tinyint(1) NOT NULL,
   `photo_url` varchar(255) COLLATE utf8mb4_danish_ci DEFAULT NULL,
-  `retail_price` int(11) NOT NULL,
-  `production_date` date NOT NULL
+  `retail_price` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_danish_ci;
 
 -- --------------------------------------------------------
