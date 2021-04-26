@@ -1,4 +1,6 @@
 <?php
+require_once "controller/Handlers/SkiModelHandler.php";
+require_once "db/SkiModel.php";
 
 /**
  * Class SkiTest created for running unit tests on the ski_type entity
@@ -15,7 +17,7 @@ class SkiTest extends \Codeception\Test\Unit
     /**
      * @var \UnitTester
      */
-    protected $tester;
+    protected UnitTester $tester;
     
     protected function _before()
     {
@@ -56,27 +58,14 @@ class SkiTest extends \Codeception\Test\Unit
      */
     public function testUpdateResource(){
         $arr = array(
-            'ski_model' => 'Active',
+            'model' => 'Active',
             'historical' => 1
         );
 
         $skiModelHandler = new SkiModelHandler();
         $updateSkiModelStatement = $skiModelHandler->updateResource($arr);
+
+        $this->tester->seeInDatabase('ski_type',['model'=>'Active', 'historical'=>1]);
         $this->assertNotEquals(null,$updateSkiModelStatement);
     }
-
-    /**
-     * Function testDeleteResource
-     * Deletes the Active Pro ski_type from the database
-     */
-    public function testDeleteResource(){
-        $ski_model = 'Active Pro';
-        $ski_modelTemp = 'Succesfully deleted ski type with ski model name '.strval($ski_model).'.';
-
-        $skiModelHandler = new SkiModelHandler();
-        $deletedSkiType = $skiModelHandler->deleteResource($ski_model);
-        $this->assertEquals($deletedSkiType, $ski_modelTemp);
-    }
-
-
 }

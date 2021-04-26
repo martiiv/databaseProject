@@ -28,8 +28,8 @@ class SkiModel extends DB
     public function createSkiType(array $resource){
         $this->db->beginTransaction();
         $query =
-            'INSERT INTO ski_type (model,ski_type, temperature,grip_system,size, weight_class,description,historical,photo_url,retail_price,production_date)
-             VALUES (:model, :ski_type, :temperature, :grip_system, :size, :weight_class, :description, :historical, :photo_url, :retail_price, :production_date)';
+            'INSERT INTO ski_type (model,ski_type, temperature,grip_system,size, weight_class,description,historical,photo_url,retail_price)
+             VALUES (:model, :ski_type, :temperature, :grip_system, :size, :weight_class, :description, :historical, :photo_url, :retail_price)';
 
         $stmt = $this->db->prepare($query);
         $stmt->bindValue(':model', $resource['model']);
@@ -73,42 +73,43 @@ class SkiModel extends DB
      * updateSkitype
      * Updates the historical value of a given ski type
      * @param array $resource the array containing the ski_model to be changed and the historical value 1
-     * @return array          returns the ski model you changed
+     * @return string returns the ski model you changed
      */
-    public function updateSkitype(array $resource): array{
+    public function updateSkitype(array $resource): string{
         $this->db->beginTransaction();
-        $query = 'UPDATE ski_type SET  historical = :historical WHERE ski_model = :ski_model';
+        $query = 'UPDATE ski_type SET  historical = :historical WHERE model = :model';
         $stmt = $this->db->prepare($query);
         $stmt->bindValue(':historical',$resource['historical']);
-        $stmt->bindValue(':ski_model', $resource['ski_model']);
+        $stmt->bindValue(':model', $resource['model']);
         $stmt->execute();
         $this->db->commit();
 
-        return $resource['ski_model'];
+        return $resource['model'];
     }
 
     /**
      * deleteSkitype
      * Deletes a ski_type given a ski_model
-     * @param string $ski_model The model name of the ski you want to delete
+     * @param string $model The model name of the ski you want to delete
      * @return string A fitting message either success or failure
+     * //TODO Remove this function
      */
-    public function deleteSkitype(string $ski_model): string{
+    public function deleteSkitype(string $model): string{
         $success = "";
         $this->db->beginTransaction();
 
-        $query = 'DELETE FROM ski_type WHERE ski_model = (:ski_model)';
+        $query = 'DELETE FROM ski_type WHERE model = (:model)';
 
         $stmt = $this->db->prepare( $query);
-        $stmt->bindValue(':ski_model',$ski_model);
+        $stmt->bindValue(':model',$model);
         $stmt->execute();
 
         $this->db->commit();
 
-        $success = 'Succesfully deleted ski type with ski model:'. strval($ski_model).'.';
+        $success = 'Succesfully deleted ski type with ski model:'. strval($model).'.';
 
         if(strlen($success)==0) {
-            $success = 'Failed to delete ski type with ski model:'.strval($ski_model).'.';
+            $success = 'Failed to delete ski type with ski model:'.strval($model).'.';
         }
         return $success;
     }
