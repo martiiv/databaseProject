@@ -64,13 +64,13 @@ class OrderTest extends \Codeception\Test\Unit
         // Change the values in this instance if you want to re-run the test
         $arr = array (
             // TODO - fix broken after fixed for API
-            'order_no' => 10017,
+            'order_no' => 10009,
             'status' => "open",
         );
 
         $orderHandler = new OrderHandler();
         $updatedOrderStatement = $orderHandler->updateResource($arr);
-        $this->assertEquals(null, $updatedOrderStatement);
+        $this->assertEquals($updatedOrderStatement, $arr);
     }
 
     // tests

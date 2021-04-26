@@ -11,7 +11,7 @@ modules:
               dsn: 'mysql:host=localhost;dbname=assignment_project'
               user: 'root'
               password: ''
-              dump: 'tests/_data/testData.sql'
+              dump: 'tests/_data/dump.sql'
               populate: true
               cleanup: true
               reconnect: true
