@@ -80,12 +80,12 @@ class ShipmentModel extends DB
 
         $this->db->beginTransaction();
 
-        $query = 'UPDATE shipments SET pickup_date = (:pickup_date), state = (:state) WHERE shipment_no = (:$shipment_no)';
+        $query = 'UPDATE shipments SET pickup_date = (:pickup_date), state = (:state) WHERE shipment_no = (:shipment_no)';
 
         $stmt = $this->db->prepare($query);
         $stmt->bindValue(':pickup_date', $resource['pickup_date']);
         $stmt->bindValue(':state', $resource['state']);
-        $stmt->bindValue(':$shipment_no', $shipment_no);
+        $stmt->bindValue(':shipment_no', $shipment_no);
         $stmt->execute();
 
         $res['pickup_date'] = $resource['pickup_date'];
