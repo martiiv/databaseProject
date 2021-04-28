@@ -2,6 +2,8 @@
 require_once 'db/OrderModel.php';
 require_once 'db/ShipmentModel.php';
 require_once 'db/SkiModel.php';
+require_once 'db/ProductModel.php';
+require_once 'controller/handlers/ProductHandler.php';
 
 class StorekeeperEndpoint
 {
@@ -53,25 +55,37 @@ class StorekeeperEndpoint
     private function handleCreateSki($uri, $payload): array
     {
         if ($uri[0] == "ski" && count($uri) == 1) {
-
             $json = json_encode($payload);
             $data = json_decode($json, true);
+            $products = array();
 
             foreach ($data as $key => $entry) {
-                print $key. ":". $entry."\n";
-                if ($entry == "") {
-                    print "One of the entries are empty \n";
+
+                print $key . ":" . $entry . "\n";
+
+                if ($entry == 0 || $key == "") {
+                    print "Either the ski_type provided or the amount is null \n";
                     //throw; //TODO Throw exception
+
+                } else {
+                    $filter = array(
+                        'ski_type' => $key,
+                        'amount' => intval($entry)
+                    );
+
+                    $products = (new ProductHandler())->createResource($filter);
                 }
             }
-            $product = (new SkiModelHandler())->createResource($data);
-            print "Right after ski creation";
-            print $product;
+            //TODO FÅ UT PRODUKTNUMMER FRA CREATERESOURCE HER I PRODUCTMODEL
+            $res['result'] = $products;
+            $res['status'] = RESTConstants::HTTP_CREATED;
+            return $res;
 
-            return  $product;
+
         } else {
+            print("The uri provided contains wrong syntax try: storekeeper/ski \n");
             //throw; //TODO Throw exception
+            return $uri;
         }
-        return $uri;
     }
 }
