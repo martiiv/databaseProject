@@ -25,7 +25,8 @@ class SkiModel extends DB
      * @param array $resource the array containing the fields for the entity
      * @return array The created entity of type Ski_type
      */
-    public function createSkiType(array $resource){
+    public function createSkiType(array $resource): array
+    {
         $this->db->beginTransaction();
         $query =
             'INSERT INTO ski_type (model,ski_type, temperature,grip_system,size, weight_class,description,historical,photo_url,retail_price)

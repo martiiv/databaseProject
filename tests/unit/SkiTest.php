@@ -29,7 +29,8 @@ class SkiTest extends \Codeception\Test\Unit
 
     /**
      * Function testCreateResource
-     * Creates a ski_type in the database
+     * Sends in data to simulate ski creation
+     * Uses the createResource from the SkiModel(Handler) to test functionality
      */
     public function testCreateResource()
     {
@@ -53,6 +54,7 @@ class SkiTest extends \Codeception\Test\Unit
     /**
      * Function testUpdateResource
      * Updates the historical value of a ski_type
+     * Uses updateResource from SkiModel(handler) to update a ski_types historical value
      * The historical value can only be set to one(1) indicating that the ski_type is out of production
      * @throws APIException if the historical value is 0
      */
