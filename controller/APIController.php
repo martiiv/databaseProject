@@ -2,6 +2,7 @@
 require_once 'RESTConstants.php';
 require_once 'controller/CustomerEndpoints/CustomerEndpoint.php';
 require_once 'controller/CompanyEndpoints/StorekeeperEndpoint.php';
+require_once 'controller/CompanyEndpoints/ProductionPlannerEndpoint.php';
 require_once 'db/AuthorisationModel.php';
 require_once 'errors.php';
 
@@ -35,6 +36,9 @@ class APIController
                 break;
             case RESTConstants::ENDPOINT_STOREKEEPER:
                 $endpoint = new StorekeeperEndpoint();
+                break;
+            case RESTConstants::ENDPOINT_PRODUCTION_PLANNER:
+                $endpoint = new ProductionPlannerEndpoint();
                 break;
         }
         return $endpoint->handleRequest(array_slice($uri, 1), $requestMethod, $queries, $payload);
