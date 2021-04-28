@@ -70,7 +70,7 @@ class ShipmentModel extends DB
         return $res;
     }
 
-    function updateResource(array $resource, string $oldName, int $oldShipment_no): array
+    function updateResource(array $resource, string $oldName, int $shipment_no): array
     {
         if (strlen($oldName != 0)){
             (new TransporterModel())->editTransporter($resource, $oldName);
@@ -80,12 +80,12 @@ class ShipmentModel extends DB
 
         $this->db->beginTransaction();
 
-        $query = 'UPDATE shipments SET pickup_date = (:pickup_date), state = (:state) WHERE shipment_no = (:oldShipment_no)';
+        $query = 'UPDATE shipments SET pickup_date = (:pickup_date), state = (:state) WHERE shipment_no = (:shipment_no)';
 
         $stmt = $this->db->prepare($query);
         $stmt->bindValue(':pickup_date', $resource['pickup_date']);
         $stmt->bindValue(':state', $resource['state']);
-        $stmt->bindValue(':oldShipment_no', $oldShipment_no);
+        $stmt->bindValue(':shipment_no', $shipment_no);
         $stmt->execute();
 
         $res['pickup_date'] = $resource['pickup_date'];
