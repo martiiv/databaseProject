@@ -70,7 +70,7 @@ class OrderTest extends \Codeception\Test\Unit
 
         $orderHandler = new OrderHandler();
         $updatedOrderStatement = $orderHandler->updateResource($arr);
-        $this->assertEquals($updatedOrderStatement, $arr);
+        $this->assertEquals($updatedOrderStatement, true);
     }
 
     // tests
