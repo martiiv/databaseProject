@@ -24,9 +24,9 @@ class ShipmentHandler
 
     /**
      * @param array $arr - An array with the data to be added to the database
-     * @return array|null - Returns the entire shipment with its data
+     * @return int - Returns the shipment nr.
      */
-    public function createResource(array $arr): ?array
+    public function createResource(array $arr): int
     {
         // TODO - add if's to validate the input
         return (new ShipmentModel())->createResource($arr);

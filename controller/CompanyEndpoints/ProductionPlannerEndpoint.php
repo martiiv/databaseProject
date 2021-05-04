@@ -34,7 +34,7 @@ class ProductionPlannerEndpoint
      * @return array registered production plan
      * @throws APIException
      */
-    private function handlePostRequest($uri, $payload)
+    private function handlePostRequest($uri, $payload): array
     {
         if ($uri[0] == "plan" && count($uri) == 1) {
             $noSkies = 0;
@@ -68,9 +68,6 @@ class ProductionPlannerEndpoint
 
             // TODO: Check that there is no existing plan in this timespan
 
-
-
-            // TODO: Check that production planner does exist
 
 
 
@@ -122,7 +119,7 @@ class ProductionPlannerEndpoint
      * @param string $date date as yyyy-mm-dd
      * @return bool if date is valid or not
      */
-    private function checkDate(string $date)
+    private function checkDate(string $date): bool
     {
         $tempDate = explode('-', $date);
         // checkdate(month, day, year) , input is yyyy-mm-dd
