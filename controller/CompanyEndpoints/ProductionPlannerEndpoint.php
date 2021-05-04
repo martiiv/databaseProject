@@ -70,9 +70,6 @@ class ProductionPlannerEndpoint
 
 
 
-            // TODO: Check that production planner does exist
-
-
 
             // Check that all the skies are valid (ski model exist)
             foreach ($payload[1] as $key => $value) {
@@ -122,7 +119,7 @@ class ProductionPlannerEndpoint
      * @param string $date date as yyyy-mm-dd
      * @return bool if date is valid or not
      */
-    private function checkDate(string $date)
+    private function checkDate(string $date): bool
     {
         $tempDate = explode('-', $date);
         // checkdate(month, day, year) , input is yyyy-mm-dd
