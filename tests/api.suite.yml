@@ -2,10 +2,9 @@ actor: ApiTester
 modules:
     enabled:
         - REST:
-                url: http://api/v1/
                 depends: PhpBrowser
+                url: &url 'http://localhost/dbproject-33/'
                 part: Json
-        - \Helper\Api
 
         - Db:
             dsn: 'mysql:host=localhost;dbname=assignment_project'
@@ -17,7 +16,15 @@ modules:
             reconnect: true
             waitlock: 10
             initial_queries:
-              - 'CREATE DATABASE IF NOT EXISTS temp_db;'
-              - 'USE temp_db;'
+              - 'CREATE DATABASE IF NOT EXISTS assignment_project;'
+              - 'USE assignment_project;'
               - 'SET NAMES utf8;'
-        - Asserts
+        - \Helper\Api
+
+
+    config:
+      PhpBrowser:
+        url: *url
+        headers:
+          Content-Type: application/json
+

@@ -61,10 +61,8 @@ class StorekeeperEndpoint
 
             foreach ($data as $key => $entry) {
 
-                print $key . ":" . $entry . "\n";
-
                 if ($entry == 0 || $key == "") {
-                    print "Either the ski_type provided or the amount is null \n";
+                    print "The ski_type provided or the amount is null \n";
                     //throw; //TODO Throw exception
 
                 } else {
@@ -76,11 +74,10 @@ class StorekeeperEndpoint
                     $products = (new ProductHandler())->createResource($filter);
                 }
             }
-            //TODO FÅ UT PRODUKTNUMMER FRA CREATERESOURCE HER I PRODUCTMODEL
+            $res['product_no'] = $products['product_no'];
             $res['result'] = $products;
             $res['status'] = RESTConstants::HTTP_CREATED;
             return $res;
-
 
         } else {
             print("The uri provided contains wrong syntax try: storekeeper/ski \n");

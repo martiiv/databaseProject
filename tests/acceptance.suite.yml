@@ -8,6 +8,10 @@ actor: AcceptanceTester
 modules:
     enabled:
         - PhpBrowser:
-            url: http://localhost/myapp
+            url: http://localhost/dbproject-33/
+            cookies:
+                cookie-1:
+                    Name: authToken
+                    Path: /;
+                    Value: EENV2yeVpGZCT8eCKxWh19fz9SZ4bA1Wh19GGkoQd4T8bHYtALHoQB6f82qqMxoh
         - \Helper\Acceptance
-step_decorators: ~        
