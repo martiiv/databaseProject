@@ -34,7 +34,7 @@ class ProductionPlannerEndpoint
      * @return array registered production plan
      * @throws APIException
      */
-    private function handlePostRequest($uri, $payload)
+    private function handlePostRequest($uri, $payload): array
     {
         if ($uri[0] == "plan" && count($uri) == 1) {
             $noSkies = 0;
