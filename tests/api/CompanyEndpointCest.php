@@ -42,7 +42,22 @@ class CompanyEndpointCest
             ['production_date'=>date("Y/m/d"),'ski_type'=>'Active'],
             ['production_date'=>date("Y/m/d"),'ski_type'=>'Redline'],
             ['production_date'=>date("Y/m/d"),'ski_type'=>'Redline'],
-            ['production_date'=>date("Y/m/d"),'ski_type'=>'Redline']);}
+            ['production_date'=>date("Y/m/d"),'ski_type'=>'Redline']);
+    }
+
+    public function testChangeStateOpen(ApiTester $I){
+        $I->haveHttpHeader('accept', 'application/json');
+        $I->haveHttpHeader('content-type', 'application/json');
+
+        Authorisation::setAuthorisationToken($I);
+        $I->sendPut('customer-rep/order/open/10006');
+
+        $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
+        $I->seeResponseIsJson();
+
+        $I->seeResponseContainsJson(array('Status of order 10006 changed to open!'));
+        $I->seeInDatabase('orders', ['order_no' => 10006, 'total_price' => 2500, 'status' => 'open', 'customer_id' => 10002, 'shipment_no' => 10001]);
+    }
 
     public function testGetOrderReady(\ApiTester $I){
         $I->haveHttpHeader('accept', 'application/json');

@@ -38,28 +38,6 @@ class companyTest extends \Codeception\Test\Unit
         $this->I->seeResponseContainsJson(array(['order_no' => 10005, 'total_price' => 12000, 'status' => 'ready', 'customer_id' => 10001, 'shipment_no' => NULL]));
     }
 
-    /*
-     * Method for getting specific order
-     * Tests the following endpoint:
-     * /company/customer-rep/order/{:id}
-     */
-    public function getOrder()
-    {
-        $this->I->haveHttpHeader('Content-Type', 'application/json');
-        $this->I->sendGet('/company/customer-rep/order/10006');
-        $this->I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
-        $this->I->seeResponseIsJson();
-        $this->I->seeResponseMatchesJsonType([
-            'order_no' => 'integer',
-            'total_price' => 'integer',
-            'status' => 'string',
-            'customer_id' => 'integer',
-            'shipment_no' => 'integer']);
-
-        $this->I->assertEquals(1, count(json_decode($this->I->grabResponse())));
-        $this->I->seeResponseContainsJson(array(['order_no' => 10006, 'total_price' => 2500, 'status' => 'new', 'customer_id' => 10002, 'shipment_no' => 10001]));
-
-    }
 
     /*
      * Method for changing the status of an order from new to open
