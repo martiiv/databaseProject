@@ -57,11 +57,32 @@ class CompanyEndpointCest
             'total_price' => 'string',
             'status' => 'string',
             'customer_id' => 'string',
-            'shipment_no' => 'null']);
+            ]);
 
         $I->dontSeeResponseContainsJson(array(['status' => 'new','shipment_no' => NULL]));
         $I->dontSeeResponseContainsJson(array(['status' => 'open','shipment_no' => NULL]));
         $I->dontSeeResponseContainsJson(array(['status' => 'available','shipment_no' => NULL]));
         $I->seeResponseContainsJson(array(['status' => 'ready','shipment_no' => NULL]));
+    }
+
+    public function testGetOrderNew(\ApiTester $I){
+        $I->haveHttpHeader('accept', 'application/json');
+        $I->haveHttpHeader('content-type', 'application/json');
+
+        Authorisation::setAuthorisationToken($I);
+        $I->sendGet('http://localhost/dbproject-33/customer-rep/order?state=new');
+        $I->seeResponseIsJson();
+        $I->seeResponseMatchesJsonType([
+            'order_no' => 'string',
+            'created'=>'string',
+            'total_price' => 'string',
+            'status' => 'string',
+            'customer_id' => 'string',
+            ]);
+
+        $I->dontSeeResponseContainsJson(array(['status' => 'open','shipment_no' => NULL]));
+        $I->dontSeeResponseContainsJson(array(['status' => 'available','shipment_no' => NULL]));
+        $I->dontSeeResponseContainsJson(array(['status' => 'ready','shipment_no' => NULL]));
+        $I->seeResponseContainsJson(array(['status' => 'new','shipment_no' => NULL]));
     }
 }
