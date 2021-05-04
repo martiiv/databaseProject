@@ -34,7 +34,7 @@ class OrderModel extends DB
         $stmt->execute();
 
 
-        while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $res[] = $row;
         }
         return $res;
@@ -49,7 +49,7 @@ class OrderModel extends DB
         $stmt->bindValue(':id', $id);
         $stmt->execute();
 
-        while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $res[] = $row;
         }
 
@@ -72,22 +72,30 @@ class OrderModel extends DB
         return $id;
     }
 
-    function updateResource(array $resource): ?array
+    function updateResource(array $resource): bool
     {
-        $arr = array();
+        $updated = false;
         $this->db->beginTransaction();
-        $query = 'UPDATE orders SET status = :status WHERE order_no = :order_no';
+
+        // Check that order does exist
+        $query = 'SELECT COUNT(*) FROM orders WHERE order_no = :order_no';
         $stmt = $this->db->prepare($query);
-        $stmt->bindValue(':status', $resource['status']);
         $stmt->bindValue(':order_no', $resource['order_no']);
         $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        $arr['status'] = $resource['status'];
-        $arr['order_no'] = $resource['order_no'];
+        if ($row['COUNT(*)'] == 1) {
+            // Update
+            $query = 'UPDATE orders SET status = :status WHERE order_no = :order_no';
+            $stmt = $this->db->prepare($query);
+            $stmt->bindValue(':status', $resource['status']);
+            $stmt->bindValue(':order_no', $resource['order_no']);
+            $stmt->execute();
+            $updated = true;
+        }
 
         $this->db->commit();
-
-        return $arr;
+        return $updated;
     }
 
     function deleteResource(int $id): string
