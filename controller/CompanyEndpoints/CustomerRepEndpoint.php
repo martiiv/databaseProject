@@ -76,7 +76,7 @@ class CustomerRepEndpoint
      * @param string $state state to change to
      * @return array results
      */
-    private function changeOrderState(mixed $orderId, string $state): array
+    public function changeOrderState(mixed $orderId, string $state): array
     {
         $resource['status'] = $state;
         $resource['order_no'] = $orderId;

@@ -59,6 +59,34 @@ class CompanyEndpointCest
         $I->seeInDatabase('orders', ['order_no' => 10006, 'total_price' => 2500, 'status' => 'open', 'customer_id' => 10002, 'shipment_no' => 10001]);
     }
 
+    public function testChangeStateAvailable(ApiTester $I){
+        $I->haveHttpHeader('accept', 'application/json');
+        $I->haveHttpHeader('content-type', 'application/json');
+
+        Authorisation::setAuthorisationToken($I);
+        $I->sendPut('customer-rep/order/available/10008');
+
+        $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
+        $I->seeResponseIsJson();
+
+        $I->seeResponseContainsJson(array('Status of order 10008 changed to available!'));
+        $I->seeInDatabase('orders', ['order_no' => 10008, 'total_price' => 2000, 'status' => 'available', 'customer_id' => 10002, 'shipment_no' => NULL]);
+    }
+
+    public function testChangeStateReady(ApiTester $I){
+        $I->haveHttpHeader('accept', 'application/json');
+        $I->haveHttpHeader('content-type', 'application/json');
+
+        Authorisation::setAuthorisationToken($I);
+        $I->sendPut('storekeeper/order/ready/10006');
+
+        $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
+        $I->seeResponseIsJson();
+
+        $I->seeResponseContainsJson(array('Status of order 10006 changed to ready!'));
+        $I->seeInDatabase('orders', ['order_no' => 10006, 'total_price' => 2500, 'status' => 'ready', 'customer_id' => 10002, 'shipment_no' => 10001]);
+    }
+
     public function testGetOrderReady(\ApiTester $I){
         $I->haveHttpHeader('accept', 'application/json');
         $I->haveHttpHeader('content-type', 'application/json');

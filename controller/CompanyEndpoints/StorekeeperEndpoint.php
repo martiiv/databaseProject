@@ -4,6 +4,7 @@ require_once 'db/ShipmentModel.php';
 require_once 'db/SkiModel.php';
 require_once 'db/ProductModel.php';
 require_once 'controller/handlers/ProductHandler.php';
+require_once 'CustomerRepEndpoint.php';
 
 class StorekeeperEndpoint
 {
@@ -11,7 +12,7 @@ class StorekeeperEndpoint
     {
         switch ($requestMethod) {
             case RESTConstants::METHOD_PUT:
-                return $this->handleUpdate($uri, $queries, $payload);
+                return $this->handleUpdate($uri);
 
             case RESTConstants::METHOD_POST:
                 return $this->handleCreateSki($uri, $payload);
@@ -20,28 +21,27 @@ class StorekeeperEndpoint
         }
     }
 
-    private function handleUpdate($uri, $queries, $payload): array
+    /**
+     * Function handleUpdate from CustomerRepEndpoint
+     * Used to change order state according to project case
+     * @param $uri
+     * @param $queries
+     * @param $payload
+     * @return array
+     */
+    private function handleUpdate($uri): array
     {
-        if ($uri[0] == "order" && count($uri) == 6) {
+        $update = new CustomerRepEndpoint();
+        if ($uri[0] == "order" && sizeof($uri) == 3) {
+            // Get order id
+            $orderId = $uri[2];
 
-            $resource = array();
-            $resource['order_no'] = $uri[2];
-            if ($uri[4] == ("ready")) {
-                $resource['status'] = $uri[4];
-                (new OrderModel())->updateResource($resource);
-
-                // TODO - add check if order_no exists
-                $res['result'] = "Order: " . $uri[2] . " successfully updated";
-                $res['status'] = RESTConstants::HTTP_OK;
-            } else {
-                $res['result'] = "Order: " . $uri[2] . " failed to update.";
-                $res['status'] = RESTConstants::HTTP_FORBIDDEN;
+            // Forward
+            switch (strtolower($uri[1])) {
+                case "ready":
+                    return $update->changeOrderState($orderId, "ready");
             }
-            return $res;
-        } else {
-            //TODO Throw exception
         }
-        return $uri;
     }
 
     /**

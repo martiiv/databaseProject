@@ -38,29 +38,6 @@ class companyTest extends \Codeception\Test\Unit
         $this->I->seeResponseContainsJson(array(['order_no' => 10005, 'total_price' => 12000, 'status' => 'ready', 'customer_id' => 10001, 'shipment_no' => NULL]));
     }
 
-
-    /*
-     * Method for changing the status of an order from new to open
-     * Tests the following endpoint:
-     * /company/customer-rep/order/{:id}{?state=open}}
-     */
-    public function changeStatusOpen()
-    {
-        $this->I->sendPut('/company/costumer-rep/order/10006?status=open');
-
-        $this->I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
-        $this->I->seeResponseIsJson();
-        $this->I->seeResponseMatchesJsonType([
-            'order_no' => 'integer',
-            'total_price' => 'integer',
-            'status' => 'string',
-            'customer_id' => 'integer',
-            'shipment_no' => 'integer']);
-
-        $this->I->seeResponseContainsJson(array(['order_no' => 10006, 'total_price' => 2500, 'status' => 'open', 'customer_id' => 10002, 'shipment_no' => 10001]));
-        $this->I->seeInDatabase('orders', ['order_no' => 10006, 'total_price' => 2500, 'status' => 'open', 'customer_id' => 10002, 'shipment_no' => 10001]);
-    }
-
     /*
      * Method for changing the status of an order from open to available
      * Tests the following endpoint:
