@@ -12,7 +12,7 @@ require_once 'Authorisation.php';
  *      Storekeeper:
  *                  testCreateSki               DONE Create product
  *                  testChangeStateReady        DONE Change to ready
- *                  testGetOrderAvailable       TODO Get order on state
+ *                  testGetOrderAvailable       DONE Get order on state
  *      Production Planner:
  *                  testUploadPlan              TODO Upload production plan
  * @date 04.05.2021
@@ -189,4 +189,33 @@ class CompanyEndpointCest
         $I->seeResponseContainsJson(array('Status of order 10006 changed to ready!'));
         $I->seeInDatabase('orders', ['order_no' => 10006, 'total_price' => 2500, 'status' => 'ready', 'customer_id' => 10002, 'shipment_no' => 10001]);
     }
+
+    /**
+     * Function for testing get order functionality
+     * Tests the following endpoint:
+     *      http://localhost/dbproject-33/storekeeper/order?state=skis available
+     * Lets a customer-rep get orders based on state
+     * @param ApiTester $I
+     */
+    public function testGetOrderAvailable(\ApiTester $I){
+        $I->haveHttpHeader('accept', 'application/json');
+        $I->haveHttpHeader('content-type', 'application/json');
+
+        Authorisation::setAuthorisationToken($I);
+        $I->sendGet('http://localhost/dbproject-33/storekeeper/order?state=skis available');
+        $I->seeResponseIsJson();
+        $I->seeResponseMatchesJsonType([
+            'order_no' => 'string',
+            'created'=>'string',
+            'total_price' => 'string',
+            'status' => 'string',
+            'customer_id' => 'string',
+        ]);
+
+        $I->dontSeeResponseContainsJson(array(['status' => 'open','shipment_no' => NULL]));
+        $I->dontSeeResponseContainsJson(array(['status' => 'ready','shipment_no' => NULL]));
+        $I->dontSeeResponseContainsJson(array(['status' => 'new','shipment_no' => NULL]));
+        $I->seeResponseIsJson(array(['status' => 'skis available','shipment_no' => NULL]));
+    }
+
 }
