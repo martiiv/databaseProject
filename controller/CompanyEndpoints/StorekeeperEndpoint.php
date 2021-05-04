@@ -74,7 +74,7 @@ class StorekeeperEndpoint
                     $products = (new ProductHandler())->createResource($filter);
                 }
             }
-            $res['product_no'] = $products['product_no'];
+            $res['product_no'] = $products['product_no'] ?? "";
             $res['result'] = $products;
             $res['status'] = RESTConstants::HTTP_CREATED;
             return $res;

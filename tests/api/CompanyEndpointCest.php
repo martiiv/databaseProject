@@ -28,7 +28,7 @@ class CompanyEndpointCest
         $I->seeResponseCodeIs(\Codeception\Util\HttpCode::CREATED);
         $I->seeResponseIsJson();
         $I->seeResponseMatchesJsonType([
-            'product_number'=>'string',
+            'product_no'=>'string',
             'production_date'=>'string',
             'ski_type'=>'string']);
 
@@ -44,4 +44,24 @@ class CompanyEndpointCest
             ['production_date'=>date("Y/m/d"),'ski_type'=>'Redline'],
             ['production_date'=>date("Y/m/d"),'ski_type'=>'Redline']);}
 
+    public function testGetOrderReady(\ApiTester $I){
+        $I->haveHttpHeader('accept', 'application/json');
+        $I->haveHttpHeader('content-type', 'application/json');
+
+        Authorisation::setAuthorisationToken($I);
+        $I->sendGet('http://localhost/dbproject-33/customer-rep/order?state=ready');
+        $I->seeResponseIsJson();
+        $I->seeResponseMatchesJsonType([
+            'order_no' => 'string',
+            'created'=>'string',
+            'total_price' => 'string',
+            'status' => 'string',
+            'customer_id' => 'string',
+            'shipment_no' => 'null']);
+
+        $I->dontSeeResponseContainsJson(array(['status' => 'new','shipment_no' => NULL]));
+        $I->dontSeeResponseContainsJson(array(['status' => 'open','shipment_no' => NULL]));
+        $I->dontSeeResponseContainsJson(array(['status' => 'available','shipment_no' => NULL]));
+        $I->seeResponseContainsJson(array(['status' => 'ready','shipment_no' => NULL]));
+    }
 }
