@@ -11,23 +11,32 @@ class OrderModel extends DB
         parent::__construct();
     }
 
-    function getCollection(string $customer = null): array
+    /**
+     * Get a collection of orders
+     * @param string|null $customer customer ID
+     * @param string|null $state state of an order
+     * @return array of orders
+     */
+    function getCollection(string $customer = null, string $state = null): array
     {
         $res = array();
-        if ($customer == null) {
-            $query = 'SELECT order_no, total_price, status, customer_id, shipment_no FROM orders';
-            $stmt = $this->db->prepare($query);
-        } else {
-            $query = 'SELECT order_no, total_price, status, customer_id, shipment_no FROM orders WHERE customer_id = :customer_id';
-            $stmt = $this->db->prepare($query);
-            $stmt->bindValue(':customer_id', $customer);
+        $query = 'SELECT order_no, created, total_price, status, customer_id, shipment_no FROM orders';
+
+        if ($customer != null || $state != null) {
+            $query .= ' WHERE';
+            if ($customer != null) $query .= ' customer_id = :customer_id';
+            if ($state != null) $query .= ' status = :status';
         }
+
+        $stmt = $this->db->prepare($query);
+        if ($customer != null) $stmt->bindValue(':customer_id', $customer);
+        if ($state != null) $stmt->bindValue(':status', $state);
         $stmt->execute();
+
 
         while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $res[] = $row;
         }
-
         return $res;
     }
 
