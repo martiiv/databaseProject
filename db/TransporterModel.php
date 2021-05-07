@@ -28,7 +28,7 @@ class TransporterModel extends DB
 
         $res = array();
 
-        $transporter = $resource['transporter'];
+        $transporter = $resource['transporter'] ?? null;
 
         $queryTransporter = 'UPDATE transporters SET name = (:name) WHERE name = (:oldName)';
 

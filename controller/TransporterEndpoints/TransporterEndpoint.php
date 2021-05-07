@@ -49,7 +49,7 @@ class TransporterEndpoint
     private function handlePutRequest($uri): array{
         if($uri[0] == 'pickup' && sizeof($uri) == 2){
             $shipment_no = $uri[1];
-            $shipment = (new ShipmentModel())->updateResource(['pickup_date'=>date("Y/m/d"),'state'=> 1],"",$shipment_no);
+            $shipment = (new ShipmentModel())->updateResource(['pickup_date'=>date("Y/m/d"),'state'=> 1],'',$shipment_no);
             $res['result'] = $shipment;
             $res['status'] = RESTConstants::HTTP_OK;
             return $res;

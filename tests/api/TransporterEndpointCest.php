@@ -1,10 +1,11 @@
 <?php
+require_once 'Authorisation.php';
 
 /**
  * Class TransporterEndpointCest for testing the transporter endpoint
  * Tests:
- *       getOrders      DONE      Get orders ready for shipment
- *       changeShipment TODO  Change the state of the shipment after pickup
+ *       getOrders      DONE  Get orders ready for shipment
+ *       changeShipment DONE  Change the state of the shipment after pickup
  */
 class TransporterEndpointCest
 {
@@ -38,8 +39,9 @@ class TransporterEndpointCest
         $I->haveHttpHeader('content-type', 'application/json');
 
         Authorisation::setAuthorisationToken($I);
-        $I->sendGet('transporter/pickup/10006');
+        $I->sendPut('transporter/pickup/10001');
+
         $I->seeResponseIsJson();
-        $I->seeInDatabase('shipments', ['shipment_no' => 10006, 'state' => 1]);
+        $I->seeInDatabase('shipments', ['shipment_no' => 10001, 'state' => 1]);
     }
 }
