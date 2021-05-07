@@ -56,6 +56,7 @@ class ProductModel extends DB
             $stmt->execute();
 
             // Store the data about one specific product
+            $res['product_no'] = $this->db->lastInsertId();
             $res['production_date'] = $todaysDate;
             $res['ski_type'] = $resource['ski_type'];
 

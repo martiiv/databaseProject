@@ -11,23 +11,32 @@ class OrderModel extends DB
         parent::__construct();
     }
 
-    function getCollection(string $customer = null): array
+    /**
+     * Get a collection of orders
+     * @param string|null $customer customer ID
+     * @param string|null $state state of an order
+     * @return array of orders
+     */
+    function getCollection(string $customer = null, string $state = null): array
     {
         $res = array();
-        if ($customer == null) {
-            $query = 'SELECT order_no, total_price, status, customer_id, shipment_no FROM orders';
-            $stmt = $this->db->prepare($query);
-        } else {
-            $query = 'SELECT order_no, total_price, status, customer_id, shipment_no FROM orders WHERE customer_id = :customer_id';
-            $stmt = $this->db->prepare($query);
-            $stmt->bindValue(':customer_id', $customer);
+        $query = 'SELECT order_no, created, total_price, status, customer_id, shipment_no FROM orders';
+
+        if ($customer != null || $state != null) {
+            $query .= ' WHERE';
+            if ($customer != null) $query .= ' customer_id = :customer_id';
+            if ($state != null) $query .= ' status = :status';
         }
+
+        $stmt = $this->db->prepare($query);
+        if ($customer != null) $stmt->bindValue(':customer_id', $customer);
+        if ($state != null) $stmt->bindValue(':status', $state);
         $stmt->execute();
 
-        while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $res[] = $row;
         }
-
         return $res;
     }
 
@@ -40,7 +49,7 @@ class OrderModel extends DB
         $stmt->bindValue(':id', $id);
         $stmt->execute();
 
-        while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $res[] = $row;
         }
 
@@ -63,22 +72,30 @@ class OrderModel extends DB
         return $id;
     }
 
-    function updateResource(array $resource): ?array
+    function updateResource(array $resource): bool
     {
-        $arr = array();
+        $updated = false;
         $this->db->beginTransaction();
-        $query = 'UPDATE orders SET status = :status WHERE order_no = :order_no';
+
+        // Check that order does exist
+        $query = 'SELECT COUNT(*) FROM orders WHERE order_no = :order_no';
         $stmt = $this->db->prepare($query);
-        $stmt->bindValue(':status', $resource['status']);
         $stmt->bindValue(':order_no', $resource['order_no']);
         $stmt->execute();
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        $arr['status'] = $resource['status'];
-        $arr['order_no'] = $resource['order_no'];
+        if ($row['COUNT(*)'] == 1) {
+            // Update
+            $query = 'UPDATE orders SET status = :status WHERE order_no = :order_no';
+            $stmt = $this->db->prepare($query);
+            $stmt->bindValue(':status', $resource['status']);
+            $stmt->bindValue(':order_no', $resource['order_no']);
+            $stmt->execute();
+            $updated = true;
+        }
 
         $this->db->commit();
-
-        return $arr;
+        return $updated;
     }
 
     function deleteResource(int $id): string

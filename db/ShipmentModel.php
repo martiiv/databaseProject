@@ -41,33 +41,18 @@ class ShipmentModel extends DB
         return $res;
     }
 
-    function createResource(array $resource): array
+    function createResource(array $resource): int
     {
-        $res = array();
-
-        $transporterArray = (new TransporterModel())->addTransporter($resource);
-
         $this->db->beginTransaction();
-        $query = 'INSERT INTO shipments (customer_name, pickup_date, state, driver_id, transporter, address_id) VALUES (:customer_name, :pickup_date, :state, :driver_id, :transporter, :address_id)';
+        $query = 'INSERT INTO shipments (customer_name, address_id) VALUES (:customer_name, :address_id)';
 
         $stmt = $this->db->prepare($query);
         $stmt->bindValue(':customer_name', $resource['customer_name']);
-        $stmt->bindValue(':pickup_date', $resource['pickup_date']);
-        $stmt->bindValue(':state', $resource['state']);
-        $stmt->bindValue(':driver_id', $resource['driver_id']);
-        $stmt->bindValue(':transporter',  $transporterArray['name']);
         $stmt->bindValue(':address_id', $resource['address_id']);
         $stmt->execute();
-
-        $res['customer_name'] = $resource['customer_name'];
-        $res['pickup_date'] = $resource['pickup_date'];
-        $res['state'] = $resource['state'];
-        $res['driver_id'] = $resource['driver_id'];
-        $res['transporter'] =  $transporterArray['name'];
-        $res['address_id'] = $resource['address_id'];
+        $id = $this->db->lastInsertId();
         $this->db->commit();
-
-        return $res;
+        return $id;
     }
 
     function updateResource(array $resource, string $oldName, int $shipment_no): array

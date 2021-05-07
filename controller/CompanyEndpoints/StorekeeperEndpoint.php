@@ -4,14 +4,18 @@ require_once 'db/ShipmentModel.php';
 require_once 'db/SkiModel.php';
 require_once 'db/ProductModel.php';
 require_once 'controller/handlers/ProductHandler.php';
+require_once 'CustomerRepEndpoint.php';
 
 class StorekeeperEndpoint
 {
     public function handleRequest($uri, $requestMethod, $queries, $payload): array
     {
         switch ($requestMethod) {
+            case RESTConstants::METHOD_GET:
+                return $this->handleGet($uri, $queries);
+
             case RESTConstants::METHOD_PUT:
-                return $this->handleUpdate($uri, $queries, $payload);
+                return $this->handleUpdate($uri);
 
             case RESTConstants::METHOD_POST:
                 return $this->handleCreateSki($uri, $payload);
@@ -20,28 +24,46 @@ class StorekeeperEndpoint
         }
     }
 
-    private function handleUpdate($uri, $queries, $payload): array
-    {
-        if ($uri[0] == "order" && count($uri) == 6) {
+    /**
+     * Function HandleGet taken from CustomerRepEndpoint
+     * Used to get orders with skis available state
+     */
+    private function handleGet($uri, $queries): array{
+        if ($uri[0] == "order" && sizeof($queries) == 1) {
+            //get state
+            $state = $queries['state'];
 
-            $resource = array();
-            $resource['order_no'] = $uri[2];
-            if ($uri[4] == ("ready")) {
-                $resource['status'] = $uri[4];
-                (new OrderModel())->updateResource($resource);
+            // Get all orders with given state
+            $orders = (new OrderModel())->getCollection(null, $state);
 
-                // TODO - add check if order_no exists
-                $res['result'] = "Order: " . $uri[2] . " successfully updated";
-                $res['status'] = RESTConstants::HTTP_OK;
-            } else {
-                $res['result'] = "Order: " . $uri[2] . " failed to update.";
-                $res['status'] = RESTConstants::HTTP_FORBIDDEN;
-            }
+            // Return result
+            $res['result'] = $orders;
+            $res['status'] = RESTConstants::HTTP_OK;
             return $res;
-        } else {
-            //TODO Throw exception
         }
-        return $uri;
+    }
+
+    /**
+     * Function handleUpdate from CustomerRepEndpoint
+     * Used to change order state according to project case
+     * @param $uri
+     * @param $queries
+     * @param $payload
+     * @return array
+     */
+    private function handleUpdate($uri): array
+    {
+        $update = new CustomerRepEndpoint();
+        if ($uri[0] == "order" && sizeof($uri) == 3) {
+            // Get order id
+            $orderId = $uri[2];
+
+            // Forward
+            switch (strtolower($uri[1])) {
+                case "ready":
+                    return $update->changeOrderState($orderId, "ready");
+            }
+        }
     }
 
     /**
@@ -61,10 +83,8 @@ class StorekeeperEndpoint
 
             foreach ($data as $key => $entry) {
 
-                print $key . ":" . $entry . "\n";
-
                 if ($entry == 0 || $key == "") {
-                    print "Either the ski_type provided or the amount is null \n";
+                    print "The ski_type provided or the amount is null \n";
                     //throw; //TODO Throw exception
 
                 } else {
@@ -76,11 +96,10 @@ class StorekeeperEndpoint
                     $products = (new ProductHandler())->createResource($filter);
                 }
             }
-            //TODO FÅ UT PRODUKTNUMMER FRA CREATERESOURCE HER I PRODUCTMODEL
+            $res['product_no'] = $products['product_no'] ?? "";
             $res['result'] = $products;
             $res['status'] = RESTConstants::HTTP_CREATED;
             return $res;
-
 
         } else {
             print("The uri provided contains wrong syntax try: storekeeper/ski \n");
