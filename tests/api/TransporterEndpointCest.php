@@ -30,7 +30,7 @@ class TransporterEndpointCest
         $I->dontSeeResponseContainsJson(array(['status' => 'open', 'shipment_no' => NULL]));
         $I->dontSeeResponseContainsJson(array(['status' => 'available', 'shipment_no' => NULL]));
         $I->dontSeeResponseContainsJson(array(['status' => 'new', 'shipment_no' => NULL]));
-        $I->seeResponseContainsJson(array(['status' => 'ready', 'shipment_no' => NULL]));
+        $I->seeResponseContainsJson(array(['status' => 'ready']));
     }
 
     public function changeShipment(){
