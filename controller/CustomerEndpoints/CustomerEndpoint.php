@@ -71,6 +71,7 @@ class CustomerEndpoint
 
             // TODO: delete shipment will not work because of improper database design.
             if ($shipment_no != null) {
+                print(string)($shipment_no);
                 (new ShipmentModel())->deleteResource($shipment_no);
             }
 
@@ -87,7 +88,6 @@ class CustomerEndpoint
     /**
      * Add a new order with skies to the database.
      *
-     * NOTE: Order_id will be auto generated, but it has not been done yet.
      * @param $uri
      * @param $payload order info with ski model and amount, e.g.: {"Active":2, "Intrasonic":4}
      * @return array Info about skies added
