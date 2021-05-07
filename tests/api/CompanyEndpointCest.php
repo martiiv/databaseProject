@@ -144,7 +144,6 @@ class CompanyEndpointCest
      */
     public function testCreateSki(\ApiTester $I)
     {
-
         $I->haveHttpHeader('accept', 'application/json');
         $I->haveHttpHeader('content-type', 'application/json');
 
