@@ -43,6 +43,10 @@ class APIController
                 break;
             case RESTConstants::ENDPOINT_CUSTOMER_REP:
                 $endpoint = new CustomerRepEndpoint();
+            case RESTConstants::ENDPOINT_TRANSPORTER   :
+                $endpoint = new TransporterEndpoint();
+            case RESTConstants::ENDPOINT_PUBLIC:
+                $endpoint = new PublicEndpoint();
         }
         return $endpoint->handleRequest(array_slice($uri, 1), $requestMethod, $queries, $payload);
     }
