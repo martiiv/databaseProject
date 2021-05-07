@@ -4,6 +4,7 @@ require_once 'controller/CustomerEndpoints/CustomerEndpoint.php';
 require_once 'controller/CompanyEndpoints/StorekeeperEndpoint.php';
 require_once 'controller/CompanyEndpoints/ProductionPlannerEndpoint.php';
 require_once 'controller/CompanyEndpoints/CustomerRepEndpoint.php';
+require_once 'controller/TransporterEndpoints/TransporterEndpoint.php';
 require_once 'db/AuthorisationModel.php';
 require_once 'errors.php';
 
@@ -43,10 +44,13 @@ class APIController
                 break;
             case RESTConstants::ENDPOINT_CUSTOMER_REP:
                 $endpoint = new CustomerRepEndpoint();
-            case RESTConstants::ENDPOINT_TRANSPORTER   :
+                break;
+            case RESTConstants::ENDPOINT_TRANSPORTER:
                 $endpoint = new TransporterEndpoint();
+                break;
             case RESTConstants::ENDPOINT_PUBLIC:
                 $endpoint = new PublicEndpoint();
+                break;
         }
         return $endpoint->handleRequest(array_slice($uri, 1), $requestMethod, $queries, $payload);
     }

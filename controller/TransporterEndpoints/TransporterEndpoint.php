@@ -1,5 +1,6 @@
 <?php
-
+require_once 'db/OrderModel.php';
+require_once 'db/ShipmentModel.php';
 
 class TransporterEndpoint
 {
@@ -33,7 +34,7 @@ class TransporterEndpoint
      */
     private function handleGetRequest($uri): array
     {
-        if ($uri[0] == "orders" && sizeof($uri) == 2) {
+        if ($uri[0] == "orders" && sizeof($uri) == 1) {
 
             // Get all orders with given state
             $orders = (new OrderModel())->getCollection(null, 'ready');

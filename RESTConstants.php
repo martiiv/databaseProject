@@ -35,4 +35,8 @@ class RESTConstants
     // Defined database errors
     const DB_ERR_ATTRIBUTE_MISSING = 1;
     const DB_ERR_FK_INTEGRITY = 2;
+
+    // Defined foreign key violations
+    const DB_FK_DEALER_COUNTY = 1001;
+    const DB_FK_CAR_DEALER = 1002;
 }
