@@ -55,7 +55,7 @@ class ShipmentModel extends DB
         return $id;
     }
 
-    function updateResource(array $resource, string $oldName, int $shipment_no): array
+    function updateResource(array $resource, string $oldName, int $shipment_no): ?array
     {
         if (strlen($oldName != 0)){
             (new TransporterModel())->editTransporter($resource, $oldName);
@@ -65,17 +65,42 @@ class ShipmentModel extends DB
 
         $this->db->beginTransaction();
 
-        $query = 'UPDATE shipments SET pickup_date = (:pickup_date), state = (:state) WHERE shipment_no = (:shipment_no)';
+        $pickupDateExist = isset($resource['pickup_date']);
+        $stateExist = isset($resource['state']);
+
+        if (!$pickupDateExist && $stateExist) {
+            $query = 'UPDATE shipments SET state = (:state) WHERE shipment_no = (:shipment_no)';
+        }
+        elseif ($pickupDateExist && $stateExist) {
+            $query = 'UPDATE shipments SET pickup_date = (:pickup_date), state = (:state) WHERE shipment_no = (:shipment_no)';
+        }
+        else if ($pickupDateExist && !$stateExist) {
+            $query = 'UPDATE shipments SET pickup_date = (:pickup_date) WHERE shipment_no = (:shipment_no)';
+        } else return null;
 
         $stmt = $this->db->prepare($query);
-        $stmt->bindValue(':pickup_date', $resource['pickup_date']);
-        $stmt->bindValue(':state', $resource['state']);
+
+        if (!$pickupDateExist && $stateExist) {
+            $stmt->bindValue(':state', $resource['state']);
+            $res['state'] = $resource['state'];
+        }
+        elseif ($pickupDateExist && $stateExist) {
+            $stmt->bindValue(':pickup_date', $resource['pickup_date']);
+            $stmt->bindValue(':state', $resource['state']);
+            $res['pickup_date'] = $resource['pickup_date'];
+            $res['state'] = $resource['state'];
+        }
+        else if ($pickupDateExist && !$stateExist) {
+            $stmt->bindValue(':pickup_date', $resource['pickup_date']);
+            $res['pickup_date'] = $resource['pickup_date'];
+        }
+
         $stmt->bindValue(':shipment_no', $shipment_no);
         $stmt->execute();
 
-        $res['pickup_date'] = $resource['pickup_date'];
-        $res['state'] = $resource['state'];
-        $res['transporter'] = $resource['transporter'];
+        if (isset($resource['transporter'])) {
+            $res['transporter'] = $resource['transporter'];
+        }
         $this->db->commit();
 
         return $res;
