@@ -3,7 +3,7 @@
 /**
  * Class TransporterEndpointCest for testing the transporter endpoint
  * Tests:
- *       getOrders      TODO      Get orders ready for shipment
+ *       getOrders      DONE      Get orders ready for shipment
  *       changeShipment TODO  Change the state of the shipment after pickup
  */
 class TransporterEndpointCest
@@ -33,7 +33,13 @@ class TransporterEndpointCest
         $I->seeResponseContainsJson(array(['status' => 'ready']));
     }
 
-    public function changeShipment(){
+    public function changeShipment(\ApiTester $I){
+        $I->haveHttpHeader('accept', 'application/json');
+        $I->haveHttpHeader('content-type', 'application/json');
 
+        Authorisation::setAuthorisationToken($I);
+        $I->sendGet('transporter/pickup/10006');
+        $I->seeResponseIsJson();
+        $I->seeInDatabase('shipments', ['shipment_no' => 10006, 'state' => 1]);
     }
 }
