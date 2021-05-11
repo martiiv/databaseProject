@@ -3,6 +3,8 @@ require_once 'DB.php';
 
 /**
  * Class OrderModel
+ *
+ * Contains the base functionality of the work done to retrieve, create, update and delete orders.
  */
 class OrderModel extends DB
 {
@@ -12,7 +14,7 @@ class OrderModel extends DB
     }
 
     /**
-     * Get a collection of orders
+     * Get a collection of/all the orders
      * @param string|null $customer customer ID
      * @param string|null $state state of an order
      * @return array of orders
@@ -20,26 +22,39 @@ class OrderModel extends DB
     function getCollection(string $customer = null, string $state = null): array
     {
         $res = array();
+        // Gets all the fields stored for an order - made to prevent SQL injection
         $query = 'SELECT order_no, created, total_price, status, customer_id, shipment_no FROM orders';
 
+        // Used to finish the query depending on alternative input from the user
+        // If the user either inputs the filter for customer-ID or state
         if ($customer != null || $state != null) {
+            // Add " WHERE" to the query sentence
             $query .= ' WHERE';
+            // Add either customer-ID or state and it's bound value
             if ($customer != null) $query .= ' customer_id = :customer_id';
             if ($state != null) $query .= ' status = :status';
         }
 
+        // Prepare the query
         $stmt = $this->db->prepare($query);
+        // Bind the respective value depending on user input
         if ($customer != null) $stmt->bindValue(':customer_id', $customer);
         if ($state != null) $stmt->bindValue(':status', $state);
+
         $stmt->execute();
 
-
+        // For each order in the database, add the order with its data to an array
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
             $res[] = $row;
         }
         return $res;
     }
 
+    /**
+     * Get one specific order based on order_id
+     * @param int $id order_id
+     * @return array|null an array containing the order
+     */
     function getResource(int $id): ?array
     {
         $res = array();
@@ -56,6 +71,11 @@ class OrderModel extends DB
         return $res;
     }
 
+    /**
+     * Methods for creating a new order
+     * @param array $resource an array containing the new order you want to create
+     * @return int order_no
+     */
     function createResource(array $resource): int
     {
         $this->db->beginTransaction();
@@ -72,6 +92,11 @@ class OrderModel extends DB
         return $id;
     }
 
+    /**
+     * Method for updating an order
+     * @param array $resource array containing order_no and fields to be updated
+     * @return bool true on successful update, false if not
+     */
     function updateResource(array $resource): bool
     {
         $updated = false;
@@ -98,9 +123,13 @@ class OrderModel extends DB
         return $updated;
     }
 
-    function deleteResource(int $id): string
+    /**
+     * Method for deleting an order
+     * @param int $id the order_no of the order to be deleted
+     * @return bool true on successful delete, false if not
+     */
+    function deleteResource(int $id): bool
     {
-        $success = "";
         $this->db->beginTransaction();
 
         $query = 'DELETE FROM orders WHERE order_no = (:id)';
@@ -109,13 +138,10 @@ class OrderModel extends DB
         $stmt->bindValue(':id', $id);
         $stmt->execute();
 
+        $deleted = true;
+
         $this->db->commit();
 
-        $success = "Successfully deleted order with order number: " . strval($id) . ".";
-
-        if (strlen($success) == 0) {
-            $success = "Failed to delete order with order number: " . strval($id) . ".";
-        }
-        return $success;
+        return $deleted;
     }
 }
