@@ -40,8 +40,6 @@ class CustomerEndpoint
     private function handleGetRequest($uri): array
     {
         $res = array();
-        $summary = array();
-        $model = null;
         switch ($uri[0]) {
             case "order":
                 $model = new OrderModel();
@@ -52,9 +50,25 @@ class CustomerEndpoint
                 }
                 $res['status'] = RESTConstants::HTTP_OK;
                 break;
+
             case "production":
+                $ski_model_list = array();
+                $summary = array();
                 $model = new ProductionPlanModel();
-                $res['result'] = $model->getSummary();
+                $dates= $model->getDates();
+
+                foreach ($dates as $date){
+                    $ski_model_list[] = $model->getSki_models($date['start_date']);
+                }
+
+                foreach ($ski_model_list as $ski_model){
+                    foreach ($ski_model as $ski){
+                        $summary[$ski['ski_type_model']] = 0;
+                        $summary[$ski['ski_type_model']] += $ski['amount'];
+                    }
+                }
+                $res['result'] = $summary;
+                $res['status'] = RESTConstants::HTTP_OK;
         }
         return $res;
     }
