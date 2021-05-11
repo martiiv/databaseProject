@@ -105,11 +105,10 @@ class SkiModel extends DB
      * deleteSkitype
      * Deletes a ski_type given a ski_model
      * @param string $model The model name of the ski you want to delete
-     * @return string A fitting message either success or failure
+     * @return bool A fitting message either success or failure
      * //TODO Remove this function
      */
-    public function deleteSkitype(string $model): string{
-        $success = "";
+    public function deleteSkitype(string $model): bool{
         $this->db->beginTransaction();
 
         $query = 'DELETE FROM ski_type WHERE model = (:model)';
@@ -118,14 +117,11 @@ class SkiModel extends DB
         $stmt->bindValue(':model',$model);
         $stmt->execute();
 
+        $deleted = true;
+
         $this->db->commit();
 
-        $success = 'Succesfully deleted ski type with ski model:'. strval($model).'.';
-
-        if(strlen($success)==0) {
-            $success = 'Failed to delete ski type with ski model:'.strval($model).'.';
-        }
-        return $success;
+      return $deleted;
     }
 
 }

@@ -28,8 +28,7 @@ class CustomerModel extends DB
     function getResource(int $id): ?array
     {
         $res = array();
-        $query = 'SELECT id, name, start_date, end_date FROM customers WHERE id = :id';
-
+        $query = 'SELECT customer_id, name, address_id FROM customers JOIN customer_address ON customer_address.customer_id = customers.id WHERE customers.id = :id';
         $stmt = $this->db->prepare($query);
         $stmt->bindValue(':id', $id);
         $stmt->execute();
@@ -81,8 +80,9 @@ class CustomerModel extends DB
         return $res;
     }
 
-    function deleteResource(int $id): string
+    function deleteResource(int $id): bool
     {
+        $deleted = false;
         $this->db->beginTransaction();
 
         $query = 'DELETE FROM customers WHERE id = (:id)';
@@ -94,8 +94,8 @@ class CustomerModel extends DB
         $this->db->commit();
 
         if ($this->getResource($id) == null) {
-            return 0;
+            $deleted = true;
         }
-        return 1;
+        return $deleted;
     }
 }

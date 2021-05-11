@@ -3,6 +3,8 @@ require_once 'DB.php';
 
 /**
  * Class EmployeeModel
+ *
+ * Class for handling employee functionality like: retrieve, create, update and delete employees
  */
 class EmployeeModel extends DB
 {
@@ -12,6 +14,11 @@ class EmployeeModel extends DB
         parent::__construct();
     }
 
+    /**
+     * Get all employees
+     * @param array|null $query
+     * @return array with all the different employees and their data
+     */
     function getCollection(array $query = null): array
     {
         $res = array();
@@ -26,6 +33,11 @@ class EmployeeModel extends DB
         return $res;
     }
 
+    /**
+     * Get an employee based on the employee_no
+     * @param int $id employee_no
+     * @return array|null array containing the employee of search and the data for that employee
+     */
     function getResource(int $id): ?array
     {
         $res = array();
@@ -41,6 +53,11 @@ class EmployeeModel extends DB
         return $res;
     }
 
+    /**
+     * Create a new employee with a name and working for a department
+     * @param array $resource with the data about the employee to be created
+     * @return array with the employee that was created and data for that employee
+     */
     function createResource(array $resource): array
     {
         $this->db->beginTransaction();
@@ -61,7 +78,12 @@ class EmployeeModel extends DB
         return $res;
     }
 
-
+    /**
+     * Update name and/or department for an employee
+     * @param array $resource the fields to be updated and with the values of what they should be updated to
+     * @param string $oldName the name/potentially old name of the employee to be edited
+     * @return array the new data about the employee
+     */
     function updateResource(array $resource, string $oldName): array
     {
         $this->db->beginTransaction();
@@ -82,7 +104,12 @@ class EmployeeModel extends DB
         return $res;
     }
 
-    function deleteResource(int $id): string
+    /**
+     * Delete an employee from the system
+     * @param int $id the employee_no of employee to be deleted
+     * @return bool
+     */
+    function deleteResource(int $id): bool
     {
         $this->db->beginTransaction();
 
@@ -92,15 +119,10 @@ class EmployeeModel extends DB
         $stmt->bindValue(':id', $id);
         $stmt->execute();
 
+        $deleted = true;
+
         $this->db->commit();
 
-        $success = "Successfully deleted employee with employee number: " . strval($id) . ".";
-
-        if (strlen($success) != 0) {
-            return $success;
-        } else {
-            $success = "Failed to delete employee with employee number: " . strval($id) . ".";
-            return $success;
-        }
+        return $deleted;
     }
 }

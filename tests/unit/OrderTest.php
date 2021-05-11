@@ -78,10 +78,10 @@ class OrderTest extends \Codeception\Test\Unit
     {
         // Due to AUTO_INCREMENT you have to change this value every time until testdb.sql is set up properly
         $id = 10017;
-        $idTemp = "Successfully deleted order with order number: " . strval($id) . ".";
+        $deletedTemp = true;
 
         $orderHandler = new OrderHandler();
         $deletedOrder = $orderHandler->deleteResource($id);
-        $this->assertEquals($deletedOrder, $idTemp);
+        $this->assertEquals($deletedOrder, $deletedTemp);
     }
 }

@@ -23,7 +23,7 @@ class CustomerHandler
         return (new CustomerModel())->updateResource($arr, $oldName);
     }
 
-    public function deleteResource(int $id): ?string
+    public function deleteResource(int $id): ?bool
     {
         return (new CustomerModel())->deleteResource($id);
     }

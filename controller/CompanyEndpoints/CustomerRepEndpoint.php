@@ -21,6 +21,8 @@ class CustomerRepEndpoint
                 return $this->handleGETRequest($uri, $queries);
             case RESTConstants::METHOD_PUT:
                 return $this->handlePUTRequest($uri, $payload);
+            case RESTConstants::METHOD_POST:
+                return $this->handlePOSTRequest($uri, $payload);
             default: //TODO Throw exception
         }
     }
@@ -64,6 +66,22 @@ class CustomerRepEndpoint
                     return $this->changeOrderState($orderId, "open");
                 case "available":
                     return $this->changeOrderState($orderId, "available");
+            }
+        }
+    }
+
+    /**
+     * This method forwards POST requests for the customer-rep endpoint
+     * @param $uri array of input parameters
+     * @return array|void results
+     */
+    private function handlePOSTRequest($uri, $payload) {
+        if ($uri[0] == "order" && sizeof($uri) == 3) {
+            // Get order id
+            $orderId = $uri[2];
+
+            // Forward
+            switch (strtolower($uri[1])) {
                 case "ship":
                     return $this->createShipment($orderId, $payload);
             }
@@ -117,16 +135,13 @@ class CustomerRepEndpoint
 
         // Set info
         $customerName = $customer[0]['name'];
-
-
-        //TODO: Rethink how addresses are stored. Wanted to get address from a customer, but team-skiers does not have address stored.
-        //TODO: Give team-skier an address
+        $customerAddress = $customer[0]['address_id'];
 
 
         // Create shipment
         $resource = array();
         $resource['customer_name'] = $customerName;
-        $resource['address_id'] = 10000;
+        $resource['address_id'] = $customerAddress;
         $shipmentId = (new ShipmentModel())->createResource($resource);
 
 
