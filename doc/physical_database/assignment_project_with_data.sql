@@ -526,7 +526,7 @@ INSERT INTO `auth_token` (`user`, `token`) VALUES
 --
 -- Visningsstruktur `customer_address`
 --
-DROP TABLE IF EXISTS `customer_address`;
+DROP VIEW IF EXISTS `customer_address`;
 CREATE VIEW `customer_address`  AS ( SELECT customer_id, address_id FROM franchises UNION ALL SELECT customer_id, address_id FROM individual_stores UNION ALL SELECT customer_id, address_id FROM team_skiers );
 
 -- --------------------------------------------------------
