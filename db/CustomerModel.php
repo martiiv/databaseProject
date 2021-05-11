@@ -28,6 +28,20 @@ class CustomerModel extends DB
     function getResource(int $id): ?array
     {
         $res = array();
+        $query = 'SELECT customer_id, name, start_date, end_date FROM customers WHERE customers.id = :id';
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':id', $id);
+        $stmt->execute();
+
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $res[] = $row;
+        }
+        return $res;
+    }
+
+    function getAddress(int $id): ?array
+    {
+        $res = array();
         $query = 'SELECT customer_id, name, address_id FROM customers JOIN customer_address ON customer_address.customer_id = customers.id WHERE customers.id = :id';
         $stmt = $this->db->prepare($query);
         $stmt->bindValue(':id', $id);
