@@ -111,20 +111,21 @@ class CustomerEndpoint
             $resource = array();
             $resource['order_no'] = $uri[3];
             $resource['status'] = "canceled";
-            $shipment_no = (new OrderModel())->updateResource($resource);
+            if ((new OrderModel())->updateResource($resource))  {
+                // Get order details
+                $order = (new OrderModel())->getResource($resource['order_no']);
+                $shipmentId = $order[0]['shipment_no'];
 
-            // TODO: delete shipment will not work because of improper database design.
-            if ($shipment_no != null) {
-                print(string)($shipment_no);
-                (new ShipmentModel())->deleteResource($shipment_no);
+                // Remove shipment
+                if ($shipmentId != "") {
+                    (new ShipmentModel())->deleteResource($order[0]['shipment_no']);
+                }
             }
 
-
+            //Prepare result
             $res['result'] = $uri[3] . " canceled";
             $res['status'] = RESTConstants::HTTP_OK;
             return $res;
-        } else {
-            //TODO Throw exception
         }
     }
 
