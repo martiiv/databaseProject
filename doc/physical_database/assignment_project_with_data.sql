@@ -43,7 +43,8 @@ INSERT INTO `address` (`postal_code`, `city_id`, `street_name`, `house_no`, `id`
 (150, 51234, 'Langkaia', 1, 10000),
 (5130, 15422, 'Myrdalsvegen', 22, 10001),
 (6005, 23124, 'Tøffeveien', 35, 10002),
-(3085, 13513, 'Taperveien', 45, 10003);
+(3085, 13513, 'Taperveien', 45, 10003),
+(383, 51234, 'BJØRNERABBEN', 1, 10004);
 
 -- --------------------------------------------------------
 
@@ -458,15 +459,16 @@ CREATE TABLE `team_skiers` (
   `customer_id` int(11) NOT NULL,
   `dob` date NOT NULL,
   `club` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL,
-  `no_skies_per_year` int(11) DEFAULT NULL
+  `no_skies_per_year` int(11) DEFAULT NULL,
+  `address_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_danish_ci;
 
 --
 -- Dataark for tabell `team_skiers`
 --
 
-INSERT INTO `team_skiers` (`customer_id`, `dob`, `club`, `no_skies_per_year`) VALUES
-(10001, '1995-05-01', 'Gutta', 15);
+INSERT INTO `team_skiers` (`customer_id`, `dob`, `club`, `no_skies_per_year`, `address_id`) VALUES
+(10001, '1995-05-01', 'Gutta', 15, 10004);
 
 -- --------------------------------------------------------
 
@@ -644,7 +646,8 @@ ALTER TABLE `storekeeper`
 -- Indexes for table `team_skiers`
 --
 ALTER TABLE `team_skiers`
-  ADD PRIMARY KEY (`customer_id`);
+  ADD PRIMARY KEY (`customer_id`),
+  ADD KEY `team_skiers_ibfk_2` (`address_id`);
 
 --
 -- Indexes for table `transporters`
@@ -797,7 +800,8 @@ ALTER TABLE `storekeeper`
 -- Begrensninger for tabell `team_skiers`
 --
 ALTER TABLE `team_skiers`
-  ADD CONSTRAINT `team_skiers_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `team_skiers_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `team_skiers_ibfk_2` FOREIGN KEY (`address_id`) REFERENCES `address` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
