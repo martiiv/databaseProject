@@ -21,7 +21,7 @@ class CustomerEndpoint
     {
         switch ($requestMethod) {
             case RESTConstants::METHOD_GET:
-                return $this->handleGetRequest($uri);
+                return $this->handleGetRequest($uri, $requestMethod);
             case RESTConstants::METHOD_DELETE:
                 return $this->handleDeleteRequest($uri);
             case RESTConstants::METHOD_POST:
@@ -32,47 +32,69 @@ class CustomerEndpoint
     }
 
     /**
-     * This method will handler all get requests from customer:
-     *  GET Order -> will return all orders, all orders from one customer or one order given an id.
+     * This method will forward all get requests from customer
      * @param $uri list of input parameters
      * @return array List of order(s)
      */
-    private function handleGetRequest($uri): array
+    private function handleGetRequest($uri, $requestMethod): array
     {
-        $res = array();
         switch ($uri[0]) {
             case "order":
-                $model = new OrderModel();
-                if (count($uri) == 2) {
-                    $res['result'] = $model->getCollection($uri[1]);
-                } elseif (count($uri) == 3) {
-                    $res['result'] = $model->getResource($uri[2]);
-                }
-                $res['status'] = RESTConstants::HTTP_OK;
-                break;
-
+                return $this->getOrder($uri);
             case "production":
-
-                $ski_model_list = array();
-                $summary = array();
-                $model = new ProductionPlanModel();
-                $dates= $model->getDates();
-
-                foreach ($dates as $date){
-                    $ski_model_list[] = $model->getSki_models($date['start_date']);
-                }
-
-                foreach ($ski_model_list as $ski_model){
-                    foreach ($ski_model as $ski){
-                        if(!array_key_exists($ski['ski_type_model'], $summary)){
-                            $summary[$ski['ski_type_model']] = 0;
-                        }
-                        $summary[$ski['ski_type_model']] += $ski['amount'];
-                    }
-                }
-                $res['result'] = $summary;
-                $res['status'] = RESTConstants::HTTP_OK;
+                return $this->getProductionPlanSummary();
+            default:
+                throw new APIException(RESTConstants::HTTP_NOT_IMPLEMENTED, $requestMethod);
         }
+    }
+
+    /**
+     * GET Order -> will return all orders, all orders from one customer or one order given an id.
+     * @param $uri list of input parameters
+     * @return array results
+     */
+    private function getOrder($uri)
+    {
+        $model = new OrderModel();
+        if (count($uri) == 2) {
+            $res['result'] = $model->getCollection($uri[1]);
+        } elseif (count($uri) == 3) {
+            $res['result'] = $model->getResource($uri[2]);
+        }
+
+        // return output
+        $res['status'] = RESTConstants::HTTP_OK;
+        return $res;
+    }
+
+    /**
+     * This method will return a list of skies to be produced. Will include model and amount.
+     * @param $uri list of input parameters
+     * @return array results
+     */
+    private function getProductionPlanSummary()
+    {
+        $ski_model_list = array();
+        $summary = array();
+        $model = new ProductionPlanModel();
+        $dates= $model->getDates();
+
+        foreach ($dates as $date){
+            $ski_model_list[] = $model->getSki_models($date['start_date']);
+        }
+
+        foreach ($ski_model_list as $ski_model){
+            foreach ($ski_model as $ski){
+                if(!array_key_exists($ski['ski_type_model'], $summary)){
+                    $summary[$ski['ski_type_model']] = 0;
+                }
+                $summary[$ski['ski_type_model']] += $ski['amount'];
+            }
+        }
+
+        // Prepare output
+        $res['result'] = $summary;
+        $res['status'] = RESTConstants::HTTP_OK;
         return $res;
     }
 
