@@ -78,10 +78,10 @@ class CustomerTest extends \Codeception\Test\Unit
     public function testDeleteResource()
     {
         $id = 10003;
-        $success = 0;
+        $deleted = true;
 
         $customerHandler = new CustomerHandler();
         $deletedCustomer = $customerHandler->deleteResource($id);
-        $this->assertEquals($deletedCustomer, $success);
+        $this->assertEquals($deletedCustomer, $deleted);
     }
 }
