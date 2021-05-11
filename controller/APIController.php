@@ -5,6 +5,7 @@ require_once 'controller/CompanyEndpoints/StorekeeperEndpoint.php';
 require_once 'controller/CompanyEndpoints/ProductionPlannerEndpoint.php';
 require_once 'controller/CompanyEndpoints/CustomerRepEndpoint.php';
 require_once 'controller/TransporterEndpoints/TransporterEndpoint.php';
+require_once 'controller/PublicEndpoints/PublicEndpoint.php';
 require_once 'db/AuthorisationModel.php';
 require_once 'errors.php';
 
