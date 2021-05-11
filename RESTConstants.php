@@ -6,6 +6,7 @@
 class RESTConstants
 {
     const API_URI = 'http://localhost/api/v0.8';
+    const SECRET = " ybhu9nn234";
 
     // HTTP method names
     const METHOD_GET = 'GET';

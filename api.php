@@ -30,8 +30,8 @@ $token = isset($_COOKIE['auth_token']) ? $_COOKIE['auth_token'] : '';
 // Handle the request
 $controller = new APIController();
 try {
-    $controller->authorise($token, RESTConstants::API_URI . '/');
-    $res = $controller->handleRequest($uri, $requestMethod, $queries, $payload);
+    $user = $controller->authorise($token, RESTConstants::API_URI . '/');
+    $res = $controller->handleRequest($uri, $requestMethod, $queries, $payload, $user);
     http_response_code($res['status']);
     if (isset($res['result'])) {
         echo json_encode($res['result']);

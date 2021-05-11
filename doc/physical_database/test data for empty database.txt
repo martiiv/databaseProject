@@ -1,0 +1,135 @@
+INSERT INTO `county` (`county_no`, `name`) VALUES
+(3, 'Oslo'),
+(7, 'Vestfold'),
+(13, 'Bergen'),
+(15, 'Møre_og_Romsdal');
+
+INSERT INTO `city` (`city_id`, `name`, `county_no`) VALUES
+(13513, 'Holmestrand', 7),
+(15422, 'Bergen', 13),
+(23124, 'Ålesund', 15),
+(51234, 'Oslo', 3);
+
+INSERT INTO `address` (`postal_code`, `city_id`, `street_name`, `house_no`, `id`) VALUES
+(150, 51234, 'Langkaia', 1, 10000),
+(5130, 15422, 'Myrdalsvegen', 22, 10001),
+(6005, 23124, 'Tøffeveien', 35, 10002),
+(3085, 13513, 'Taperveien', 45, 10003),
+(383, 51234, 'BJØRNERABBEN', 1, 10004);
+
+INSERT INTO `customers` (`id`, `name`, `start_date`, `end_date`) VALUES
+(10000, 'Gamletorvet sport Oslo sportslager', '2021-03-01', '2035-03-05'),
+(10001, 'Han Raske', '2021-03-01', '2023-05-03'),
+(10002, 'XXL', '2021-03-01', '2040-03-05');
+
+INSERT INTO `franchises` (`customer_id`, `buying_price`, `address_id`) VALUES
+(10002, 500, 10001);
+
+INSERT INTO `individual_stores` (`customer_id`, `buying_price`, `address_id`) VALUES
+(10000, 1000, 10000);
+
+INSERT INTO `team_skiers` (`customer_id`, `dob`, `club`, `no_skies_per_year`, `address_id`) VALUES
+(10001, '1995-05-01', 'Gutta', 15, 10004);
+
+INSERT INTO `employees` (`number`, `name`, `department`) VALUES
+(10000, 'Ragnhild', 'Customer-Rep'),
+(10001, 'Tord', 'Storekeeper'),
+(10002, 'Pelle', 'Production-Planner'),
+(10003, 'Oline', 'Customer-Rep'),
+(10004, 'Polse', 'Production-Planner');
+
+INSERT INTO `customer_representative` (`number`) VALUES
+(10000),
+(10003);
+
+INSERT INTO `storekeeper` (`number`) VALUES
+(10001);
+
+INSERT INTO `production_planner` (`number`) VALUES
+(10002),
+(10004);
+
+INSERT INTO `ski_type` (`model`, `ski_type`, `temperature`, `grip_system`, `size`, `weight_class`, `description`, `historical`, `photo_url`, `retail_price`) VALUES
+('Active', 'classic', 'cold', 'wax', 142, '20-30', 'Bra ski', 0, NULL, 1200),
+('Active Pro', 'skate', 'warm', 'intelligrip', 147, '30-40', 'Rævva ski', 0, NULL, 1400),
+('Endurance', 'double-pole', 'warm', 'wax', 152, '40-50', 'Ok ski', 0, NULL, 1500),
+('Intrasonic', 'classic', 'cold', 'intelligrip', 157, '40-50', 'Litt bra ski', 0, NULL, 1500),
+('Race Pro', 'skate', 'warm', 'wax', 162, '50-60', 'Ræser ski', 0, NULL, 2200),
+('Race Speed', 'double-pole', 'warm', 'intelligrip', 167, '70-80', 'Beste skia', 0, NULL, 36000),
+('Redline', 'skate', 'cold', 'wax', 172, '80-90', 'Verste skia', 0, NULL, 200);
+
+INSERT INTO `product` (`product_no`, `production_date`, `ski_type`) VALUES
+(10000, '2021-04-02', 'Active Pro'),
+(10001, '2021-04-04', 'Active Pro'),
+(10002, '2021-04-05', 'Active Pro'),
+(10003, '2021-04-28', 'Race Pro'),
+(10004, '2021-04-28', 'Race pro'),
+(10005, '2021-04-29', 'Race pro'),
+(10006, '2012-07-24', 'Redline'),
+(10007, '2012-07-25', 'Redline'),
+(10008, '2012-07-26', 'Redline');
+
+INSERT INTO `transporters` (`name`) VALUES
+('Einars levering'),
+('Gro Anitas postservice'),
+('Henriks utkjøring'),
+('Oles transport');
+
+INSERT INTO `shipments` (`shipment_no`, `customer_name`, `pickup_date`, `state`, `driver_id`, `transporter`, `address_id`) VALUES
+(10000, 'Gamletorvet sport Oslo sportslager', '2021-06-28', 0, 2, 'Gro Anitas postservice', 10000),
+(10001, 'XXL', '2021-04-25', 0, 1, 'Einars levering', 10001);
+
+INSERT INTO `orders` (`order_no`, `total_price`, `status`, `customer_id`, `shipment_no`) VALUES
+(10005, 12000, 'ready', 10001, NULL),
+(10006, 2500, 'new', 10002, 10001),
+(10007, 34000, 'skis available', 10000, 10000),
+(10008, 2000, 'new', 10002, NULL),
+(10009, 1000, 'new', 10001, NULL);
+
+INSERT INTO `order_items` (`amount`, `order_no`, `ski_type`) VALUES
+(200, 10005, 'Active Pro'),
+(50, 10006, 'Race Pro'),
+(150, 10007, 'Redline'),
+(30, 10008, 'Race Speed'),
+(25, 10009, 'Intrasonic');
+
+INSERT INTO `history` (`date`, `status`, `order_no`, `employee_no`) VALUES
+('2020-06-25 00:00:00', 'open', 10005, 10003),
+('2020-06-26 00:00:00', 'skis available', 10005, 10000),
+('2020-06-27 00:00:00', 'ready', 10005, 10001),
+('2021-04-22 00:00:00', 'open', 10007, 10000),
+('2021-04-23 00:00:00', 'skis available', 10007, 10003);
+
+INSERT INTO `items_picked` (`amount`, `shipment_no`, `product_no`) VALUES
+(50, 10000, 10005),
+(25, 10000, 10008),
+(200, 10001, 10003),
+(150, 10001, 10007);
+
+INSERT INTO `production_plan` (`start_date`, `end_date`, `no_of_skis_per_day`, `production_planner_number`) VALUES
+('2021-04-22', '2021-05-19', 5900, 10004),
+('2021-05-22', '2021-06-17', 1500, 10002),
+('2021-06-18', '2021-07-15', 4000, 10002),
+('2021-07-16', '2021-08-13', 2600, 10002),
+('2021-08-14', '2021-09-11', 4405, 10004);
+
+INSERT INTO `production_list` (`amount`, `production_plan_start_date`, `production_plan_end_date`, `ski_type_model`) VALUES
+(1500, '2021-04-22', '2021-05-19', 'Active Pro'),
+(1900, '2021-04-22', '2021-05-19', 'Race Pro'),
+(2500, '2021-04-22', '2021-05-19', 'Redline'),
+(1000, '2021-06-18', '2021-07-15', 'Redline'),
+(3000, '2021-06-18', '2021-07-15', 'Race Pro'),
+(2005, '2021-08-14', '2021-09-11', 'Active Pro'),
+(2400, '2021-08-14', '2021-09-11', 'Race Pro'),
+(1500, '2021-05-22', '2021-06-17', 'Race Pro'),
+(1600, '2021-07-16', '2021-08-13', 'Redline'),
+(1000, '2021-07-16', '2021-08-13', 'Race Pro'),
+(500, '2021-07-16', '2021-08-13', 'Active Pro');
+
+INSERT INTO `auth_token` (`user`, `token`) VALUES
+('customer', '18116b636a868fd03c4f100dc0c95eccf38dffa44f7d5262ce18544d812ba4e3'),
+('customer-rep', '8917768390cedfaffe5540e7605cbaff187c596aeeaf98a961bdebfe33ba1f32'),
+('storekeeper', 'aed65a99dad688ac946d725782199e7cfbb4fa112daaf1a6c359799dc2f10723'),
+('planner', 'b6d7d2cfb05ed255dfa37022955d99d9236c6a81c8534e8d766bf4f98ca60cb8'),
+('root', 'c9caceea4162fdad403fbdf926ebc9ebf6b9f37688fbb051c15913cc3058c739'),
+('transporter', 'e49c8c771ee7409bd66ecc573ff7741d94e6f0c922e88bb21fe0abe6f418beda');
