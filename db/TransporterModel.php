@@ -1,8 +1,15 @@
 <?php
 
-
+/**
+ * Class TransporterModel - Handles transporter functionality like add new-, edit- and delete transporter
+ */
 class TransporterModel extends DB
 {
+    /**
+     * Add a new transporter
+     * @param array $resource The data to be put into the new transporter
+     * @return array containing the newly created transporter
+     */
     function addTransporter(array $resource): array
     {
         $this->db->beginTransaction();
@@ -22,6 +29,12 @@ class TransporterModel extends DB
         return $res;
     }
 
+    /**
+     * Edit a transporter - change the transporters name
+     * @param array $resource The data of the transporter to be changed (new name)
+     * @param string $oldName the old name of the transporter
+     * @return array containing the newly edited transporter with the new data
+     */
     function editTransporter(array $resource, string $oldName): array
     {
         $this->db->beginTransaction();
@@ -42,7 +55,12 @@ class TransporterModel extends DB
         return $res;
     }
 
-    function deleteResource(string $name): string
+    /**
+     * Delete a transporter
+     * @param string $name of the transporter
+     * @return bool true if transporter got successfully deleted, false otherwise
+     */
+    function deleteResource(string $name): bool
     {
         $this->db->beginTransaction();
 
@@ -52,15 +70,10 @@ class TransporterModel extends DB
         $stmt->bindValue(':name', $name);
         $stmt->execute();
 
+        $deleted = true;
+
         $this->db->commit();
 
-        $success = "Successfully deleted transporter: " . $name . ".";
-
-        if (strlen($success) != 0) {
-            return $success;
-        } else {
-            $success = "Failed to delete transporter: " . $name . ".";
-            return $success;
-        }
+        return $deleted;
     }
 }
