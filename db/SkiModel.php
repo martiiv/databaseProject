@@ -70,6 +70,19 @@ class SkiModel extends DB
         return $res;
     }
 
+    public function getCollection(): array
+    {
+        $query = 'SELECT model, ski_type, temperature, grip_system, size, weight_class, description, historical, photo_url, retail_price FROM ski_type WHERE historical = 0';
+
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+
+        while($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $res[] = $row;
+        }
+        return $res;
+    }
+
     /**
      * updateSkitype
      * Updates the historical value of a given ski type

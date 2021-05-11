@@ -8,9 +8,9 @@ require_once 'Authorisation.php';
  *      getMyOrders()       DONE For listing a customers orders with since
  *      getSpecificOrder()  DONE For getting an order with state information
  *      placeOrder()        DONE Place an order
- *      cancelOrder()       DONE Delete an order TODO delete shipments
+ *      cancelOrder()       DONE Delete an order
  *      splitOrder()        TODO Request a split order
- *      getPlanSummary()    TODO Get production summary
+ *      getPlanSummary()    DONE Get production summary
  * @date    07.05.2021
  * @version 0.6
  */
@@ -106,9 +106,6 @@ class CustomerEndpointCest
         $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
 
         $I->seeInDatabase('orders', ['order_no' => 10006, 'status' => 'canceled', 'customer_id' => 10002]);
-        //TODO UPDATE updateResource method to return shipment number
-        //$I->dontSeeInDatabase('shipments', ['shipment_no'=>10001]);
-
     }
 
     public function splitOrder(\ApiTester $I)
