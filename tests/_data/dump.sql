@@ -503,7 +503,8 @@ INSERT INTO `transporters` (`name`) VALUES
 --
 
 CREATE TABLE `auth_token` (
-    `token` char(64) COLLATE utf8mb4_danish_ci NOT NULL
+                              `user` varchar(255) COLLATE utf8mb4_danish_ci NOT NULL,
+                              `token` char(64) COLLATE utf8mb4_danish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_danish_ci;
 
 -- --------------------------------------------------------
@@ -512,9 +513,13 @@ CREATE TABLE `auth_token` (
 -- Dataark for tabell `auth_token`
 --
 
-INSERT INTO `auth_token` (`token`) VALUES
-('EENV2yeVpGZCT8eCKxWh19fz9SZ4bA1Wh19GGkoQd4T8bHYtALHoQB6f82qqMxoh');
-COMMIT;
+INSERT INTO `auth_token` (`user`, `token`) VALUES
+('customer', '18116b636a868fd03c4f100dc0c95eccf38dffa44f7d5262ce18544d812ba4e3'),
+('customer-rep', '8917768390cedfaffe5540e7605cbaff187c596aeeaf98a961bdebfe33ba1f32'),
+('storekeeper', 'aed65a99dad688ac946d725782199e7cfbb4fa112daaf1a6c359799dc2f10723'),
+('planner', 'b6d7d2cfb05ed255dfa37022955d99d9236c6a81c8534e8d766bf4f98ca60cb8'),
+('root', 'c9caceea4162fdad403fbdf926ebc9ebf6b9f37688fbb051c15913cc3058c739'),
+('transporter', 'e49c8c771ee7409bd66ecc573ff7741d94e6f0c922e88bb21fe0abe6f418beda');
 
 --
 -- Indexes for dumped tables
@@ -662,6 +667,13 @@ ALTER TABLE `team_skiers`
 --
 ALTER TABLE `transporters`
     ADD PRIMARY KEY (`name`);
+
+--
+-- Indexes for table `auth_token`
+--
+ALTER TABLE `auth_token`
+    ADD UNIQUE KEY `token` (`token`);
+COMMIT;
 
 --
 -- AUTO_INCREMENT for dumped tables

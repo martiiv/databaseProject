@@ -1,4 +1,6 @@
 <?php
+require_once 'Authorisation.php';
+
 
 /**
  * Class CustomerEndpointCest made for testing Customer endpoint
@@ -88,13 +90,14 @@ class CustomerEndpointCest
                 'Intrasonic' => 4
             ]]);
 
-        $I->seeInDatabase('orders', ['total_price'=>8400,'status'=>'new', 'customer_id'=>10001, 'shipment_no'=>NULL]);
+        $I->seeInDatabase('orders', ['total_price' => 8400, 'status' => 'new', 'customer_id' => 10001, 'shipment_no' => NULL]);
         $I->seeInDatabase('order_items',
             ['ski_type' => 'Active', 'amount' => 2],
             ['ski_type' => 'Intrasonic', 'amount' => 4]);
     }
 
-    public function cancelOrder(\ApiTester $I){
+    public function cancelOrder(\ApiTester $I)
+    {
         $I->haveHttpHeader('accept', 'application/json');
         $I->haveHttpHeader('content-type', 'application/json');
 
@@ -102,7 +105,7 @@ class CustomerEndpointCest
         $I->sendDelete('customer/order/cancel/10002/10006');
         $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
 
-        $I->seeInDatabase('orders',['order_no'=>10006,'status'=>'canceled', 'customer_id'=>10002]);
+        $I->seeInDatabase('orders', ['order_no' => 10006, 'status' => 'canceled', 'customer_id' => 10002]);
         //TODO UPDATE updateResource method to return shipment number
         //$I->dontSeeInDatabase('shipments', ['shipment_no'=>10001]);
 
@@ -115,8 +118,19 @@ class CustomerEndpointCest
 
     public function getPlanSummary(\ApiTester $I)
     {
+        $I->haveHttpHeader('accept', 'application/json');
+        $I->haveHttpHeader('content-type', 'application/json');
 
+        Authorisation::setAuthorisationToken($I);
+        $I->sendGet('customer/production');
+        $I->seeResponseCodeIs(\Codeception\Util\HttpCode::OK);
+        $I->seeResponseIsJson();
+        $I->seeResponseMatchesJsonType([
+            'Active Pro' => 'integer',
+            'Race Pro' => 'integer',
+            'Redline' => 'integer',
+        ]);
+
+        $I->seeResponseContainsJson(["Active Pro" => 2505, "Race Pro" => 7900, "Redline" => 2600]);
     }
-
-
 }

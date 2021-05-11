@@ -52,6 +52,7 @@ class CustomerEndpoint
                 break;
 
             case "production":
+
                 $ski_model_list = array();
                 $summary = array();
                 $model = new ProductionPlanModel();
@@ -63,7 +64,9 @@ class CustomerEndpoint
 
                 foreach ($ski_model_list as $ski_model){
                     foreach ($ski_model as $ski){
-                        $summary[$ski['ski_type_model']] = 0;
+                        if(!array_key_exists($ski['ski_type_model'], $summary)){
+                            $summary[$ski['ski_type_model']] = 0;
+                        }
                         $summary[$ski['ski_type_model']] += $ski['amount'];
                     }
                 }
