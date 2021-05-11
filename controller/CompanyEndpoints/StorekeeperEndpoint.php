@@ -93,10 +93,11 @@ class StorekeeperEndpoint
                         'amount' => intval($entry)
                     );
 
-                    $products = (new ProductHandler())->createResource($filter);
+                    $temp = (new ProductHandler())->createResource($filter);
+                    $products = array_merge($products, $temp);
                 }
             }
-            $res['product_no'] = $products['product_no'] ?? "";
+
             $res['result'] = $products;
             $res['status'] = RESTConstants::HTTP_CREATED;
             return $res;

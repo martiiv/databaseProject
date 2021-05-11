@@ -43,7 +43,8 @@ INSERT INTO `address` (`postal_code`, `city_id`, `street_name`, `house_no`, `id`
 (150, 51234, 'Langkaia', 1, 10000),
 (5130, 15422, 'Myrdalsvegen', 22, 10001),
 (6005, 23124, 'Tøffeveien', 35, 10002),
-(3085, 13513, 'Taperveien', 45, 10003);
+(3085, 13513, 'Taperveien', 45, 10003),
+(383, 51234, 'BJØRNERABBEN', 1, 10004);
 
 -- --------------------------------------------------------
 
@@ -330,8 +331,16 @@ CREATE TABLE `production_list` (
 
 INSERT INTO `production_list` (`amount`, `production_plan_start_date`, `production_plan_end_date`, `ski_type_model`) VALUES
 (1500, '2021-04-22', '2021-05-19', 'Active Pro'),
-(1600, '2021-06-18', '2021-07-15', 'Redline'),
-(2000, '2021-08-14', '2021-09-11', 'Race Pro');
+(1900, '2021-04-22', '2021-05-19', 'Race Pro'),
+(2500, '2021-04-22', '2021-05-19', 'Redline'),
+(1000, '2021-06-18', '2021-07-15', 'Redline'),
+(3000, '2021-06-18', '2021-07-15', 'Race Pro'),
+(2005, '2021-08-14', '2021-09-11', 'Active Pro'),
+(2400, '2021-08-14', '2021-09-11', 'Race Pro'),
+(1500, '2021-05-22', '2021-06-17', 'Race Pro'),
+(1600, '2021-07-16', '2021-08-13', 'Redline'),
+(1000, '2021-07-16', '2021-08-13', 'Race Pro'),
+(500, '2021-07-16', '2021-08-13', 'Active Pro');
 
 -- --------------------------------------------------------
 
@@ -351,11 +360,11 @@ CREATE TABLE `production_plan` (
 --
 
 INSERT INTO `production_plan` (`start_date`, `end_date`, `no_of_skis_per_day`, `production_planner_number`) VALUES
-('2021-04-22', '2021-05-19', 1500, 10004),
-('2021-05-22', '2021-06-17', 1400, 10002),
-('2021-06-18', '2021-07-15', 1600, 10002),
-('2021-07-16', '2021-08-13', 1800, 10002),
-('2021-08-14', '2021-09-11', 2000, 10004);
+('2021-04-22', '2021-05-19', 5900, 10004),
+('2021-05-22', '2021-06-17', 1500, 10002),
+('2021-06-18', '2021-07-15', 4000, 10002),
+('2021-07-16', '2021-08-13', 2600, 10002),
+('2021-08-14', '2021-09-11', 4405, 10004);
 
 -- --------------------------------------------------------
 
@@ -385,7 +394,7 @@ CREATE TABLE `shipments` (
                              `shipment_no` int(11) NOT NULL,
                              `customer_name` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL,
                              `pickup_date` date DEFAULT NULL,
-                             `state` tinyint(1) NOT NULL,
+                             `state` tinyint(1) NOT NULL DEFAULT 0,
                              `driver_id` int(11) DEFAULT NULL,
                              `transporter` varchar(100) COLLATE utf8mb4_danish_ci DEFAULT NULL,
                              `address_id` int(11) NOT NULL
@@ -458,15 +467,16 @@ CREATE TABLE `team_skiers` (
                                `customer_id` int(11) NOT NULL,
                                `dob` date NOT NULL,
                                `club` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL,
-                               `no_skies_per_year` int(11) DEFAULT NULL
+                               `no_skies_per_year` int(11) DEFAULT NULL,
+                               `address_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_danish_ci;
 
 --
 -- Dataark for tabell `team_skiers`
 --
 
-INSERT INTO `team_skiers` (`customer_id`, `dob`, `club`, `no_skies_per_year`) VALUES
-(10001, '1995-05-01', 'Gutta', 15);
+INSERT INTO `team_skiers` (`customer_id`, `dob`, `club`, `no_skies_per_year`, `address_id`) VALUES
+(10001, '1995-05-01', 'Gutta', 15, 10004);
 
 -- --------------------------------------------------------
 
@@ -515,14 +525,14 @@ COMMIT;
 --
 ALTER TABLE `address`
     ADD PRIMARY KEY (`id`),
-    ADD KEY `address_ibfk_1` (`city_id`);
+  ADD KEY `address_ibfk_1` (`city_id`);
 
 --
 -- Indexes for table `city`
 --
 ALTER TABLE `city`
     ADD PRIMARY KEY (`city_id`),
-    ADD KEY `city_ibfk_1` (`county_no`);
+  ADD KEY `city_ibfk_1` (`county_no`);
 
 --
 -- Indexes for table `county`
@@ -553,66 +563,66 @@ ALTER TABLE `employees`
 --
 ALTER TABLE `franchises`
     ADD PRIMARY KEY (`customer_id`),
-    ADD KEY `address_id` (`address_id`);
+  ADD KEY `address_id` (`address_id`);
 
 --
 -- Indexes for table `history`
 --
 ALTER TABLE `history`
     ADD PRIMARY KEY (`date`,`order_no`) USING BTREE,
-    ADD KEY `order_no` (`order_no`),
-    ADD KEY `employee_no` (`employee_no`);
+  ADD KEY `order_no` (`order_no`),
+  ADD KEY `employee_no` (`employee_no`);
 
 --
 -- Indexes for table `individual_stores`
 --
 ALTER TABLE `individual_stores`
     ADD PRIMARY KEY (`customer_id`),
-    ADD KEY `address_id` (`address_id`);
+  ADD KEY `address_id` (`address_id`);
 
 --
 -- Indexes for table `items_picked`
 --
 ALTER TABLE `items_picked`
     ADD PRIMARY KEY (`shipment_no`,`product_no`),
-    ADD KEY `product_no` (`product_no`);
+  ADD KEY `product_no` (`product_no`);
 
 --
 -- Indexes for table `orders`
 --
 ALTER TABLE `orders`
     ADD PRIMARY KEY (`order_no`),
-    ADD KEY `shipment_no` (`shipment_no`),
-    ADD KEY `customer_id` (`customer_id`);
+  ADD KEY `shipment_no` (`shipment_no`),
+  ADD KEY `customer_id` (`customer_id`);
 
 --
 -- Indexes for table `order_items`
 --
 ALTER TABLE `order_items`
     ADD PRIMARY KEY (`order_no`,`ski_type`),
-    ADD KEY `ski_type` (`ski_type`),
-    ADD KEY `order_no` (`order_no`);
+  ADD KEY `ski_type` (`ski_type`),
+  ADD KEY `order_no` (`order_no`);
 
 --
 -- Indexes for table `product`
 --
 ALTER TABLE `product`
     ADD PRIMARY KEY (`product_no`),
-    ADD KEY `ski_type` (`ski_type`);
+  ADD KEY `ski_type` (`ski_type`);
 
 --
 -- Indexes for table `production_list`
 --
 ALTER TABLE `production_list`
     ADD PRIMARY KEY (`production_plan_start_date`,`production_plan_end_date`,`ski_type_model`),
-    ADD KEY `ski_type_model` (`ski_type_model`);
+  ADD KEY `ski_type_model` (`ski_type_model`);
 
 --
 -- Indexes for table `production_plan`
 --
 ALTER TABLE `production_plan`
     ADD PRIMARY KEY (`start_date`,`end_date`),
-    ADD KEY `production_planner_number` (`production_planner_number`);
+  ADD KEY `production_planner_number` (`production_planner_number`);
 
 --
 -- Indexes for table `production_planner`
@@ -625,8 +635,8 @@ ALTER TABLE `production_planner`
 --
 ALTER TABLE `shipments`
     ADD PRIMARY KEY (`shipment_no`),
-    ADD KEY `transporter` (`transporter`),
-    ADD KEY `address_id` (`address_id`);
+  ADD KEY `transporter` (`transporter`),
+  ADD KEY `address_id` (`address_id`);
 
 --
 -- Indexes for table `ski_type`
@@ -644,7 +654,8 @@ ALTER TABLE `storekeeper`
 -- Indexes for table `team_skiers`
 --
 ALTER TABLE `team_skiers`
-    ADD PRIMARY KEY (`customer_id`);
+    ADD PRIMARY KEY (`customer_id`),
+  ADD KEY `team_skiers_ibfk_2` (`address_id`);
 
 --
 -- Indexes for table `transporters`
@@ -719,7 +730,7 @@ ALTER TABLE `customer_representative`
 --
 ALTER TABLE `franchises`
     ADD CONSTRAINT `franchises_ibfk_1` FOREIGN KEY (`address_id`) REFERENCES `address` (`id`),
-    ADD CONSTRAINT `franchises_ibfk_2` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `franchises_ibfk_2` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Begrensninger for tabell `history`
@@ -732,28 +743,28 @@ ALTER TABLE `history`
 --
 ALTER TABLE `individual_stores`
     ADD CONSTRAINT `individual_stores_ibfk_1` FOREIGN KEY (`address_id`) REFERENCES `address` (`id`),
-    ADD CONSTRAINT `individual_stores_ibfk_2` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `individual_stores_ibfk_2` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Begrensninger for tabell `items_picked`
 --
 ALTER TABLE `items_picked`
     ADD CONSTRAINT `items_picked_ibfk_1` FOREIGN KEY (`shipment_no`) REFERENCES `shipments` (`shipment_no`) ON DELETE CASCADE,
-    ADD CONSTRAINT `items_picked_ibfk_2` FOREIGN KEY (`product_no`) REFERENCES `product` (`product_no`);
+  ADD CONSTRAINT `items_picked_ibfk_2` FOREIGN KEY (`product_no`) REFERENCES `product` (`product_no`);
 
 --
 -- Begrensninger for tabell `orders`
 --
 ALTER TABLE `orders`
     ADD CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`shipment_no`) REFERENCES `shipments` (`shipment_no`) ON DELETE SET NULL,
-    ADD CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Begrensninger for tabell `order_items`
 --
 ALTER TABLE `order_items`
     ADD CONSTRAINT `order_items_ibfk_2` FOREIGN KEY (`ski_type`) REFERENCES `ski_type` (`model`) ON UPDATE CASCADE,
-    ADD CONSTRAINT `order_items_ibfk_3` FOREIGN KEY (`order_no`) REFERENCES `orders` (`order_no`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `order_items_ibfk_3` FOREIGN KEY (`order_no`) REFERENCES `orders` (`order_no`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Begrensninger for tabell `product`
@@ -766,7 +777,7 @@ ALTER TABLE `product`
 --
 ALTER TABLE `production_list`
     ADD CONSTRAINT `FK_production_period` FOREIGN KEY (`production_plan_start_date`,`production_plan_end_date`) REFERENCES `production_plan` (`start_date`, `end_date`) ON DELETE CASCADE ON UPDATE CASCADE,
-    ADD CONSTRAINT `production_list_ibfk_1` FOREIGN KEY (`ski_type_model`) REFERENCES `ski_type` (`model`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `production_list_ibfk_1` FOREIGN KEY (`ski_type_model`) REFERENCES `ski_type` (`model`) ON UPDATE CASCADE;
 
 --
 -- Begrensninger for tabell `production_plan`
@@ -785,7 +796,7 @@ ALTER TABLE `production_planner`
 --
 ALTER TABLE `shipments`
     ADD CONSTRAINT `shipments_ibfk_1` FOREIGN KEY (`transporter`) REFERENCES `transporters` (`name`) ON DELETE SET NULL ON UPDATE CASCADE,
-    ADD CONSTRAINT `shipments_ibfk_2` FOREIGN KEY (`address_id`) REFERENCES `address` (`id`) ON UPDATE CASCADE;
+  ADD CONSTRAINT `shipments_ibfk_2` FOREIGN KEY (`address_id`) REFERENCES `address` (`id`) ON UPDATE CASCADE;
 
 --
 -- Begrensninger for tabell `storekeeper`
@@ -797,7 +808,8 @@ ALTER TABLE `storekeeper`
 -- Begrensninger for tabell `team_skiers`
 --
 ALTER TABLE `team_skiers`
-    ADD CONSTRAINT `team_skiers_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+    ADD CONSTRAINT `team_skiers_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `team_skiers_ibfk_2` FOREIGN KEY (`address_id`) REFERENCES `address` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

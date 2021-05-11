@@ -21,7 +21,7 @@ modules:
         waitlock: 10
         initial_queries:
           - 'CREATE DATABASE IF NOT EXISTS assignment_project;'
-          - 'USE temp_db;'
+          - 'USE assignment_project;'
           - 'SET NAMES utf8;'
 
     - \Helper\Functional

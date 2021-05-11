@@ -225,9 +225,9 @@ CREATE TABLE `production_planner` (
 
 CREATE TABLE `shipments` (
   `shipment_no` int(11) NOT NULL,
-  `store_franchise_name` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL,
+  `customer_name` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL,
   `pickup_date` date DEFAULT NULL,
-  `state` tinyint(1) NOT NULL,
+  `state` tinyint(1) NOT NULL DEFAULT 0,
   `driver_id` int(11) DEFAULT NULL,
   `transporter` varchar(100) COLLATE utf8mb4_danish_ci DEFAULT NULL,
   `address_id` int(11) NOT NULL
@@ -272,7 +272,8 @@ CREATE TABLE `team_skiers` (
   `customer_id` int(11) NOT NULL,
   `dob` date NOT NULL,
   `club` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL,
-  `no_skies_per_year` int(11) DEFAULT NULL
+  `no_skies_per_year` int(11) DEFAULT NULL,
+  `address_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_danish_ci;
 
 -- --------------------------------------------------------
@@ -433,7 +434,8 @@ ALTER TABLE `storekeeper`
 -- Indexes for table `team_skiers`
 --
 ALTER TABLE `team_skiers`
-  ADD PRIMARY KEY (`customer_id`);
+  ADD PRIMARY KEY (`customer_id`),
+  ADD KEY `team_skiers_ibfk_2` (`address_id`);
 
 --
 -- Indexes for table `transporters`
@@ -586,7 +588,8 @@ ALTER TABLE `storekeeper`
 -- Begrensninger for tabell `team_skiers`
 --
 ALTER TABLE `team_skiers`
-  ADD CONSTRAINT `team_skiers_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `team_skiers_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `team_skiers_ibfk_2` FOREIGN KEY (`address_id`) REFERENCES `address` (`id`);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
