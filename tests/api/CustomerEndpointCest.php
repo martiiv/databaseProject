@@ -9,7 +9,7 @@ require_once 'Authorisation.php';
  *      getSpecificOrder()  DONE For getting an order with state information
  *      placeOrder()        DONE Place an order
  *      cancelOrder()       DONE Delete an order
- *      splitOrder()        TODO Request a split order
+ *      splitOrder()        TODO Request a split order NOT IMPLEMENTED
  *      getPlanSummary()    DONE Get production summary
  * @date    07.05.2021
  * @version 0.6
@@ -127,7 +127,6 @@ class CustomerEndpointCest
             'Race Pro' => 'integer',
             'Redline' => 'integer',
         ]);
-
         $I->seeResponseContainsJson(["Active Pro" => 2505, "Race Pro" => 7900, "Redline" => 2600]);
     }
 }
