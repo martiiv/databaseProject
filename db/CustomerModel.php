@@ -80,8 +80,9 @@ class CustomerModel extends DB
         return $res;
     }
 
-    function deleteResource(int $id): string
+    function deleteResource(int $id): bool
     {
+        $deleted = false;
         $this->db->beginTransaction();
 
         $query = 'DELETE FROM customers WHERE id = (:id)';
@@ -93,8 +94,8 @@ class CustomerModel extends DB
         $this->db->commit();
 
         if ($this->getResource($id) == null) {
-            return 0;
+            $deleted = true;
         }
-        return 1;
+        return $deleted;
     }
 }
