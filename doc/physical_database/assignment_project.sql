@@ -225,9 +225,9 @@ CREATE TABLE `production_planner` (
 
 CREATE TABLE `shipments` (
   `shipment_no` int(11) NOT NULL,
-  `store_franchise_name` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL,
+  `customer_name` varchar(100) COLLATE utf8mb4_danish_ci NOT NULL,
   `pickup_date` date DEFAULT NULL,
-  `state` tinyint(1) NOT NULL,
+  `state` tinyint(1) NOT NULL DEFAULT 0,
   `driver_id` int(11) DEFAULT NULL,
   `transporter` varchar(100) COLLATE utf8mb4_danish_ci DEFAULT NULL,
   `address_id` int(11) NOT NULL
