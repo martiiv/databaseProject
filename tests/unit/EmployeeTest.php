@@ -78,10 +78,10 @@ class EmployeeTest extends \Codeception\Test\Unit
     public function testDeleteResource()
     {
         $id = 7;
-        $idTemp = "Successfully deleted employee with employee number: " . strval($id) . ".";
+        $deletedTemp = true;
 
         $employeeHandler = new EmployeeHandler();
         $deletedEmployee = $employeeHandler->deleteResource($id);
-        $this->assertEquals($deletedEmployee, $idTemp);
+        $this->assertEquals($deletedEmployee, $deletedTemp);
     }
 }
