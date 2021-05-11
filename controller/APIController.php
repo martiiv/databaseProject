@@ -21,37 +21,57 @@ class APIController
      * @param string $endpointPath the request endpoint
      * @throws APIException with the code set to HTTP_FORBIDDEN if the token is not valid
      */
-    public function authorise(string $token)
+    public function authorise(string $token): string
     {
-        if (!(new AuthorisationModel())->isValid($token)) {
+        if ($token == "") return RESTConstants::ENDPOINT_PUBLIC;
+
+        $user = (new AuthorisationModel())->isValid($token);
+        if ($user == "") {
             throw new APIException(RESTConstants::HTTP_FORBIDDEN, "");
         }
+        return $user;
     }
 
 
     public function handleRequest(array $uri, string $requestMethod,
-                                  array $queries, array $payload): array
+                                  array $queries, array $payload, string $user): array
     {
-        switch ($uri[0]) {
+        $endpointURL = strtolower($uri[0]);
+        switch ($endpointURL) {
             case RESTConstants::ENDPOINT_CUSTOMER:
+                $this->checkUser($user, $endpointURL);
                 $endpoint = new CustomerEndpoint();
                 break;
             case RESTConstants::ENDPOINT_STOREKEEPER:
+                $this->checkUser($user, $endpointURL);
                 $endpoint = new StorekeeperEndpoint();
                 break;
             case RESTConstants::ENDPOINT_PRODUCTION_PLANNER:
+                $this->checkUser($user, $endpointURL);
                 $endpoint = new ProductionPlannerEndpoint();
                 break;
             case RESTConstants::ENDPOINT_CUSTOMER_REP:
+                $this->checkUser($user, $endpointURL);
                 $endpoint = new CustomerRepEndpoint();
                 break;
             case RESTConstants::ENDPOINT_TRANSPORTER:
+                $this->checkUser($user, $endpointURL);
                 $endpoint = new TransporterEndpoint();
                 break;
             case RESTConstants::ENDPOINT_PUBLIC:
+                $this->checkUser($user, $endpointURL);
                 $endpoint = new PublicEndpoint();
                 break;
         }
         return $endpoint->handleRequest(array_slice($uri, 1), $requestMethod, $queries, $payload);
+    }
+
+    private function checkUser(string $user, string $endpoint)
+    {
+        if ($user != $endpoint) {
+            if ($user != "root") {
+                throw new APIException(RESTConstants::HTTP_FORBIDDEN, "");
+            }
+        }
     }
 }

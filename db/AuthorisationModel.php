@@ -14,10 +14,10 @@ class AuthorisationModel extends DB
     /**
      * A simple authorisation mechanism - just checking that the token matches the one in the database
      * @param string $token
-     * @return bool indicating whether the token was successfully verified
+     * @return string indicating whether the token was successfully verified
      */
-    public function isValid(string $token): bool {
-        $query = 'SELECT COUNT(*) FROM auth_token WHERE token = :token';
+    public function isValid(string $token): string {
+        $query = 'SELECT user FROM auth_token WHERE token = :token';
 
         $stmt = $this->db->prepare($query);
         $stmt->bindValue(':token', $token);
@@ -26,9 +26,9 @@ class AuthorisationModel extends DB
         $row = $stmt->fetch(PDO::FETCH_NUM);
 
         if ($row[0] == 0) {
-            return false;
+            return "";
         } else {
-            return true;
+            return $row[0];
         }
     }
 }
