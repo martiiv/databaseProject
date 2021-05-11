@@ -107,9 +107,9 @@ class EmployeeModel extends DB
     /**
      * Delete an employee from the system
      * @param int $id the employee_no of employee to be deleted
-     * @return string
+     * @return bool
      */
-    function deleteResource(int $id): string
+    function deleteResource(int $id): bool
     {
         $this->db->beginTransaction();
 
