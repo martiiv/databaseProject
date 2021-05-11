@@ -3,6 +3,7 @@ require_once 'db/OrderModel.php';
 require_once 'db/ShipmentModel.php';
 require_once 'db/SkiModel.php';
 require_once 'db/OrderItemsModel.php';
+require_once 'db/ProductionPlanModel.php';
 
 
 class CustomerEndpoint
@@ -25,7 +26,8 @@ class CustomerEndpoint
                 return $this->handleDeleteRequest($uri);
             case RESTConstants::METHOD_POST:
                 return $this->handlePostRequest($uri, $payload);
-            default: throw new APIException(RESTConstants::HTTP_NOT_IMPLEMENTED, $requestMethod);
+            default:
+                throw new APIException(RESTConstants::HTTP_NOT_IMPLEMENTED, $requestMethod);
         }
     }
 
@@ -38,7 +40,6 @@ class CustomerEndpoint
     private function handleGetRequest($uri): array
     {
         $res = array();
-        $model = null;
         switch ($uri[0]) {
             case "order":
                 $model = new OrderModel();
@@ -47,9 +48,30 @@ class CustomerEndpoint
                 } elseif (count($uri) == 3) {
                     $res['result'] = $model->getResource($uri[2]);
                 }
-                $res['status'] =  RESTConstants::HTTP_OK;
+                $res['status'] = RESTConstants::HTTP_OK;
+                break;
+
             case "production":
-                //TODO: Return production plan
+
+                $ski_model_list = array();
+                $summary = array();
+                $model = new ProductionPlanModel();
+                $dates= $model->getDates();
+
+                foreach ($dates as $date){
+                    $ski_model_list[] = $model->getSki_models($date['start_date']);
+                }
+
+                foreach ($ski_model_list as $ski_model){
+                    foreach ($ski_model as $ski){
+                        if(!array_key_exists($ski['ski_type_model'], $summary)){
+                            $summary[$ski['ski_type_model']] = 0;
+                        }
+                        $summary[$ski['ski_type_model']] += $ski['amount'];
+                    }
+                }
+                $res['result'] = $summary;
+                $res['status'] = RESTConstants::HTTP_OK;
         }
         return $res;
     }
@@ -79,8 +101,7 @@ class CustomerEndpoint
             $res['result'] = $uri[3] . " canceled";
             $res['status'] = RESTConstants::HTTP_OK;
             return $res;
-        }
-        else {
+        } else {
             //TODO Throw exception
         }
     }
@@ -118,7 +139,7 @@ class CustomerEndpoint
 
             // Get total price
             foreach ($skis as $skitype => $ski) {
-                $filter['total_price'] += ((int) $ski['retail_price']) * ((int) $data[$skitype]);
+                $filter['total_price'] += ((int)$ski['retail_price']) * ((int)$data[$skitype]);
             }
 
             $order_no = (new OrderModel())->createResource($filter);

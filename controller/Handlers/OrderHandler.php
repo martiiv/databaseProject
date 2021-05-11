@@ -26,7 +26,7 @@ class OrderHandler
 
     }
 
-    public function deleteResource(int $id): ?string
+    public function deleteResource(int $id): ?bool
     {
         return (new OrderModel())->deleteResource($id);
     }

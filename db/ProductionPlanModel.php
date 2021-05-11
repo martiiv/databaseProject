@@ -40,4 +40,37 @@ class ProductionPlanModel extends DB
         $stmt->execute();
         $this->db->commit();
     }
+
+    /**
+     * Function getSummary, will select all entries from the production list
+     * Getting the entire list of skis up for production
+     * @return array
+     */
+    function getDates(): array
+    {
+        $res = array();
+        $this->db->beginTransaction();
+        $query = 'SELECT start_date FROM production_plan ORDER BY start_date DESC LIMIT 4';
+        $stmt = $this->db->prepare($query);
+        $stmt->execute();
+        $this->db->commit();
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $res[] = $row;
+        }
+        return $res;
+    }
+
+    function getSki_models(string $date){
+        $res = array();
+        $this->db->beginTransaction();
+        $query = 'SELECT amount, ski_type_model FROM production_list WHERE production_plan_start_date = :date';
+        $stmt = $this->db->prepare($query);
+        $stmt->bindValue(':date', $date);
+        $stmt->execute();
+        $this->db->commit();
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $res[] = $row;
+        }
+        return $res;
+    }
 }
