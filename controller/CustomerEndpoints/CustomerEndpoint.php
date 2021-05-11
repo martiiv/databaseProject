@@ -3,6 +3,7 @@ require_once 'db/OrderModel.php';
 require_once 'db/ShipmentModel.php';
 require_once 'db/SkiModel.php';
 require_once 'db/OrderItemsModel.php';
+require_once 'db/ProductionPlanModel.php';
 
 
 class CustomerEndpoint
@@ -25,7 +26,8 @@ class CustomerEndpoint
                 return $this->handleDeleteRequest($uri);
             case RESTConstants::METHOD_POST:
                 return $this->handlePostRequest($uri, $payload);
-            default: throw new APIException(RESTConstants::HTTP_NOT_IMPLEMENTED, $requestMethod);
+            default:
+                throw new APIException(RESTConstants::HTTP_NOT_IMPLEMENTED, $requestMethod);
         }
     }
 
@@ -38,6 +40,7 @@ class CustomerEndpoint
     private function handleGetRequest($uri): array
     {
         $res = array();
+        $summary = array();
         $model = null;
         switch ($uri[0]) {
             case "order":
@@ -47,9 +50,11 @@ class CustomerEndpoint
                 } elseif (count($uri) == 3) {
                     $res['result'] = $model->getResource($uri[2]);
                 }
-                $res['status'] =  RESTConstants::HTTP_OK;
+                $res['status'] = RESTConstants::HTTP_OK;
+                break;
             case "production":
-                //TODO: Return production plan
+                $model = new ProductionPlanModel();
+                $res['result'] = $model->getSummary();
         }
         return $res;
     }
@@ -79,8 +84,7 @@ class CustomerEndpoint
             $res['result'] = $uri[3] . " canceled";
             $res['status'] = RESTConstants::HTTP_OK;
             return $res;
-        }
-        else {
+        } else {
             //TODO Throw exception
         }
     }
@@ -118,7 +122,7 @@ class CustomerEndpoint
 
             // Get total price
             foreach ($skis as $skitype => $ski) {
-                $filter['total_price'] += ((int) $ski['retail_price']) * ((int) $data[$skitype]);
+                $filter['total_price'] += ((int)$ski['retail_price']) * ((int)$data[$skitype]);
             }
 
             $order_no = (new OrderModel())->createResource($filter);
