@@ -8,7 +8,7 @@ require_once 'Authorisation.php';
  *                  testGetOrderNew()           DONE Get order on state
  *                  testChangeStateOpen         DONE Change to open
  *                  testChangeStateAvailable    DONE Change to available
- *                  testCreateShipment          TODO Create shipment
+ *                  testCreateShipment          TODO Create shipment DID NOT IMPLEMENT
  *      Storekeeper:
  *                  testCreateSki               DONE Create product
  *                  testChangeStateReady        DONE Change to ready
@@ -16,8 +16,6 @@ require_once 'Authorisation.php';
  *      Production Planner:
  *                  testUploadPlan              DONE Upload production plan
  *
- * Minor improvements: TODO Check for same date testUploadPlan
- *                     TODO Check if correct state change for each endpoint
  * @date 04.05.2021
  * @version 0.6
  */
