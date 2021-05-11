@@ -1,4 +1,4 @@
--- phpMyAdmin SQL Dump
+ -- phpMyAdmin SQL Dump
 -- version 5.0.4
 -- https://www.phpmyadmin.net/
 --
@@ -70,6 +70,17 @@ CREATE TABLE `customers` (
   `start_date` date NOT NULL,
   `end_date` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_danish_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Erstatningsstruktur for visning `customer_address`
+-- (See below for the actual view)
+--
+CREATE TABLE `customer_address` (
+`customer_id` int(11)
+,`address_id` int(11)
+);
 
 -- --------------------------------------------------------
 
@@ -298,6 +309,13 @@ CREATE TABLE `auth_token` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_danish_ci;
 
 -- --------------------------------------------------------
+
+--
+-- Visningsstruktur `customer_address`
+--
+DROP TABLE IF EXISTS `customer_address`;
+
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `customer_address`  AS ( SELECT customer_id, address_id FROM franchises UNION ALL SELECT customer_id, address_id FROM individual_stores UNION ALL SELECT customer_id, address_id FROM team_skiers );
 
 --
 -- Indexes for dumped tables
