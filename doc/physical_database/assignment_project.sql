@@ -289,12 +289,15 @@ CREATE TABLE `transporters` (
 -- --------------------------------------------------------
 
 --
--- Dataark for tabell `auth_token`
+-- Tabellstruktur for tabell `auth_token`
 --
 
-INSERT INTO `auth_token` (`token`) VALUES
-('EENV2yeVpGZCT8eCKxWh19fz9SZ4bA1Wh19GGkoQd4T8bHYtALHoQB6f82qqMxoh');
-COMMIT;
+CREATE TABLE `auth_token` (
+  `user` varchar(255) COLLATE utf8mb4_danish_ci NOT NULL,
+  `token` char(64) COLLATE utf8mb4_danish_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_danish_ci;
+
+-- --------------------------------------------------------
 
 --
 -- Indexes for dumped tables
@@ -442,6 +445,13 @@ ALTER TABLE `team_skiers`
 --
 ALTER TABLE `transporters`
   ADD PRIMARY KEY (`name`);
+
+--
+-- Indexes for table `auth_token`
+--
+ALTER TABLE `auth_token`
+  ADD UNIQUE KEY `token` (`token`);
+COMMIT;
 
 --
 -- AUTO_INCREMENT for dumped tables
