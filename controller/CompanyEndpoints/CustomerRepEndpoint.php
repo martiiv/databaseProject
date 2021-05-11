@@ -131,7 +131,7 @@ class CustomerRepEndpoint
         // Get customer info
         $order = (new OrderModel())->getResource($orderId);
         $customerID = $order[0]['customer_id'];
-        $customer = (new CustomerModel())->getResource($customerID);
+        $customer = (new CustomerModel())->getAddress($customerID);
 
         // Set info
         $customerName = $customer[0]['name'];

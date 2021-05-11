@@ -114,17 +114,6 @@ INSERT INTO `customers` (`id`, `name`, `start_date`, `end_date`) VALUES
 -- --------------------------------------------------------
 
 --
--- Erstatningsstruktur for visning `customer_address`
--- (See below for the actual view)
---
-CREATE TABLE `customer_address` (
-`customer_id` int(11)
-,`address_id` int(11)
-);
-
--- --------------------------------------------------------
-
---
 -- Tabellstruktur for tabell `customer_representative`
 --
 
@@ -538,9 +527,9 @@ INSERT INTO `auth_token` (`user`, `token`) VALUES
 -- Visningsstruktur `customer_address`
 --
 DROP TABLE IF EXISTS `customer_address`;
+CREATE VIEW `customer_address`  AS ( SELECT customer_id, address_id FROM franchises UNION ALL SELECT customer_id, address_id FROM individual_stores UNION ALL SELECT customer_id, address_id FROM team_skiers );
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `customer_address`  AS ( SELECT customer_id, address_id FROM franchises UNION ALL SELECT customer_id, address_id FROM individual_stores UNION ALL SELECT customer_id, address_id FROM team_skiers );
-
+-- --------------------------------------------------------
 --
 -- Indexes for dumped tables
 --

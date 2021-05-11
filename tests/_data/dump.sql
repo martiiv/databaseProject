@@ -521,6 +521,8 @@ INSERT INTO `auth_token` (`user`, `token`) VALUES
 ('root', 'c9caceea4162fdad403fbdf926ebc9ebf6b9f37688fbb051c15913cc3058c739'),
 ('transporter', 'e49c8c771ee7409bd66ecc573ff7741d94e6f0c922e88bb21fe0abe6f418beda');
 
+
+-- --------------------------------------------------------
 --
 -- Indexes for dumped tables
 --
