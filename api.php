@@ -14,10 +14,12 @@ if (!isset($queries['request'])) {
     return;
 }
 
+// Gets the URI's - puts them into an array
 $uri = explode('/', $queries['request']);
 unset($queries['request']);
 $requestMethod = $_SERVER['REQUEST_METHOD'];
 
+// Gets the body of the request
 $content = file_get_contents('php://input');
 if (strlen($content) > 0) {
     $payload = json_decode($content, true);
@@ -25,6 +27,7 @@ if (strlen($content) > 0) {
     $payload = array();
 }
 
+// Checks if there is a cookie with name "auth_token"
 $token = isset($_COOKIE['auth_token']) ? $_COOKIE['auth_token'] : '';
 
 // Handle the request
