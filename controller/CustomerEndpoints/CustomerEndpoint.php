@@ -6,18 +6,21 @@ require_once 'db/OrderItemsModel.php';
 require_once 'db/ProductionPlanModel.php';
 
 
+/**
+ * Class CustomerEndpoint is responsible for providing the customer with functionality to create, get and delete an order.
+ */
 class CustomerEndpoint
 {
     /**
-     * This method will forward the request based on requestMethod.
-     * @param $uri
-     * @param $requestMethod
-     * @param $queries
-     * @param $payload
-     * @return array
+     * Handler for the customer endpoint
+     * @param array $uri list of input parameters
+     * @param string $requestMethod method requested like GET, POST, PUT....
+     * @param array $queries included in the uri, i.e. ?state=state
+     * @param array $payload of the request
+     * @return array results
      * @throws APIException
      */
-    public function handleRequest($uri, $requestMethod, $queries, $payload): array
+    public function handleRequest(array $uri, string $requestMethod, array $queries, array $payload): array
     {
         return match ($requestMethod) {
             RESTConstants::METHOD_GET => $this->handleGetRequest($uri, $requestMethod),
@@ -29,10 +32,12 @@ class CustomerEndpoint
 
     /**
      * This method will forward all get requests from customer
-     * @param $uri list of input parameters
+     * @param array $uri list of input parameters
+     * @param string $requestMethod method requested like GET, POST, PUT....
      * @return array List of order(s)
+     * @throws APIException
      */
-    private function handleGetRequest($uri, $requestMethod): array
+    private function handleGetRequest(array $uri, string $requestMethod): array
     {
         return match ($uri[0]) {
             "order" => $this->getOrder($uri),
@@ -43,10 +48,10 @@ class CustomerEndpoint
 
     /**
      * GET Order -> will return all orders, all orders from one customer or one order given an id.
-     * @param $uri list of input parameters
+     * @param array $uri list of input parameters
      * @return array results
      */
-    private function getOrder($uri)
+    private function getOrder(array $uri)
     {
         $model = new OrderModel();
         if (count($uri) == 2) {
@@ -62,23 +67,22 @@ class CustomerEndpoint
 
     /**
      * This method will return a list of skies to be produced. Will include model and amount.
-     * @param $uri list of input parameters
      * @return array results
      */
-    private function getProductionPlanSummary()
+    private function getProductionPlanSummary(): array
     {
         $ski_model_list = array();
         $summary = array();
         $model = new ProductionPlanModel();
-        $dates= $model->getDates();
+        $dates = $model->getDates();
 
-        foreach ($dates as $date){
+        foreach ($dates as $date) {
             $ski_model_list[] = $model->getSki_models($date['start_date']);
         }
 
-        foreach ($ski_model_list as $ski_model){
-            foreach ($ski_model as $ski){
-                if(!array_key_exists($ski['ski_type_model'], $summary)){
+        foreach ($ski_model_list as $ski_model) {
+            foreach ($ski_model as $ski) {
+                if (!array_key_exists($ski['ski_type_model'], $summary)) {
                     $summary[$ski['ski_type_model']] = 0;
                 }
                 $summary[$ski['ski_type_model']] += $ski['amount'];
@@ -94,17 +98,17 @@ class CustomerEndpoint
     /**
      * This method will delete an order.
      * It will essentially set status to canceled and delete shipment if ordered.
-     * @param $uri list of input parameters
+     * @param array $uri list of input parameters
      * @return array confirmation
      */
-    private function handleDeleteRequest($uri)
+    private function handleDeleteRequest(array $uri): array
     {
         if ($uri[0] == "order" && count($uri) == 4) {
 
             $resource = array();
             $resource['order_no'] = $uri[3];
             $resource['status'] = "canceled";
-            if ((new OrderModel())->updateResource($resource))  {
+            if ((new OrderModel())->updateResource($resource)) {
                 // Get order details
                 $order = (new OrderModel())->getResource($resource['order_no']);
                 $shipmentId = $order[0]['shipment_no'];
@@ -125,12 +129,12 @@ class CustomerEndpoint
     /**
      * Add a new order with skies to the database.
      *
-     * @param $uri
-     * @param $payload order info with ski model and amount, e.g.: {"Active":2, "Intrasonic":4}
+     * @param array $uri
+     * @param arrau $payload order info with ski model and amount, e.g.: {"Active":2, "Intrasonic":4}
      * @return array Info about skies added
      * @throws APIException
      */
-    private function handlePostRequest($uri, $payload): array
+    private function handlePostRequest(array $uri, arrau $payload): array
     {
         if ($uri[0] == "order" && $uri[1] == "place" && count($uri) == 3) {
             $model = new SkiModel();

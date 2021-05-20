@@ -2,18 +2,23 @@
 require_once 'db/OrderModel.php';
 require_once 'db/ShipmentModel.php';
 
+
+/**
+ * Class TransporterEndpoint is responsible for providing the transporters a way to retrieve all orders
+ * that are waiting to be picked up, and a way to update an order when it has been picked up.
+ */
 class TransporterEndpoint
 {
     /**
-     * This method will forward the request based on requestMethod.
-     * @param $uri
-     * @param $requestMethod
-     * @param $queries
-     * @param $payload
-     * @return array
+     * Handler for the transporter endpoint
+     * @param array $uri list of input parameters
+     * @param string $requestMethod method requested like GET, POST, PUT....
+     * @param array $queries included in the uri, i.e. ?state=state
+     * @param array $payload of the request
+     * @return array results
      * @throws APIException
      */
-    public function handleRequest($uri, $requestMethod, $queries, $payload): array
+    public function handleRequest(array $uri, string $requestMethod, array $queries, array $payload): array
     {
         return match ($requestMethod) {
             RESTConstants::METHOD_GET => $this->handleGetRequest($uri),
@@ -25,10 +30,10 @@ class TransporterEndpoint
     /**
      * This method will handler all get requests from customer:
      *  GET Order -> will return all orders, all orders from one customer or one order given an id.
-     * @param $uri list of input parameters
+     * @param array $uri of input parameters
      * @return array List of order(s)
      */
-    private function handleGetRequest($uri): array
+    private function handleGetRequest(array $uri): array
     {
         if ($uri[0] == "orders" && sizeof($uri) == 1) {
 
@@ -42,10 +47,17 @@ class TransporterEndpoint
         }
     }
 
-    private function handlePutRequest($uri): array{
-        if($uri[0] == 'pickup' && sizeof($uri) == 2){
+    /**
+     * This method handles all the PUT requests made in the transporter endpoint.
+     * In this case, update an order with pickup date and changes the status
+     * @param array $uri of input parameters
+     * @return array with results: The shipment
+     */
+    private function handlePutRequest(array $uri): array
+    {
+        if ($uri[0] == 'pickup' && sizeof($uri) == 2) {
             $shipment_no = $uri[1];
-            $shipment = (new ShipmentModel())->updateResource(['pickup_date'=>date("Y/m/d"),'state'=> 1],'',$shipment_no);
+            $shipment = (new ShipmentModel())->updateResource(['pickup_date' => date("Y/m/d"), 'state' => 1], '', $shipment_no);
             $res['result'] = $shipment;
             $res['status'] = RESTConstants::HTTP_OK;
             return $res;

@@ -1,5 +1,7 @@
 <?php
 
+use JetBrains\PhpStorm\Pure;
+
 /**
  * Class APIException an exception class thrown whenever the request could not be successfully handled by the API.
  */
@@ -15,7 +17,7 @@ class APIException extends Exception
      */
     protected $detailCode;
 
-    public function __construct($code, $instance, $detailCode = -1, $message = "", Throwable $previous = null)
+    #[Pure] public function __construct($code, $instance, $detailCode = -1, $message = "", Throwable $previous = null)
     {
         parent::__construct($message, $code, $previous);
         $this->instance = $instance;

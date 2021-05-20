@@ -3,12 +3,24 @@ require_once 'db/OrderModel.php';
 require_once 'db/ShipmentModel.php';
 require_once 'db/SkiModel.php';
 require_once 'db/ProductModel.php';
-require_once 'controller/handlers/ProductHandler.php';
 require_once 'CustomerRepEndpoint.php';
 
+
+/**
+ * Class StorekeeperEndpoint is responsible for providing everything that a storekeeper needs, for instance:
+ * - update an order's state
+ */
 class StorekeeperEndpoint
 {
-    public function handleRequest($uri, $requestMethod, $queries, $payload): array
+    /**
+     * Handler for the storekeeper endpoint
+     * @param array $uri list of input parameters
+     * @param string $requestMethod method requested like GET, POST, PUT....
+     * @param array $queries included in the uri, i.e. ?state=state
+     * @param array $payload of the request
+     * @return array results
+     */
+    public function handleRequest(array $uri, string $requestMethod, array $queries, array $payload): array
     {
         switch ($requestMethod) {
             case RESTConstants::METHOD_GET:
@@ -27,8 +39,12 @@ class StorekeeperEndpoint
     /**
      * Function HandleGet taken from CustomerRepEndpoint
      * Used to get orders with skis available state
+     * @param array $uri of input parameters
+     * @param array $queries array of queries included in the uri, i.e. ?state=state
+     * @return array
      */
-    private function handleGet($uri, $queries): array{
+    private function handleGet(array $uri, array $queries): array
+    {
         if ($uri[0] == "order" && sizeof($queries) == 1) {
             //get state
             $state = $queries['state'];
@@ -46,12 +62,10 @@ class StorekeeperEndpoint
     /**
      * Function handleUpdate from CustomerRepEndpoint
      * Used to change order state according to project case
-     * @param $uri
-     * @param $queries
-     * @param $payload
+     * @param array $uri of input parameters
      * @return array
      */
-    private function handleUpdate($uri): array
+    private function handleUpdate(array $uri): array
     {
         $update = new CustomerRepEndpoint();
         if ($uri[0] == "order" && sizeof($uri) == 3) {
@@ -70,11 +84,11 @@ class StorekeeperEndpoint
      * Method for creating 'Finished' products
      * http://localhost/dbproject-33/storekeeper/ski
      *
-     * @param $uri /ski : The url passed into the function
-     * @param $payload /{model:amount,model:amount...} The body passed in structure ski_type model name and amount
+     * @param array $uri of input parameters
+     * @param body $payload /{model:amount,model:amount...} The body passed in structure ski_type model name and amount
      * @return array Returns the produced skis with product number and production date
      */
-    private function handleCreateSki($uri, $payload): array
+    private function handleCreateSki(array $uri, body $payload): array
     {
         if ($uri[0] == "ski" && count($uri) == 1) {
             $json = json_encode($payload);
@@ -93,7 +107,7 @@ class StorekeeperEndpoint
                         'amount' => intval($entry)
                     );
 
-                    $temp = (new ProductHandler())->createResource($filter);
+                    $temp = (new ProductModel)->createResource($filter);
                     $products = array_merge($products, $temp);
                 }
             }

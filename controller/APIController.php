@@ -10,8 +10,8 @@ require_once 'db/AuthorisationModel.php';
 require_once 'errors.php';
 
 /**
- * Class APIController this is the main controller for the API - it is just a dispatcher forwarding the requests to
- *       the DealersEndpoint, UsedCarsEndpoint, or ReportController depending on the what endpoint is addressed
+ * Class APIController this is the main controller for the API - it is just a dispatcher forwarding the requests to the different endpoints.
+ * It will also check if the user trying to access the endpoint has the appropriate authentication level.
  */
 class APIController
 {
@@ -19,7 +19,7 @@ class APIController
      * Verifies that the request contains a valid authorisation token. The authorisation scheme is quite simple -
      * assuming that there is only one authorisation token for the complete API
      * @param string $token the authorisation token to be verified
-     * @param string $endpointPath the request endpoint
+     * @return string authentication level / endpoint access
      * @throws APIException with the code set to HTTP_FORBIDDEN if the token is not valid
      */
     public function authorise(string $token): string
@@ -33,7 +33,16 @@ class APIController
         return $user;
     }
 
-
+    /**
+     * Forwards the requests to the correct endpoints.
+     * @param array $uri list of input parameters
+     * @param string $requestMethod method requested like GET, POST, PUT....
+     * @param array $queries included in the uri, i.e. ?state=state
+     * @param array $payload of the request
+     * @param string $user authentication level / endpoint access
+     * @return array results
+     * @throws APIException
+     */
     public function handleRequest(array $uri, string $requestMethod,
                                   array $queries, array $payload, string $user): array
     {
@@ -63,10 +72,17 @@ class APIController
                 $this->checkUser($user, $endpointURL);
                 $endpoint = new PublicEndpoint();
                 break;
+            default: //Throw exception
         }
         return $endpoint->handleRequest(array_slice($uri, 1), $requestMethod, $queries, $payload);
     }
 
+    /**
+     * This method will check if the user has the right access to use the endpoint.
+     * @param string $user authentication level / endpoint access
+     * @param string $endpoint endpoints
+     * @throws APIException
+     */
     private function checkUser(string $user, string $endpoint)
     {
         if ($user != $endpoint) {

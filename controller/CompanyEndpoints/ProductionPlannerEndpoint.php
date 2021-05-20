@@ -3,9 +3,21 @@ require_once 'db/SkiModel.php';
 require_once 'db/ProductionPlanModel.php';
 
 
+/**
+ * Class ProductionPlannerEndpoint is responsible to provide the production planner with functionality to create a production plan.
+ */
 class ProductionPlannerEndpoint
 {
-    public function handleRequest($uri, $requestMethod, $queries, $payload): array
+    /**
+     * Handler for the production-plan endpoint
+     * @param $uri array list of input parameters
+     * @param $requestMethod string method requested like GET, POST, PUT....
+     * @param $queries array included in the uri, i.e. ?state=state
+     * @param $payload body of the request
+     * @return array results
+     * @throws APIException
+     */
+    public function handleRequest(array $uri, string $requestMethod, array $queries, body $payload): array
     {
         return match ($requestMethod) {
             RESTConstants::METHOD_POST => $this->handlePostRequest($uri, $payload),
@@ -27,12 +39,12 @@ class ProductionPlannerEndpoint
             "Endurance" : 5,
             "Race Pro" : 4
         }]
-     * @param $uri list of input parameters
-     * @param $payload All the info needed to register a prodcution plan
+     * @param $uri array of input parameters
+     * @param $payload body with info needed to register a production plan
      * @return array registered production plan
      * @throws APIException
      */
-    private function handlePostRequest($uri, $payload): array
+    private function handlePostRequest(array $uri, body $payload): array
     {
         if ($uri[0] == "plan" && count($uri) == 1) {
             $noSkies = 0;
@@ -65,8 +77,6 @@ class ProductionPlannerEndpoint
             }
 
             // TODO: Check that there is no existing plan in this timespan
-
-
 
 
             // Check that all the skies are valid (ski model exist)
