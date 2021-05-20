@@ -521,6 +521,13 @@ INSERT INTO `auth_token` (`user`, `token`) VALUES
 ('root', 'c9caceea4162fdad403fbdf926ebc9ebf6b9f37688fbb051c15913cc3058c739'),
 ('transporter', 'e49c8c771ee7409bd66ecc573ff7741d94e6f0c922e88bb21fe0abe6f418beda');
 
+-- --------------------------------------------------------
+
+--
+-- Visningsstruktur `customer_address`
+--
+DROP VIEW IF EXISTS `customer_address`;
+CREATE VIEW `customer_address`  AS ( SELECT customer_id, address_id FROM franchises UNION ALL SELECT customer_id, address_id FROM individual_stores UNION ALL SELECT customer_id, address_id FROM team_skiers );
 
 -- --------------------------------------------------------
 --

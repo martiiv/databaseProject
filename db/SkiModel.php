@@ -25,7 +25,7 @@ class SkiModel extends DB
      * @param array $resource the array containing the fields for the entity
      * @return array The created entity of type Ski_type
      */
-    public function createSkiType(array $resource): array
+    public function createResource(array $resource): array
     {
         $this->db->beginTransaction();
         $query =
@@ -89,7 +89,7 @@ class SkiModel extends DB
      * @param array $resource the array containing the ski_model to be changed and the historical value 1
      * @return string returns the ski model you changed
      */
-    public function updateSkitype(array $resource): string{
+    public function updateResource(array $resource): string{
         $this->db->beginTransaction();
         $query = 'UPDATE ski_type SET  historical = :historical WHERE model = :model';
         $stmt = $this->db->prepare($query);

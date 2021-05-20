@@ -20,7 +20,7 @@ class CustomerEndpointCest
     {
     }
 
-    public function getMyOrders(\ApiTester $I)
+    public function getMyOrders(ApiTester $I)
     {
         $I->haveHttpHeader('accept', 'application/json');
         $I->haveHttpHeader('content-type', 'application/json');
@@ -41,7 +41,7 @@ class CustomerEndpointCest
         $I->seeResponseContainsJson(array(['customer_id' => '10002']));
     }
 
-    public function getSpecificOrder(\ApiTester $I)
+    public function getSpecificOrder(ApiTester $I)
     {
         $I->haveHttpHeader('accept', 'application/json');
         $I->haveHttpHeader('content-type', 'application/json');
@@ -61,7 +61,7 @@ class CustomerEndpointCest
         $I->seeResponseContainsJson(array(['order_no' => '10006', 'total_price' => '2500', 'status' => 'new', 'customer_id' => '10002', 'shipment_no' => '10001']));
     }
 
-    public function placeOrder(\ApiTester $I)
+    public function placeOrder(ApiTester $I)
     {
         $I->haveHttpHeader('accept', 'application/json');
         $I->haveHttpHeader('content-type', 'application/json');
@@ -96,7 +96,7 @@ class CustomerEndpointCest
             ['ski_type' => 'Intrasonic', 'amount' => 4]);
     }
 
-    public function cancelOrder(\ApiTester $I)
+    public function cancelOrder(ApiTester $I)
     {
         $I->haveHttpHeader('accept', 'application/json');
         $I->haveHttpHeader('content-type', 'application/json');
@@ -108,12 +108,12 @@ class CustomerEndpointCest
         $I->seeInDatabase('orders', ['order_no' => 10006, 'status' => 'canceled', 'customer_id' => 10002]);
     }
 
-    public function splitOrder(\ApiTester $I)
+    public function splitOrder(ApiTester $I)
     {
 
     }
 
-    public function getPlanSummary(\ApiTester $I)
+    public function getPlanSummary(ApiTester $I)
     {
         $I->haveHttpHeader('accept', 'application/json');
         $I->haveHttpHeader('content-type', 'application/json');

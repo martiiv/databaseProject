@@ -308,15 +308,15 @@ CREATE TABLE `auth_token` (
   `token` char(64) COLLATE utf8mb4_danish_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_danish_ci;
 
--- --------------------------------------------------------
+ -- --------------------------------------------------------
 
 --
 -- Visningsstruktur `customer_address`
 --
-DROP TABLE IF EXISTS `customer_address`;
+ DROP VIEW IF EXISTS `customer_address`;
+ CREATE VIEW `customer_address`  AS ( SELECT customer_id, address_id FROM franchises UNION ALL SELECT customer_id, address_id FROM individual_stores UNION ALL SELECT customer_id, address_id FROM team_skiers );
 
-CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `customer_address`  AS ( SELECT customer_id, address_id FROM franchises UNION ALL SELECT customer_id, address_id FROM individual_stores UNION ALL SELECT customer_id, address_id FROM team_skiers );
-
+ -- --------------------------------------------------------
 --
 -- Indexes for dumped tables
 --
