@@ -9,7 +9,7 @@ require_once 'db/ProductionPlanModel.php';
 class ProductionPlannerEndpoint
 {
     /**
-     * Handler for the production-plan endpoint
+     * Handler for the production-planner endpoint
      * @param $uri array list of input parameters
      * @param $requestMethod string method requested like GET, POST, PUT....
      * @param $queries array included in the uri, i.e. ?state=state

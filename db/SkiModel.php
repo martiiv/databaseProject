@@ -8,9 +8,6 @@ require_once 'DB.php';
  *                                  updateSkiType
  *                                  getSkiType
  *                                  deleteSkiType
- * @author Martin Iversen
- * @date 26.04.2021
- * @version 0.8
  */
 class SkiModel extends DB
 {

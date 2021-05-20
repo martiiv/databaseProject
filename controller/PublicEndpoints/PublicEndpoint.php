@@ -10,7 +10,7 @@ class PublicEndpoint
 {
 
     /**
-     * Handler for the customer endpoint
+     * Handler for the public endpoint
      * @param array $uri list of input parameters
      * @param string $requestMethod method requested like GET, POST, PUT....
      * @param array $queries included in the uri, i.e. ?state=state

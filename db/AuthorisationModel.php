@@ -3,6 +3,8 @@ require_once 'DB.php';
 
 /**
  * Class AuthorisationModel
+ *
+ * Authorizing that the token is valid.
  */
 class AuthorisationModel extends DB
 {
@@ -13,7 +15,7 @@ class AuthorisationModel extends DB
 
     /**
      * A simple authorisation mechanism - just checking that the token matches the one in the database
-     * @param string $token
+     * @param string $token the token you want to check if is valid
      * @return string indicating whether the token was successfully verified
      */
     public function isValid(string $token): string {
