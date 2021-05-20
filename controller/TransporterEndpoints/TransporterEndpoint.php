@@ -15,15 +15,11 @@ class TransporterEndpoint
      */
     public function handleRequest($uri, $requestMethod, $queries, $payload): array
     {
-        switch ($requestMethod) {
-            case RESTConstants::METHOD_GET:
-                return $this->handleGetRequest($uri);
-            case RESTConstants::METHOD_PUT:
-                return $this->handlePutRequest($uri);
-
-            default:
-                throw new APIException(RESTConstants::HTTP_NOT_IMPLEMENTED, $requestMethod);
-        }
+        return match ($requestMethod) {
+            RESTConstants::METHOD_GET => $this->handleGetRequest($uri),
+            RESTConstants::METHOD_PUT => $this->handlePutRequest($uri),
+            default => throw new APIException(RESTConstants::HTTP_NOT_IMPLEMENTED, $requestMethod),
+        };
     }
 
     /**

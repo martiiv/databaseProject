@@ -1,11 +1,10 @@
 <?php
-require_once "controller/Handlers/CustomerHandler.php";
 require_once "db/CustomerModel.php";
 
 class CustomerTest extends \Codeception\Test\Unit
 {
     /**
-     * @var \UnitTester
+     * @var UnitTester
      */
     protected $tester;
     
@@ -20,8 +19,8 @@ class CustomerTest extends \Codeception\Test\Unit
     // tests
     public function testGetCollection()
     {
-        $customerHandler = new CustomerHandler();
-        $customers = $customerHandler->getCollection();
+        $customerModel = new CustomerModel();
+        $customers = $customerModel->getCollection();
         foreach ($customers as $customer) {
             print(json_encode($customer));
             print("\n");
@@ -31,8 +30,8 @@ class CustomerTest extends \Codeception\Test\Unit
     // tests
     public function testGetResource()
     {
-        $customerHandler = new CustomerHandler();
-        $customers = $customerHandler->getResource(10000);
+        $customerModel = new CustomerModel();
+        $customers = $customerModel->getResource(10000);
         $this->assertEquals(10000, $customers[0]['id']);
         print(json_encode($customers));
     }
@@ -48,8 +47,8 @@ class CustomerTest extends \Codeception\Test\Unit
             'end_date' => '2022-10-12'
         );
 
-        $customerHandler = new CustomerHandler();
-        $newCustomer = $customerHandler->createResource($arr);
+        $customerModel = new CustomerModel();
+        $newCustomer = $customerModel->createResource($arr);
         print(json_encode($newCustomer));
         print(json_encode($arr));
         $this->assertEquals(json_encode($newCustomer), json_encode($arr));
@@ -67,11 +66,11 @@ class CustomerTest extends \Codeception\Test\Unit
         // The name needs to be updated after you have updated it if you want to rerun it
         $oldName = "Epic ski store";
 
-        $customerHandler = new CustomerHandler();
-        $updatedCustomer = $customerHandler->updateResource($arr, $oldName);
-        print(json_encode($updatedCustomer));
+        $customerModel = new CustomerModel();
+        $customers = $customerModel->updateResource($arr, $oldName);
+        print(json_encode($customers));
         print(json_encode($arr));
-        $this->assertEquals(json_encode($updatedCustomer), json_encode($arr));
+        $this->assertEquals(json_encode($customers), json_encode($arr));
     }
 
     // tests
@@ -80,8 +79,8 @@ class CustomerTest extends \Codeception\Test\Unit
         $id = 10003;
         $deleted = true;
 
-        $customerHandler = new CustomerHandler();
-        $deletedCustomer = $customerHandler->deleteResource($id);
-        $this->assertEquals($deletedCustomer, $deleted);
+        $customerModel = new CustomerModel();
+        $customers = $customerModel->deleteResource($id);
+        $this->assertEquals($customers, $deleted);
     }
 }

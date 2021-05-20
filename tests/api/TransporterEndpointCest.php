@@ -34,7 +34,7 @@ class TransporterEndpointCest
         $I->seeResponseContainsJson(array(['status' => 'ready']));
     }
 
-    public function changeShipment(\ApiTester $I){
+    public function changeShipment(ApiTester $I){
         $I->haveHttpHeader('accept', 'application/json');
         $I->haveHttpHeader('content-type', 'application/json');
 

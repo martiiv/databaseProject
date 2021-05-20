@@ -7,12 +7,10 @@ class ProductionPlannerEndpoint
 {
     public function handleRequest($uri, $requestMethod, $queries, $payload): array
     {
-        switch ($requestMethod) {
-            case RESTConstants::METHOD_POST:
-                return $this->handlePostRequest($uri, $payload);
-            default:
-                throw new APIException(RESTConstants::HTTP_NOT_IMPLEMENTED, $requestMethod);
-        }
+        return match ($requestMethod) {
+            RESTConstants::METHOD_POST => $this->handlePostRequest($uri, $payload),
+            default => throw new APIException(RESTConstants::HTTP_NOT_IMPLEMENTED, $requestMethod),
+        };
     }
 
     /**

@@ -1,5 +1,4 @@
 <?php
-require_once 'controller/Handlers/OrderHandler.php';
 require_once 'db/OrderModel.php';
 
 
@@ -7,7 +6,7 @@ require_once 'db/OrderModel.php';
 class OrderTest extends \Codeception\Test\Unit
 {
     /**
-     * @var \UnitTester
+     * @var UnitTester
      */
     protected $tester;
 
@@ -23,8 +22,8 @@ class OrderTest extends \Codeception\Test\Unit
     // tests
     public function testGetResource()
     {
-        $orderHandler = new OrderHandler();
-        $order = $orderHandler->getResource(1);
+        $orderModel = new OrderModel();
+        $order = $orderModel->getResource(1);
         foreach ($order as $o) {
             print(json_encode($o));
             print("\n");
@@ -34,8 +33,8 @@ class OrderTest extends \Codeception\Test\Unit
     // tests
     public function testGetCollection()
     {
-        $orderHandler = new OrderHandler();
-        $orders = $orderHandler->getCollection();
+        $orderModel = new OrderModel();
+        $orders = $orderModel->getCollection();
         foreach ($orders as $order) {
             print(json_encode($order));
             print("\n");
@@ -53,8 +52,8 @@ class OrderTest extends \Codeception\Test\Unit
             'customer_id' => 10000
         );
 
-        $orderHandler = new OrderHandler();
-        $newOrder = $orderHandler->createResource($arr);
+        $orderModel = new OrderModel();
+        $newOrder = $orderModel->createResource($arr);
         $this->assertNotEquals(0, $newOrder);
     }
 
@@ -68,8 +67,8 @@ class OrderTest extends \Codeception\Test\Unit
             'status' => "open",
         );
 
-        $orderHandler = new OrderHandler();
-        $updatedOrderStatement = $orderHandler->updateResource($arr);
+        $orderModel = new OrderModel();
+        $updatedOrderStatement = $orderModel->updateResource($arr);
         $this->assertEquals($updatedOrderStatement, true);
     }
 
@@ -80,8 +79,8 @@ class OrderTest extends \Codeception\Test\Unit
         $id = 10017;
         $deletedTemp = true;
 
-        $orderHandler = new OrderHandler();
-        $deletedOrder = $orderHandler->deleteResource($id);
+        $orderModel = new OrderModel();
+        $deletedOrder = $orderModel->deleteResource($id);
         $this->assertEquals($deletedOrder, $deletedTemp);
     }
 }
