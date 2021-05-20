@@ -122,9 +122,9 @@ class ShipmentTest extends \Codeception\Test\Unit
      *
      * Test the deletion process of a shipment from the database.
      *
-     * If the deletion take place, it returns a success message.
+     * If the deletion take place, it returns true.
      *
-     * Assert if this message is the same as the manually coded success message.
+     * Assert if this returned value is true.
      */
     public function testDeleteResource()
     {

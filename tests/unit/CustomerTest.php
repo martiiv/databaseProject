@@ -2,6 +2,21 @@
 require_once "controller/Handlers/CustomerHandler.php";
 require_once "db/CustomerModel.php";
 
+/**
+ * Class CustomerTest - A unit-test class for testing the different methods handling customers.
+ *
+ * Consists of:
+ *      - testGetCollection()
+ *          -- retrieves all customers
+ *      - testGetResource()
+ *          -- retrieves one customer based on ID
+ *      - testCreateResource()
+ *          -- creates a new customer
+ *      - testUpdateResource()
+ *          -- updates a customer with a given ID
+ *      - testDeleteResource()
+ *          -- deletes a customer with a given ID
+ */
 class CustomerTest extends \Codeception\Test\Unit
 {
     /**
@@ -17,7 +32,13 @@ class CustomerTest extends \Codeception\Test\Unit
     {
     }
 
-    // tests
+    /**
+     * Function testGetCollection
+     *
+     * Gets all the customer from the database using the getCollection-method in CustomerModel.
+     *
+     * For each customer, json encode the shipment data and display it.
+     */
     public function testGetCollection()
     {
         $customerHandler = new CustomerHandler();
@@ -28,7 +49,13 @@ class CustomerTest extends \Codeception\Test\Unit
         }
     }
 
-    // tests
+    /**
+     * Function testGetResource
+     *
+     * Gets a specific customer based on ID.
+     *
+     * In this test we retrieve the first item in the database using the getResource-method from CustomerModel.
+     */
     public function testGetResource()
     {
         $customerHandler = new CustomerHandler();
@@ -37,11 +64,17 @@ class CustomerTest extends \Codeception\Test\Unit
         print(json_encode($customers));
     }
 
-    // tests
+    /**
+     * Function testCreateResource
+     *
+     * Creates a new customer with data using createResource-method in CustomerModel.
+     *
+     * Sends an array with data to the method.
+     *
+     * Checks that the content added to the database is the same as the input data.
+     */
     public function testCreateResource()
     {
-        // Delete this instance from the DB if you want to re-run the test
-        // Optionally change the values
         $arr = array (
             'name' => "Epic ski store",
             'start_date' => '2020-10-12',
@@ -55,16 +88,24 @@ class CustomerTest extends \Codeception\Test\Unit
         $this->assertEquals(json_encode($newCustomer), json_encode($arr));
     }
 
-    // tests
+    /**
+     * Function testUpdateResource
+     *
+     * Updates the following attributes in a customer (based on customer input id):
+     *      - name
+     *      - end_date
+     *
+     * Sends the new attribute values to the updateResource-method in CustomerModel.
+     *
+     * Checks if the updated object is equal to the passed in object.
+     */
     public function testUpdateResource()
     {
-        // Change the values in this instance if you want to re-run the test
         $arr = array (
             'name' => "Sport1 Oslo",
             'end_date' => '2024-10-12'
         );
 
-        // The name needs to be updated after you have updated it if you want to rerun it
         $oldName = "Epic ski store";
 
         $customerHandler = new CustomerHandler();
@@ -74,7 +115,15 @@ class CustomerTest extends \Codeception\Test\Unit
         $this->assertEquals(json_encode($updatedCustomer), json_encode($arr));
     }
 
-    // tests
+    /**
+     * Function testDeleteResource
+     *
+     * Test the deletion process of a customer from the database.
+     *
+     * If the deletion take place, it returns true.
+     *
+     * Assert if this returned value is true.
+     */
     public function testDeleteResource()
     {
         $id = 10003;

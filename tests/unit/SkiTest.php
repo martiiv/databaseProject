@@ -8,9 +8,6 @@ require_once "db/SkiModel.php";
  *                              testCreateResource
  *                              testUpdateResource
  *                              testDeleteResource
- * @author Martin Iversen
- * @date 26.04.2021
- * @version 0.8
  */
 class SkiTest extends \Codeception\Test\Unit
 {
