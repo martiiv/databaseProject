@@ -192,9 +192,12 @@ class CompanyEndpointCest
         $I->seeResponseIsJson();
 
         $I->seeResponseContainsJson(array('Status of order 10006 changed to ready!'));
-        $I->seeInDatabase('orders', ['order_no' => 10006, 'total_price' => 2500, 'status' => 'ready', 'customer_id' => 10002, 'shipment_no' => 10001]);
+        $I->seeInDatabase('orders', [   'order_no' => 10006,
+                                        'total_price' => 2500,
+                                        'status' => 'ready',
+                                        'customer_id' => 10002,
+                                        'shipment_no' => 10001]);
     }
-
     /**
      * Function for testing get order functionality
      * Tests the following endpoint:
