@@ -2,7 +2,13 @@
 require_once 'DB.php';
 
 /**
- * Class OrderModel
+ * Class ProductionPlanModel
+ *
+ * Class for handling production plan functionality like:
+ *              - create new plan
+ *              - add skis to list
+ *              - get dates
+ *              - get ski models
  */
 class ProductionPlanModel extends DB
 {
@@ -11,6 +17,11 @@ class ProductionPlanModel extends DB
         parent::__construct();
     }
 
+    /**
+     * Creates a new production plan
+     * @param array $resource array containing information about production plan to be created
+     * @return int returns the ID of the newly created production plan
+     */
     function createResource(array $resource): int
     {
         $this->db->beginTransaction();
@@ -28,6 +39,10 @@ class ProductionPlanModel extends DB
         return $id;
     }
 
+    /**
+     * Adds skis to the production list
+     * @param array $resource array containing information about the skis to be added to the production list
+     */
     function addSkiesToList(array $resource)
     {
         $this->db->beginTransaction();
@@ -42,9 +57,8 @@ class ProductionPlanModel extends DB
     }
 
     /**
-     * Function getSummary, will select all entries from the production list
-     * Getting the entire list of skis up for production
-     * @return array
+     * Gets the dates of the different production plan periods
+     * @return array array containing all the periods with their start- and end date
      */
     function getDates(): array
     {
@@ -60,6 +74,11 @@ class ProductionPlanModel extends DB
         return $res;
     }
 
+    /**
+     * Retrieves the amount of- and type of ski model from the production list, given a date
+     * @param string $date the start date of the period you are interested in.
+     * @return array array containing information about amount and ski type model for that period
+     */
     function getSki_models(string $date){
         $res = array();
         $this->db->beginTransaction();

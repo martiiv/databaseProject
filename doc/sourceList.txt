@@ -1,0 +1,16 @@
+Last update: 20.05.2021
+
+- Rune Hjelsvolds code projects: 
+	We used these projects as a template for our project structure. 
+	We changed alot of the and modified the structure somewhat in order for it to fit our case
+	Projects used for reference: 	https://git.gvk.idi.ntnu.no/runehj/yaapi
+					https://git.gvk.idi.ntnu.no/runehj/sample-rest-api-project
+- Codeception documentation and guides:
+	In order to get codeception up and running we frequently visisted codeceptions homepage with code documenation and guides
+	We relied heavily on their testing documentation in order to get our tests up and running
+	Sites used for reference:	https://codeception.com/docs/10-APITesting
+					https://codeception.com/docs/05-UnitTests
+					
+- Lucidchart in order to create database models efficently
+	Sites used for reference:	https://www.lucidchart.com/pages/
+ 

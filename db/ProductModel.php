@@ -2,8 +2,18 @@
 require_once 'DB.php';
 require_once 'db/ProductModel.php';
 
+/**
+ * Class ProductModel
+ *
+ * Class for handling product functionality like: retrieve and create new products
+ */
 class ProductModel extends DB
 {
+    /**
+     * Gets all the products in the database
+     * @param array|null $query
+     * @return array array containing all products
+     */
     function getCollection(array $query = null): array
     {
         $res = array();
@@ -18,6 +28,11 @@ class ProductModel extends DB
         return $res;
     }
 
+    /**
+     * Retrieves a specific product based on product ID
+     * @param int $id ID of the product of interest
+     * @return array|null array containing the product and product information
+     */
     function getResource(int $id): ?array
     {
         $res = array();
@@ -33,6 +48,11 @@ class ProductModel extends DB
         return $res;
     }
 
+    /**
+     * Create new product
+     * @param array $resource array containing information about product to be created
+     * @return array array containing the newly created product and its data.
+     */
     function createResource(array $resource): array
     {
         // Todays date in YYYY-MM-DD format
