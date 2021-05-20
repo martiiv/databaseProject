@@ -3,6 +3,8 @@ require_once 'DB.php';
 
 /**
  * Class OrderModel
+ *
+ * Class for handling customer functionality like: retrieve, create, update and delete customers.
  */
 class CustomerModel extends DB
 {
@@ -11,6 +13,11 @@ class CustomerModel extends DB
         parent::__construct();
     }
 
+    /**
+     * Get all customers
+     * @param array|null
+     * @return array returns an array containing the customers and their data
+     */
     function getCollection(array $query = null): array
     {
         $res = array();
@@ -25,6 +32,11 @@ class CustomerModel extends DB
         return $res;
     }
 
+    /**
+     * Get one customer and its data based on the customer number.
+     * @param int $id the ID of the customer (customer number)
+     * @return array|null an array containing the customer and its data
+     */
     function getResource(int $id): ?array
     {
         $res = array();
@@ -39,6 +51,11 @@ class CustomerModel extends DB
         return $res;
     }
 
+    /**
+     * Gets the address of a customer
+     * @param int $id the ID of the customer (customer number)
+     * @return array|null an array containing the customer and its data - this time also with address
+     */
     function getAddress(int $id): ?array
     {
         $res = array();
@@ -53,6 +70,11 @@ class CustomerModel extends DB
         return $res;
     }
 
+    /**
+     * Creates a new customer instance in the system
+     * @param array $resource array containing data about the customer to be created
+     * @return array returns the newly created customer
+     */
     function createResource(array $resource): array
     {
         $this->db->beginTransaction();
@@ -74,6 +96,12 @@ class CustomerModel extends DB
         return $res;
     }
 
+    /**
+     * Updates a customer in the system with data like name or end_date of "membership"
+     * @param array $resource array containing data to be changed
+     * @param string $oldName name of customer to be changed
+     * @return array the updated instance of the customer and its data
+     */
     function updateResource(array $resource, string $oldName): array
     {
         $this->db->beginTransaction();
@@ -94,6 +122,11 @@ class CustomerModel extends DB
         return $res;
     }
 
+    /**
+     * Deletes a customer from the system
+     * @param int $id the ID of the customer (customer number)
+     * @return bool boolean telling whether the deletion was successful or not
+     */
     function deleteResource(int $id): bool
     {
         $deleted = false;

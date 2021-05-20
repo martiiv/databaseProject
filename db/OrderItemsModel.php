@@ -1,7 +1,11 @@
 <?php
 require_once 'DB.php';
 
-
+/**
+ * Class OrderItemsModel
+ *
+ * Class for handling order items list functionality like: add ski to order
+ */
 class OrderItemsModel extends DB
 {
     public function __construct()
@@ -9,7 +13,11 @@ class OrderItemsModel extends DB
         parent::__construct();
     }
 
-    public function addSkiToOrder($filter) {
+    /**
+     * Method for adding a ski to an order
+     * @param array $filter filter array containing filter data for adding ski to order
+     */
+    public function addSkiToOrder(array $filter) {
         $this->db->beginTransaction();
         $query = 'INSERT INTO order_items (amount, order_no, ski_type) VALUES (:amount, :order_no, :ski_type)';
 
