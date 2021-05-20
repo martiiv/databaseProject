@@ -1,5 +1,4 @@
 <?php
-require_once "controller/Handlers/SkiModelHandler.php";
 require_once "db/SkiModel.php";
 
 /**
@@ -12,7 +11,7 @@ require_once "db/SkiModel.php";
 class SkiTest extends \Codeception\Test\Unit
 {
     /**
-     * @var \UnitTester
+     * @var UnitTester
      */
     protected UnitTester $tester;
     
@@ -43,8 +42,8 @@ class SkiTest extends \Codeception\Test\Unit
             'photo_url'=>'u/tull/unit_test_ski',
             'retail_price'=>16000);
 
-        $skiModelHandler = new SkiModelHandler();
-        $newSki = $skiModelHandler -> createResource($array);
+        $skiModel = new SkiModel();
+        $newSki = $skiModel->createResource($array);
         $this -> assertNotEquals(0,$newSki);
     }
 
@@ -61,8 +60,8 @@ class SkiTest extends \Codeception\Test\Unit
             'historical' => 1
         );
 
-        $skiModelHandler = new SkiModelHandler();
-        $updateSkiModelStatement = $skiModelHandler->updateResource($arr);
+        $skiModel = new SkiModel();
+        $updateSkiModelStatement = $skiModel->updateResource($arr);
 
         $this->tester->seeInDatabase('ski_type',['model'=>'Active', 'historical'=>1]);
         $this->assertNotEquals(null,$updateSkiModelStatement);

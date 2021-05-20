@@ -1,11 +1,10 @@
 <?php
-require_once "controller/Handlers/TransporterHandler.php";
 require_once "db/TransporterModel.php";
 
 class TransporterUnitTest extends \Codeception\Test\Unit
 {
     /**
-     * @var \UnitTester
+     * @var UnitTester
      */
     protected $tester;
     
@@ -33,8 +32,8 @@ class TransporterUnitTest extends \Codeception\Test\Unit
         $name = "Ole Joar's Pickup Service";
         $deletedTemp = true;
 
-        $transporterHandler = new TransporterHandler();
-        $deletedTransporter = $transporterHandler->deleteResource($name);
+        $transporterModel = new TransporterModel();
+        $deletedTransporter = $transporterModel->deleteResource($name);
         $this->assertEquals($deletedTransporter, $deletedTemp);
     }
 }

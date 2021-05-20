@@ -1,11 +1,10 @@
 <?php
-require_once "controller/Handlers/ProductHandler.php";
 require_once "db/ProductModel.php";
 
 class ProductTest extends \Codeception\Test\Unit
 {
     /**
-     * @var \UnitTester
+     * @var UnitTester
      */
     protected $tester;
 
@@ -26,8 +25,8 @@ class ProductTest extends \Codeception\Test\Unit
      */
     public function testGetCollection()
     {
-        $productHandler = new ProductHandler();
-        $products = $productHandler->getCollection();
+        $productModel = new ProductModel();
+        $products = $productModel->getCollection();
         foreach ($products as $product) {
             print(json_encode($product));
             print("\n");
@@ -51,9 +50,9 @@ class ProductTest extends \Codeception\Test\Unit
             'amount' => 5
         );
 
-        $productHandler = new ProductHandler();
+        $productModel = new ProductModel();
         // Creates all the products, returns array with all products
-        $newProduct = $productHandler->createResource($arr);
+        $newProduct = $productModel->createResource($arr);
         // For each product created - Assert the ski types
         for ($i = 0; $i < $arr['amount']; $i++) {
             $this->assertEquals(json_encode($newProduct[$i]['ski_type']), json_encode($arr['ski_type']));

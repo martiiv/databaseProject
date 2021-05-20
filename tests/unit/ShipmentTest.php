@@ -1,5 +1,4 @@
 <?php
-require_once "controller/Handlers/ShipmentHandler.php";
 require_once "db/ShipmentModel.php";
 
 /**
@@ -20,7 +19,7 @@ require_once "db/ShipmentModel.php";
 class ShipmentTest extends \Codeception\Test\Unit
 {
     /**
-     * @var \UnitTester
+     * @var UnitTester
      */
     protected $tester;
     
@@ -41,8 +40,8 @@ class ShipmentTest extends \Codeception\Test\Unit
      */
     public function testGetCollection()
     {
-        $shipmentHandler = new ShipmentHandler();
-        $shipments = $shipmentHandler->getCollection();
+        $shipmentModel = new ShipmentModel();
+        $shipments = $shipmentModel->getCollection();
         foreach ($shipments as $shipment) {
             print(json_encode($shipment));
             print("\n");
@@ -58,8 +57,8 @@ class ShipmentTest extends \Codeception\Test\Unit
      */
     public function testGetResource()
     {
-        $shipmentHandler = new ShipmentHandler();
-        $shipment = $shipmentHandler->getResource(1);
+        $shipmentModel = new ShipmentModel();
+        $shipment = $shipmentModel->getResource(1);
         print(json_encode($shipment));
     }
 
@@ -80,8 +79,8 @@ class ShipmentTest extends \Codeception\Test\Unit
             'address_id' => 10000,
         );
 
-        $shipmentHandler = new ShipmentHandler();
-        $newShipment = $shipmentHandler->createResource($arr);
+        $shipmentModel = new ShipmentModel();
+        $newShipment = $shipmentModel->createResource($arr);
         $this->assertNotNull($newShipment);
     }
 
@@ -112,8 +111,8 @@ class ShipmentTest extends \Codeception\Test\Unit
         // Needed to change the transporter in the transporters-entity
         $oldName = "Gro Anitas postservice";
 
-        $shipmentHandler = new ShipmentHandler();
-        $updatedShipment = $shipmentHandler->updateResource($arr, $oldName, $shipment_no);
+        $shipmentModel = new ShipmentModel();
+        $updatedShipment = $shipmentModel->updateResource($arr, $oldName, $shipment_no);
         $this->assertEquals(json_encode($updatedShipment), json_encode($arr));
     }
 
@@ -134,8 +133,8 @@ class ShipmentTest extends \Codeception\Test\Unit
         // Message on successful deletion
         $idTemp = "Successfully deleted shipment with shipment number: " . strval($id) . ".";
 
-        $shipmentHandler = new ShipmentHandler();
-        $deletedShipment = $shipmentHandler->deleteResource($id);
+        $shipmentModel = new ShipmentModel();
+        $deletedShipment = $shipmentModel->deleteResource($id);
         $this->assertEquals($deletedShipment, $idTemp);
     }
 }

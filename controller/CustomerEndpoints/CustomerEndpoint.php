@@ -19,16 +19,12 @@ class CustomerEndpoint
      */
     public function handleRequest($uri, $requestMethod, $queries, $payload): array
     {
-        switch ($requestMethod) {
-            case RESTConstants::METHOD_GET:
-                return $this->handleGetRequest($uri, $requestMethod);
-            case RESTConstants::METHOD_DELETE:
-                return $this->handleDeleteRequest($uri);
-            case RESTConstants::METHOD_POST:
-                return $this->handlePostRequest($uri, $payload);
-            default:
-                throw new APIException(RESTConstants::HTTP_NOT_IMPLEMENTED, $requestMethod);
-        }
+        return match ($requestMethod) {
+            RESTConstants::METHOD_GET => $this->handleGetRequest($uri, $requestMethod),
+            RESTConstants::METHOD_DELETE => $this->handleDeleteRequest($uri),
+            RESTConstants::METHOD_POST => $this->handlePostRequest($uri, $payload),
+            default => throw new APIException(RESTConstants::HTTP_NOT_IMPLEMENTED, $requestMethod),
+        };
     }
 
     /**
@@ -38,14 +34,11 @@ class CustomerEndpoint
      */
     private function handleGetRequest($uri, $requestMethod): array
     {
-        switch ($uri[0]) {
-            case "order":
-                return $this->getOrder($uri);
-            case "production":
-                return $this->getProductionPlanSummary();
-            default:
-                throw new APIException(RESTConstants::HTTP_NOT_IMPLEMENTED, $requestMethod);
-        }
+        return match ($uri[0]) {
+            "order" => $this->getOrder($uri),
+            "production" => $this->getProductionPlanSummary(),
+            default => throw new APIException(RESTConstants::HTTP_NOT_IMPLEMENTED, $requestMethod),
+        };
     }
 
     /**

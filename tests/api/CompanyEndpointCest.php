@@ -32,7 +32,7 @@ class CompanyEndpointCest
      * Lets a customer-rep get orders based on state
      * @param ApiTester $I
      */
-    public function testGetOrderNew(\ApiTester $I)
+    public function testGetOrderNew(ApiTester $I)
     {
         $I->haveHttpHeader('accept', 'application/json');
         $I->haveHttpHeader('content-type', 'application/json');
@@ -61,7 +61,7 @@ class CompanyEndpointCest
      * Lets a customer-rep get orders based on state
      * @param ApiTester $I
      */
-    public function testGetOrderReady(\ApiTester $I)
+    public function testGetOrderReady(ApiTester $I)
     {
         $I->haveHttpHeader('accept', 'application/json');
         $I->haveHttpHeader('content-type', 'application/json');
@@ -91,7 +91,7 @@ class CompanyEndpointCest
      * Lets a customer-rep change orders based on state
      * @param ApiTester $I
      */
-    public function testChangeStateOpen(\ApiTester $I)
+    public function testChangeStateOpen(ApiTester $I)
     {
         $I->haveHttpHeader('accept', 'application/json');
         $I->haveHttpHeader('content-type', 'application/json');
@@ -114,7 +114,7 @@ class CompanyEndpointCest
      * Lets a customer-rep change orders based on state
      * @param ApiTester $I
      */
-    public function testChangeStateAvailable(\ApiTester $I)
+    public function testChangeStateAvailable(ApiTester $I)
     {
         $I->haveHttpHeader('accept', 'application/json');
         $I->haveHttpHeader('content-type', 'application/json');
@@ -140,7 +140,7 @@ class CompanyEndpointCest
      * }
      * Lets a storekeeper produce skis
      */
-    public function testCreateSki(\ApiTester $I)
+    public function testCreateSki(ApiTester $I)
     {
         $I->haveHttpHeader('accept', 'application/json');
         $I->haveHttpHeader('content-type', 'application/json');
@@ -180,7 +180,7 @@ class CompanyEndpointCest
      * Lets a storekeeper change orders based on state
      * @param ApiTester $I
      */
-    public function testChangeStateReady(\ApiTester $I)
+    public function testChangeStateReady(ApiTester $I)
     {
         $I->haveHttpHeader('accept', 'application/json');
         $I->haveHttpHeader('content-type', 'application/json');
@@ -202,7 +202,7 @@ class CompanyEndpointCest
      * Lets a customer-rep get orders based on state
      * @param ApiTester $I
      */
-    public function testGetOrderAvailable(\ApiTester $I)
+    public function testGetOrderAvailable(ApiTester $I)
     {
         $I->haveHttpHeader('accept', 'application/json');
         $I->haveHttpHeader('content-type', 'application/json');
@@ -229,7 +229,7 @@ class CompanyEndpointCest
      * Tests the following endpoint:
      *      http://localhost/dbproject-33/planner/plan
      */
-    public function testUploadPlan(\ApiTester $I)
+    public function testUploadPlan(ApiTester $I)
     {
         $I->haveHttpHeader('accept', 'application/json');
         $I->haveHttpHeader('content-type', 'application/json');

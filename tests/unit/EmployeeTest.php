@@ -1,5 +1,4 @@
 <?php
-require_once "controller/Handlers/EmployeeHandler.php";
 require_once "db/EmployeeModel.php";
 
 /**
@@ -43,8 +42,8 @@ class EmployeeTest extends \Codeception\Test\Unit
      */
     public function testGetResource()
     {
-        $employeeHandler = new EmployeeHandler();
-        $employees = $employeeHandler->getResource(1);
+        $employeeModel = new EmployeeModel();
+        $employees = $employeeModel->getResource(1);
         print(json_encode($employees));
     }
 
@@ -57,8 +56,8 @@ class EmployeeTest extends \Codeception\Test\Unit
      */
     public function testGetCollection()
     {
-        $employeeHandler = new EmployeeHandler();
-        $employees = $employeeHandler->getCollection();
+        $employeeModel = new EmployeeModel();
+        $employees = $employeeModel->getCollection();
         foreach ($employees as $employee) {
             print(json_encode($employee));
             print("\n");
@@ -81,8 +80,8 @@ class EmployeeTest extends \Codeception\Test\Unit
             'department' => "Storekeeper"
         );
 
-        $employeeHandler = new EmployeeHandler();
-        $newEmployee = $employeeHandler->createResource($arr);
+        $employeeModel = new EmployeeModel();
+        $newEmployee = $employeeModel->createResource($arr);
         print(json_encode($newEmployee));
         print(json_encode($arr));
         $this->assertEquals(json_encode($newEmployee), json_encode($arr));
@@ -108,8 +107,8 @@ class EmployeeTest extends \Codeception\Test\Unit
 
         $oldName = "Morten";
 
-        $employeeHandler = new EmployeeHandler();
-        $updatedEmployee = $employeeHandler->updateResource($arr, $oldName);
+        $employeeModel = new EmployeeModel();
+        $updatedEmployee = $employeeModel->updateResource($arr, $oldName);
         print(json_encode($updatedEmployee));
         print(json_encode($arr));
         $this->assertEquals(json_encode($updatedEmployee), json_encode($arr));
@@ -129,8 +128,8 @@ class EmployeeTest extends \Codeception\Test\Unit
         $id = 7;
         $deletedTemp = true;
 
-        $employeeHandler = new EmployeeHandler();
-        $deletedEmployee = $employeeHandler->deleteResource($id);
+        $employeeModel = new EmployeeModel();
+        $deletedEmployee = $employeeModel->deleteResource($id);
         $this->assertEquals($deletedEmployee, $deletedTemp);
     }
 }
