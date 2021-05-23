@@ -80,10 +80,10 @@ class StorekeeperEndpoint
      * http://localhost/dbproject-33/storekeeper/ski
      *
      * @param array $uri of input parameters
-     * @param body $payload /{model:amount,model:amount...} The body passed in structure ski_type model name and amount
+     * @param array $payload /{model:amount,model:amount...} The body passed in structure ski_type model name and amount
      * @return array Returns the produced skis with product number and production date
      */
-    private function handleCreateSki(array $uri, body $payload): array
+    private function handleCreateSki(array $uri, array $payload): array
     {
         if ($uri[0] == "ski" && count($uri) == 1) {
             $json = json_encode($payload);

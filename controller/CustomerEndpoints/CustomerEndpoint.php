@@ -130,11 +130,11 @@ class CustomerEndpoint
      * Add a new order with skies to the database.
      *
      * @param array $uri
-     * @param arrau $payload order info with ski model and amount, e.g.: {"Active":2, "Intrasonic":4}
+     * @param array $payload order info with ski model and amount, e.g.: {"Active":2, "Intrasonic":4}
      * @return array Info about skies added
      * @throws APIException
      */
-    private function handlePostRequest(array $uri, arrau $payload): array
+    private function handlePostRequest(array $uri, array $payload): array
     {
         if ($uri[0] == "order" && $uri[1] == "place" && count($uri) == 3) {
             $model = new SkiModel();

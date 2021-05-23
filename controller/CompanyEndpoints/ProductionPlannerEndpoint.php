@@ -13,11 +13,11 @@ class ProductionPlannerEndpoint
      * @param $uri array list of input parameters
      * @param $requestMethod string method requested like GET, POST, PUT....
      * @param $queries array included in the uri, i.e. ?state=state
-     * @param $payload body of the request
+     * @param $payload array of the request
      * @return array results
      * @throws APIException
      */
-    public function handleRequest(array $uri, string $requestMethod, array $queries, body $payload): array
+    public function handleRequest(array $uri, string $requestMethod, array $queries, array $payload): array
     {
         return match ($requestMethod) {
             RESTConstants::METHOD_POST => $this->handlePostRequest($uri, $payload),
@@ -40,11 +40,11 @@ class ProductionPlannerEndpoint
             "Race Pro" : 4
         }]
      * @param $uri array of input parameters
-     * @param $payload body with info needed to register a production plan
+     * @param $payload array with info needed to register a production plan
      * @return array registered production plan
      * @throws APIException
      */
-    private function handlePostRequest(array $uri, body $payload): array
+    private function handlePostRequest(array $uri, array $payload): array
     {
         if ($uri[0] == "plan" && count($uri) == 1) {
             $noSkies = 0;
