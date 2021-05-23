@@ -20,15 +20,12 @@ class CustomerRepEndpoint
      */
     public function handleRequest(array $uri, string $requestMethod, array $queries, array $payload): array
     {
-        switch ($requestMethod) {
-            case RESTConstants::METHOD_GET:
-                return $this->handleGETRequest($uri, $queries);
-            case RESTConstants::METHOD_PUT:
-                return $this->handlePUTRequest($uri);
-            case RESTConstants::METHOD_POST:
-                return $this->handlePOSTRequest($uri, $payload);
-            default: //TODO Throw exception
-        }
+        return match ($requestMethod) {
+            RESTConstants::METHOD_GET => $this->handleGETRequest($uri, $queries),
+            RESTConstants::METHOD_PUT => $this->handlePUTRequest($uri),
+            RESTConstants::METHOD_POST => $this->handlePOSTRequest($uri, $payload),
+            default => throw new APIException(RESTConstants::HTTP_NOT_IMPLEMENTED, $requestMethod),
+        };
     }
 
     /**
@@ -70,6 +67,8 @@ class CustomerRepEndpoint
                     return $this->changeOrderState($orderId, "open");
                 case "available":
                     return $this->changeOrderState($orderId, "available");
+                default:
+                    throw new APIException(RESTConstants::HTTP_BAD_REQUEST, "Cannot change state to " . strtolower($uri[1]));
             }
         }
     }
@@ -90,6 +89,7 @@ class CustomerRepEndpoint
             switch (strtolower($uri[1])) {
                 case "ship":
                     return $this->createShipment($orderId, $payload);
+                default: throw new APIException(RESTConstants::HTTP_BAD_REQUEST, "Cannot change state to " . strtolower($uri[1]));
             }
         }
     }

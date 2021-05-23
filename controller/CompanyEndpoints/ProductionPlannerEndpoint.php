@@ -53,12 +53,10 @@ class ProductionPlannerEndpoint
 
             // Check if there is info stored about start/end date
             if (sizeof($payload[0]) != 3 || !array_key_exists("start", $payload[0]) || !array_key_exists("end", $payload[0])) {
-                print ("bad request, start or end date is not present");
-                throw new APIException(RESTConstants::HTTP_BAD_REQUEST, null);
+                throw new APIException(RESTConstants::HTTP_BAD_REQUEST, "start or end date is not present");
             }
             if (!array_key_exists("planner nr", $payload[0])) {
-                print ("bad request, planner nr is not present");
-                throw new APIException(RESTConstants::HTTP_BAD_REQUEST, null);
+                throw new APIException(RESTConstants::HTTP_BAD_REQUEST, "planner nr is not present");
             }
 
             //Get start and end dates
@@ -68,12 +66,10 @@ class ProductionPlannerEndpoint
 
             // Check if dates stored are valid
             if ($this->checkDate($startDate) == false) {
-                print ("bad request, invalid begin date");
-                throw new APIException(RESTConstants::HTTP_BAD_REQUEST, null);
+                throw new APIException(RESTConstants::HTTP_BAD_REQUEST, "invalid begin date");
             }
             if ($this->checkDate($endDate) == false) {
-                print ("bad request, invalid end date");
-                throw new APIException(RESTConstants::HTTP_BAD_REQUEST, null);
+                throw new APIException(RESTConstants::HTTP_BAD_REQUEST, "invalid end date");
             }
 
             // TODO: Check that there is no existing plan in this timespan

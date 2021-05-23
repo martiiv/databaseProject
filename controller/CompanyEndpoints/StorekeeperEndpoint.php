@@ -22,18 +22,12 @@ class StorekeeperEndpoint
      */
     public function handleRequest(array $uri, string $requestMethod, array $queries, array $payload): array
     {
-        switch ($requestMethod) {
-            case RESTConstants::METHOD_GET:
-                return $this->handleGet($uri, $queries);
-
-            case RESTConstants::METHOD_PUT:
-                return $this->handleUpdate($uri);
-
-            case RESTConstants::METHOD_POST:
-                return $this->handleCreateSki($uri, $payload);
-
-            default: //TODO Throw exception
-        }
+        return match ($requestMethod) {
+            RESTConstants::METHOD_GET => $this->handleGet($uri, $queries),
+            RESTConstants::METHOD_PUT => $this->handleUpdate($uri),
+            RESTConstants::METHOD_POST => $this->handleCreateSki($uri, $payload),
+            default => throw new APIException(RESTConstants::HTTP_NOT_IMPLEMENTED, $requestMethod),
+        };
     }
 
     /**
@@ -76,6 +70,7 @@ class StorekeeperEndpoint
             switch (strtolower($uri[1])) {
                 case "ready":
                     return $update->changeOrderState($orderId, "ready");
+                default: throw new APIException(RESTConstants::HTTP_BAD_REQUEST, "Cannot change state to " . strtolower($uri[1]));
             }
         }
     }
@@ -98,9 +93,7 @@ class StorekeeperEndpoint
             foreach ($data as $key => $entry) {
 
                 if ($entry == 0 || $key == "") {
-                    print "The ski_type provided or the amount is null \n";
-                    //throw; //TODO Throw exception
-
+                    throw new APIException(RESTConstants::HTTP_BAD_REQUEST, "The ski_type provided or the amount is null");
                 } else {
                     $filter = array(
                         'ski_type' => $key,
@@ -117,8 +110,7 @@ class StorekeeperEndpoint
             return $res;
 
         } else {
-            print("The uri provided contains wrong syntax try: storekeeper/ski \n");
-            //throw; //TODO Throw exception
+            throw new APIException(RESTConstants::HTTP_BAD_REQUEST, "The uri provided contains wrong syntax try: storekeeper/ski ");
             return $uri;
         }
     }

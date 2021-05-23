@@ -1,6 +1,7 @@
 <?php
 require_once 'controller/APIController.php';
 require_once 'controller/APIException.php';
+require_once 'controller/BadRequestException.php';
 require_once 'errors.php';
 header('Content-Type: application/json');
 
@@ -44,12 +45,7 @@ try {
 } catch (APIException $e) {
     http_response_code($e->getCode());
     echo json_encode(generateErrorResponseContent($e->getCode(), $e->getInstance(), $e->getDetailCode(), $e));
-} catch (BadRequestException $e) {
-    $resp = generateDBErrorResponseContent($e->getCode(), $e->getInstance(), $e->getDetailCode());
-    http_response_code($resp['error_code']);
-    echo json_encode($resp);
 } catch (Throwable $e) {
     http_response_code(RESTConstants::HTTP_INTERNAL_SERVER_ERROR);
     echo json_encode(generateDBErrorResponseContent(RESTConstants::HTTP_INTERNAL_SERVER_ERROR, '/', -1));
 }
-

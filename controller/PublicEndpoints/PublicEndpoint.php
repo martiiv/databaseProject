@@ -19,11 +19,10 @@ class PublicEndpoint
      */
     public function handleRequest(array $uri, string $requestMethod, array $queries, array $payload): array
     {
-        switch ($requestMethod) {
-            case RESTConstants::METHOD_GET:
-                return $this->handleGet($uri, $queries);
-            default: //TODO Throw exception
-        }
+        return match ($requestMethod) {
+            RESTConstants::METHOD_GET => $this->handleGet($uri, $queries),
+            default => throw new APIException(RESTConstants::HTTP_NOT_IMPLEMENTED, $requestMethod),
+        };
     }
 
     /**
@@ -43,7 +42,7 @@ class PublicEndpoint
         } else if ($uri[0] == "skis" && sizeof($queries) == 0) {
             $ski_models = (new SkiModel())->getCollection();
         } else {
-            ///throw new ....
+            throw new APIException(RESTConstants::HTTP_BAD_REQUEST, "invalid url or missing queries");
         }
 
         $res['result'] = $ski_models;
