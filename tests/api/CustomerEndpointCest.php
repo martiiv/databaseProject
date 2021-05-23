@@ -12,7 +12,7 @@ require_once 'Authorisation.php';
  *      splitOrder()        TODO Request a split order NOT IMPLEMENTED
  *      getPlanSummary()    DONE Get production summary
  * @date    07.05.2021
- * @version 0.6
+ * @version 1.0
  */
 class CustomerEndpointCest
 {
