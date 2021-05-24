@@ -1,8 +1,6 @@
-<h1>Deployment guide for peer review:</h1>
+<h1>Deployment guide:</h1>
 
 <h3>Comments about submission:</h3>
-
-**The tester has to set up their own local test server to test API endpoint functionality ([deployment guide](#local-deployment-guide))**
 
 **Use software like postman to make API requests**
 
