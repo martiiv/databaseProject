@@ -1,14 +1,12 @@
 <h1>Deployment guide:</h1>
 
+This is the readMe for the database project for the course IDATG2204, this readme contains information about deployment as well as some test cases and endpoints. 
+**For the full Endpoint documentation see the Endpoint Documentation document in the doc folder**
+For a detailed description of the project see the project report found on Inspera. 
+
 <h3>Comments about submission:</h3>
 
 **Use software like postman to make API requests**
-
-**When placing orders, the tester will have to pass in order number(this number will be auto generated in the future), please do not create several orders with the same order number when testing** 
-
-This projects functions and tests have been heavily influenced by the rest API sample project provided by the course professor, Rune Hjelsvold .
-
-Codeception API tests are not configured yet and might not work .
 
 <h2>Local deployment guide</h2>
 
