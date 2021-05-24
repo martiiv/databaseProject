@@ -1,10 +1,8 @@
-<h1>Deployment guide:</h1>
+<h1>Readme</h1>
 
 This is the readMe for the database project for the course IDATG2204, this readme contains information about deployment as well as some test cases and endpoints. 
 **For the full Endpoint documentation see the Endpoint Documentation document in the doc folder**
 For a detailed description of the project see the project report found on Inspera. 
-
-<h3>Comments about submission:</h3>
 
 **Use software like postman to make API requests**
 
